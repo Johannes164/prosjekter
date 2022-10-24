@@ -140,15 +140,32 @@ body {
     padding: 20px;
     line-height: 0;
 } */
+.bbH1 {
+    position: absolute; 
+    text-align: center; 
+    font-size: 6.3em;
+    color: white;
+}
+.bbP {
+    font-size: 0.5em;
+    line-height: 0.9;
+    font-weight: lighter;
+}
+.bbH1, .bbP {
+    animation-delay: 1.9s;
+    animation: undraw 0.1s ease-in forwards;
+    display: none;
+}
 .homeBackground > svg {
     position: relative;
-    top: -6vh;
+    top: -3vh;
 }
 .homeBackground > svg path {
     stroke-dasharray: 384; /* setter lengden til strekene svg-en skal lages av */
     stroke-dashoffset: 384; /* setter hvor på pathen dashen til en stroke skal begynne */
 
     animation: draw 2s ease-in-out forwards;
+    transition-delay: 2s;
 }
 
 
@@ -174,8 +191,17 @@ body {
         fill: white;
         filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))
     }
-
 }
+@keyframes undraw {
+    0% {
+        display: none;
+    }
+    100% {
+        display: block;
+    }
+}
+
+
 #brynebyenebam {
     width: 500px;
 }
@@ -226,7 +252,7 @@ body {
     }
 }
 
-@media only screen and (max-width:1100px) { /* setter reglene under bare dersom viewport er lik eller mindre enn 1100px */
+@media only screen and (max-width:1250px) { /* setter reglene under bare dersom viewport er lik eller mindre enn 1250px */
     #siteWrap{
         grid-template-areas: 
         "header header header header header header"
@@ -284,7 +310,7 @@ body {
     align-content: end;
     margin-right: 1em;
 }
-@media only screen and (max-width:1100px){ 
+@media only screen and (max-width:1250px){ 
 
     .burgerContainer {
         display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
