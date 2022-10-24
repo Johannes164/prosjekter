@@ -190,12 +190,6 @@ body {
 #brynebyenebam {
     width: 500px;
 }
-@media only screen and (max-width:766px){
-    #brynebyenebam {
-        width: 300px;
-        
-    }
-}
 
 .content {
     grid-area: content;
@@ -247,9 +241,7 @@ body {
         "footer footer footer footer footer footer"
         ;
     }
-    .header .nav {
-        display: none;
-    }
+
     .profile{
         display: none; /* other 2 er fjernet når størrelsen er mindre enn 1101px */
     }
@@ -258,14 +250,29 @@ body {
         width: 50px; /* 1:1.3 */
         height: 65px;
     }
+
+    #siteWrap{
+    grid-template-rows: 
+    144px
+    450px
+    min-content
+    min-content
+    1fr
+    ;
+    }
+
+    #brynebyenebam {
+        width: 400px;
+        
+    }
+
+    .header > .nav a{ 
+        /*padding: 12px 20px; */
+        font-size: 0.8em;
+    }
 }
     @media only screen and (max-width:766px){ 
-        .homeBackground h1 {
-            position: relative;
-            top: -6vh;
-            font-size: 3em;
-        }
-    
+
         #siteWrap{
         grid-template-rows: 
         144px
@@ -279,6 +286,13 @@ body {
             margin-left: 1em;
             width: 40px; /* 1:1.3 */
             height: 52px;
+        }
+
+        #brynebyenebam {
+            width: 300px; 
+        }
+        .header .nav {
+            display: none;
         }
     }
 
@@ -295,7 +309,7 @@ body {
     align-content: end;
     margin-right: 1em;
 }
-@media only screen and (max-width:1250px){ 
+@media only screen and (max-width:766px){ 
 
     .burgerContainer {
         display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
