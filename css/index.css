@@ -279,6 +279,9 @@ body {      /* body regler */
         .header .nav {
             display: none;
         }
+        .nav.change{
+            display: flex;
+        }
     }
 
 /* … */
