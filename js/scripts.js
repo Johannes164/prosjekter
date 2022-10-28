@@ -6,9 +6,9 @@ hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("change");
 });
 
-//window.addEventListener("resize", () => {
-//  if(navbar.classList.contains("change"))
-//    navbar.classList.remove("change");
-//  if(hamburger.classList.contains("change"))
-//    hamburger.classList.remove("change");
-//});
+window.addEventListener("resize", () => {
+  if(navbar.classList.contains("change"))
+    navbar.classList.remove("change");
+  if(hamburger.classList.contains("change"))
+    hamburger.classList.remove("change");
+});

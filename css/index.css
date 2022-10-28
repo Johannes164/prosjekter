@@ -357,11 +357,13 @@ body {      /* body regler */
             display: flex;
             position: fixed;
             left: 0;
-
         }
+        .nav.change a{
+            margin: 0 1vw;
+        }
+
         .burgerContainer {
             display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
-            position: ;
         }
     }
 
