@@ -54,7 +54,7 @@
 
     <div class="homeBackground homeBackgroundBilde">                            <!-- området mellom navbar og "Velkommen!" delen (homebackgroundbilde er bare gradient bakgrunnen) -->
 
-        <svg id="brynebyenebam" viewbox="0 0 637 202" width="637" height="202" fill="none" xmlns="http://www.w3.org/2000/svg">  <!-- på "Figma.com" kan du designe ting, og blant annet hente svg-koden for det du lagde, brukte det for teksten "Brynebyen En by av muligheter" -->
+        <svg id="brynebyenebam" viewbox="0 0 637 202" width="637" height="202" fill="none" xmlns="http://www.w3.org/2000/svg">  <!-- på "Figma.com" kan du designe ting, og blant annet hente svg-koden for det du lagde, brukte det på teksten "Brynebyen En by av muligheter" -->
             <path d="M3.4375 98V8.375H36.0625C46.0625 8.375 53.75 10.2083 59.125 13.875C64.5 17.5417 67.1875 22.7083 67.1875 29.375C67.1875 34.2083 65.5417 38.4375 62.25 42.0625C59 45.6875 54.8333 48.2083 49.75 49.625V49.875C56.125 50.6667 61.2083 53.0208 65 56.9375C68.8333 60.8542 70.75 65.625 70.75 71.25C70.75 79.4583 67.8125 85.9792 61.9375 90.8125C56.0625 95.6042 48.0417 98 37.875 98H3.4375ZM23.625 23.25V44.5H32.5C36.6667 44.5 39.9375 43.5 42.3125 41.5C44.7292 39.4583 45.9375 36.6667 45.9375 33.125C45.9375 26.5417 41.0208 23.25 31.1875 23.25H23.625ZM23.625 59.5V83.125H34.5625C39.2292 83.125 42.875 82.0417 45.5 79.875C48.1667 77.7083 49.5 74.75 49.5 71C49.5 67.4167 48.1875 64.6042 45.5625 62.5625C42.9792 60.5208 39.3542 59.5 34.6875 59.5H23.625Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
             <path d="M125.375 51.8125C123 50.5208 120.229 49.875 117.062 49.875C112.771 49.875 109.417 51.4583 107 54.625C104.583 57.75 103.375 62.0208 103.375 67.4375V98H83.625V34H103.375V45.875H103.625C106.75 37.2083 112.375 32.875 120.5 32.875C122.583 32.875 124.208 33.125 125.375 33.625V51.8125Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
             <path d="M200.688 34L174.688 103.125C168.438 119.75 159.021 128.062 146.438 128.062C141.646 128.062 137.708 127.521 134.625 126.438V110.688C137.25 112.229 140.104 113 143.188 113C148.271 113 151.812 110.604 153.812 105.812L157.188 97.875L131.188 34H153.062L165 72.9375C165.75 75.3542 166.333 78.2083 166.75 81.5H167C167.375 79.0833 168.062 76.2708 169.062 73.0625L181.125 34H200.688Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
@@ -83,10 +83,6 @@
         </svg>
     </div>
 
-    <div class="profile"> 
-        <img src="images/bryne.png" alt="bryne høghus" width="500">
-    </div>
-
     <div class="main">
         <h1>Velkommen!</h1>
         <p> Dette er nettstedet til brynebyen, hvor du blandt annet kan lese om <a href="byutvikling.html">byutviklingen</a> til bryne. Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
@@ -94,6 +90,10 @@
             optio officia? Rem labore aut fuga repudiandae temporibus cupiditate inventore est adipisci soluta, vitae animi accusamus reprehenderit illo. Dolor alias repellendus 
             odio. Nesciunt eos, aut consequatur voluptatibus hic eveniet beatae accusantium, culpa incidunt rerum adipisci est debitis quam neque. </p>
         <a class="btn" href="#">Link</a>
+    </div>
+
+    <div class="profile"> 
+        <img src="images/bryne.png" alt="bryne høghus" width="500">
     </div>
 
     <div class="content">
@@ -105,6 +105,7 @@
 
     <div class="footer">
         &copy; Copyright 2022 Brynebyen
+        <h2><a href="#">Tilbake til toppen</a></h2>
     </div>
 
 </div> <!-- siteWrap end -->
@@ -112,6 +113,6 @@
 
 
 
-<script src="js/scripts.js"></script>        <!-- js link -->
+<script src="js/scripts.js"></script>        <!-- js link (kjøres på slutten for at queryselector skal fungere (kan også legge til defer i script tag))-->
 </body>
 </html>

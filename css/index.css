@@ -2,19 +2,23 @@
 * {
     box-sizing: border-box; /* inkluderer border i størrelsen i stedet for å legge den til https://www.w3schools.com/css/css3_box-sizing.asp */
 }
-
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
 body {      /* body regler */
     margin: 0;
     padding: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Segoe UI targeter Windows og Windows phone, Roboto targeter Android og nyere Chrome OS, oxygen targeter oxygen OS, ubuntu er linux https://github.com/necolas/normalize.css/issues/665 */
     line-height: 1.5em;
     background-color: rgb(24, 26, 27);
+    color: #e8e6e3
     
 }
 
 #siteWrap{      /* div som dekker hele siden */
-    height: 100vh;
-    background-color: rgb(24, 26, 27);
+    height: 100%;
     display: grid;
     grid-template-columns: 
         1fr
@@ -39,11 +43,16 @@ body {      /* body regler */
 
 
 
-/* || Content */
+
+
+
+/* || Header and Main Navigation */
+
 
 .headerFill1 {
     grid-area: headerFill1;
 }
+
 .headerFill2 {
     grid-area: headerFill2;
 }
@@ -51,12 +60,8 @@ body {      /* body regler */
 .header {           /* container til bl.a navbar */
     grid-area: header;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    flex-basis: 100%;
-    flex-direction: row;
-    align-content: stretch;
-    flex-wrap: wrap;
+    align-items: center;
 }
 .header .logo{
     margin-left: 1em;
@@ -65,7 +70,6 @@ body {      /* body regler */
 }
 .header > .nav{
     list-style: none;
-    padding: 0;
     display: flex;
 }
 .header > .nav a{ /* gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) */
@@ -81,41 +85,70 @@ body {      /* body regler */
 .header > .nav a:hover, .header > .nav .active{ /* gjelder når man har musen over lenkene, eller gir noe i nav .active */
     transition: all 0.2s ease-in-out;
     background-color: rgb(45, 90, 130);
-    color: #e8e6e3
-}
-
-.main {
-    grid-area: main;
-}
-.main > h1, .main > p, .main > p > a {
     color: #e8e6e3;
 }
-.main > p > a:active{
-    color: #bdbab2;
-    text-decoration: none;
+
+
+
+
+/* Hamburger meny */
+.burgerContainer { /* Beholderen til hamburgermenyen */
+    display: none; 
+    cursor: pointer; /* Gjør at musepekeren blir til en pekefinger */
+    align-content: end;
+    margin-right: 1em;
 }
 
-.btn {
-    text-decoration: none;
-    background-color: rgb(90, 45, 130);
-    border: 2px solid rgb(90, 45, 130);
-    border-radius: 50em;
-    color: #e8e6e3;
-    padding: 15px 30px;
-    margin: 0 8px;
-    font-weight: bold;
-    float: right;
+.burgerContainer {
+    transition: all 400ms cubic-bezier(0.84, 0.06, .52, 1.8);
+}
+.burgerContainer:hover {
+    transform: scale(1.2);
 }
 
-.profile {  /* profile img container */
-    width: 100px;
-    padding: 2em 1em ;
-    grid-area: profile;
+.burgerBar1, .burgerBar2, .burgerBar3 {
+    margin: 4px 0;
+    transition: all 0.2s ease-in-out; /* Gjør at endringer på verdier for disse klassene skjer over 0.4 sekunder gradvis */
+    
 }
-.profile > img {
-    width: 320px;
-    height: 450px;
+
+.change .burgerBar1 { /* når det ikkje er komma etter ".change" betyr det at alt innenfor {} vil skje med klassen .burgerBar1 dersom .change også er aktiv i parent-div */
+    transform: translate(0, 6px) rotate(-29.745deg); /* Setter change funksjonen til å transormere, altså endre burgerBar1 med å sette den 0 til høyre, 11px nedover, og rotere den 45 grader anti-clockwise */
+    
 }
+
+.change .burgerBar2 {
+    opacity: 0; 
+}
+
+.change .burgerBar3 {
+    transform: translate(0, -7px) rotate(29.745deg); /*samme som burgerBar1 bare andre retningen*/
+}
+
+.burgerBar1 {
+    width: 35px;
+    height: 3px;
+    background-color: rgba(228, 228, 228, 0.5);
+}
+
+.burgerBar2 {
+    width: 35px;
+    height: 2px;
+    background-color: rgba(228, 228, 228, 1);
+}
+
+.burgerBar3 {
+    width: 35px;
+    height: 3px;
+    background-color: rgba(228, 228, 228, 0.5);
+}
+
+
+
+
+
+
+/* || Content */
 
 
 .homeBackground { /* området under header */
@@ -134,17 +167,19 @@ body {      /* body regler */
     stroke-dasharray: 384; /* setter lengden til strekene svg-en skal lages av */
     stroke-dashoffset: 384; /* setter hvor på pathen dashen til en stroke skal begynne */
 
-    animation: draw 2s ease-in-out forwards;
+    animation: draw 2s ease-in-out forwards 100ms;
     transition-delay: 2s;
 }
 
 
 @keyframes draw {
     0% {
+        transform: rotate3d(1, 0.1, 0.05, 30deg);
         stroke-dashoffset: 384;
         fill: rgba(255, 255, 255, 0.0)
     }
     50% {
+        transform: rotate3d(0, 0, 0, 0);
         stroke-dashoffset: 0;
         fill: rgba(255, 255, 255, 0.4)
     }
@@ -163,27 +198,60 @@ body {      /* body regler */
         filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))
     }
 }
-@keyframes undraw {
-    0% {
-        display: none;
-    }
-    100% {
-        display: block;
-    }
-}
 
 
 #brynebyenebam { /* tittel svg */
     width: 500px;
 }
 
+
+
+.main {
+    grid-area: main;
+}
+.main p a {
+    color: #e8e6e3
+}
+.main > p > a:active, .main > p > a:hover{
+    color: #bdbab2;
+    text-decoration: none;
+}
+
+.btn {
+    text-decoration: none;
+    background-color: rgb(90, 45, 130);
+    border: 2px solid rgb(90, 45, 130);
+    border-radius: 50em;
+    color: #e8e6e3;
+    padding: 15px 30px;
+    margin: 0 8px;
+    font-weight: bold;
+    float: right;
+}
+.btn:hover {
+    background-color: rgb(97, 69, 130);
+    border: 2px solid rgb(97, 69, 130);
+}
+
+.profile {  /* profile img container */
+    width: 100px;
+    padding: 2em 1em ;
+    grid-area: profile;
+}
+.profile > img {
+    width: 320px;
+    height: 450px;
+}
+
+
 .content { /* kode for image library, se 5.2 i grid øving */
     grid-area: content;
     display: grid;
     grid-gap: 8px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, auto));
     justify-content: space-between;
-    margin: 1em 0 1em 2em 
+    margin: 1em 2em 1em;
+    overflow: hidden;
 }
 .content img {
     width: 100%;
@@ -197,14 +265,21 @@ body {      /* body regler */
     padding: 2em 0;
     grid-area: footer;
 }
+.footer a{
+    text-decoration: none;
+    color: #e8e6e3;
+}
+.footer a:active{
+    color: #dcd9d5;
+}
 
 .homeBackgroundBilde {  /* størrelsen er på 200% slik at halve er vist på skjermen, så åppnår vi animasjonen ved å bytte på hvilken halvdel som vises */
     background-size: 200%;
-    background-image: linear-gradient(135deg, #FFAA00, #00FFFF, #ff00f0);
+    background-image: linear-gradient(135deg, #FFAA00aa, #00FFFFaa, #ff00f0aa);
     background-attachment: fixed; /* skalerer bakgrunnen til viewport sin størrelse og viser den hvor den er skrudd på, slik at den kan dekke flere elementer */
     animation: homeBackgroundAnim 20s ease-in-out infinite; /* bakgrunnen er satt til  */
-;
 }
+
 @keyframes homeBackgroundAnim {
     0% {
         background-position: left;
@@ -253,11 +328,10 @@ body {      /* body regler */
     }
 
     .header > .nav a{ 
-        /*padding: 12px 20px; */
         font-size: 0.8em;
     }
 }
-    @media only screen and (max-width:766px){ 
+    @media only screen and (max-width:768px){ 
 
         #siteWrap{
         grid-template-rows: 
@@ -281,63 +355,35 @@ body {      /* body regler */
         }
         .nav.change{
             display: flex;
+            position: fixed;
+            left: 0;
+
+        }
+        .burgerContainer {
+            display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
+            position: ;
         }
     }
 
 /* … */
-
-
-
-/* || Header and Main Navigation */
-
-/* Hamburger meny */
-.burgerContainer { /* Beholderen til hamburgermenyen */
-    display: none; 
-    cursor: pointer; /* Gjør at musepekeren blir til en pekefinger */
-    align-content: end;
-    margin-right: 1em;
+/*
+.header > .nav{
+    list-style: none;
+    display: flex;
 }
-@media only screen and (max-width:766px){ 
-
-    .burgerContainer {
-        display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
-    }
-
+.header > .nav a{  gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) 
+    text-decoration: none;
+    border: 2px solid rgb(45, 90, 130);
+    border-radius: 50em;  pille-effekt 
+    color: rgb(45, 90, 130);
+    filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.1));
+    padding: 15px 30px;
+    margin: 0 8px;
+    font-weight: bold
 }
-
-.burgerBar1, .burgerBar2, .burgerBar3 {
-    margin: 4px 0;
-    transition: all 0.2s ease-in-out; /* Gjør at endringer på verdier for disse klassene skjer over 0.4 sekunder gradvis */
-    
+.header > .nav a:hover, .header > .nav .active{  gjelder når man har musen over lenkene, eller gir noe i nav .active 
+    transition: all 0.2s ease-in-out;
+    background-color: rgb(45, 90, 130);
+    color: #e8e6e3
 }
-
-.change .burgerBar1 { /* når det ikkje er komma etter ".change" betyr det at alt innenfor {} vil skje med klassen .burgerBar1 dersom .change også er aktiv i parent-div */
-    transform: translate(0, 6px) rotate(-29.745deg); /* Setter change funksjonen til å transormere, altså endre burgerBar1 med å sette den 0 til høyre, 11px nedover, og rotere den 45 grader anti-clockwise */
-    
-}
-
-.change .burgerBar2 {
-    opacity: 0; 
-}
-
-.change .burgerBar3 {
-    transform: translate(0, -7px) rotate(29.745deg); /*samme som burgerBar1 bare andre retningen*/
-}
-
-.burgerBar1 {
-    width: 35px;
-    height: 3px;
-    background-color: rgba(228, 228, 228, 0.5);
-}
-
-.burgerBar2 {
-    width: 35px;
-    height: 2px;
-    background-color: rgba(228, 228, 228, 1);
-}
-
-.burgerBar3 {
-    width: 35px;
-    height: 3px;
-    background-color: rgba(228, 228, 228, 0.5);
-}
+*/
