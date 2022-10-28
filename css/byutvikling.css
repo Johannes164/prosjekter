@@ -198,7 +198,7 @@ body {      /* body regler */
 }
 
 
-#brynebyenebam { /* tittel svg */
+#byutviklingTittel { /* tittel svg */
     width: 500px;
 }
 
@@ -320,7 +320,7 @@ body {      /* body regler */
     ;
     }
 
-    #brynebyenebam {
+    #byutviklingTittel {
         width: 400px;
     }
 
@@ -344,7 +344,7 @@ body {      /* body regler */
             height: 65px;
         }
 
-        #brynebyenebam {
+        #byutviklingTittel {
             width: 300px; 
         }
         .header .nav {
