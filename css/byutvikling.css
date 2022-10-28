@@ -162,18 +162,18 @@ body {      /* body regler */
     top: -3vh;
 }
 .homeBackground > svg path {
-    stroke-dasharray: 384; /* setter lengden til strekene svg-en skal lages av */
-    stroke-dashoffset: 384; /* setter hvor på pathen dashen til en stroke skal begynne */
+    stroke-dasharray: 427; /* setter lengden til strekene svg-en skal lages av */
+    stroke-dashoffset: 427; /* setter hvor på pathen dashen til en stroke skal begynne */
 
     animation: draw 2s ease-in-out forwards 100ms;
-    transition-delay: 2s;
+    transition-delay: 2s; 
 }
 
 
 @keyframes draw {
     0% {
         transform: rotate3d(1, 0.1, 0.05, 30deg);
-        stroke-dashoffset: 384;
+        stroke-dashoffset: 427;
         fill: rgba(255, 255, 255, 0.0)
     }
     50% {
@@ -186,12 +186,12 @@ body {      /* body regler */
         fill: rgba(255, 255, 255, 1);
     }
     99% {
-        stroke-dashoffset: 384;
+        stroke-dashoffset: 427;
         fill: white;
         ;
     }
     100% {
-        stroke-dashoffset: 384;
+        stroke-dashoffset: 427;
         fill: white;
         filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))
     }
