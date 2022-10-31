@@ -1,372 +1,310 @@
-/* || General styles */
-* {
-    box-sizing: border-box; /* inkluderer border i størrelsen i stedet for å legge den til https://www.w3schools.com/css/css3_box-sizing.asp */
-}
-
-body {      /* body regler */
-    margin: 0; /* Fjerner marg og padding for alle browsers */
-    padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Segoe UI targeter Windows og Windows phone, Roboto targeter Android og nyere Chrome OS, oxygen targeter oxygen OS, ubuntu er linux https://github.com/necolas/normalize.css/issues/665 */
-    line-height: 1.5em;
-    background-color: rgb(24, 26, 27);
-    color: #e8e6e3
-}
 html {
-    line-height: 1.15; /* fikser line height for alle browsers */
-    -webkit-text-size-adjust: 100%; /* Stopper justring av fontstørrelse når orientering endres på iOS */
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
 }
 
- hr {
-    box-sizing: content-box; /* Rett box sizing for Firefox */
-    height: 0; /* -,- */
-    overflow: visible; /* Viser overflow i Edge og IE */
-  }
+body {
+  margin: 0;
+}
 
-#siteWrap{      /* div som dekker hele siden */
-    height: 100%;
-    display: grid;
-    grid-template-columns: 
-        1fr
-        repeat(4, minmax(0, 300px))
-        1fr
-    ;
-    grid-template-rows: 
-    144px
-    700px
-    min-content
-    min-content
-    1fr
-    ;
+hr {
+  box-sizing: content-box; /* 1 */
+  height: 0; /* 1 */
+  overflow: visible; /* 2 */
+}
+
+* {
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	background-image: radial-gradient(rgba(195, 195, 195, 0.5), rgba(150, 200, 255, 0.3));
+	background-size:cover;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul li {
+  display: inline;
+  list-style-type: none;
+}
+
+.main-wrapper {
+  max-width: 1200px;
+  margin: auto;
+}
+
+
+.nav-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 30% auto;
+}
+
+.nav-wrapper a{
+  letter-spacing: .1em;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-wrapper a:hover {
+  cursor: pointer;
+  color: rgb(113, 137, 168);
+}
+
+.logo {
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.69));
+}
+
+.nav-items {
+  text-align: right;
+  padding-top: 10px;
+  padding-left: 0;
+}
+
+.burger-icon {
+  display: none;
+}
+
+.list-item {
+  margin-left: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px;
+  transition: .25s;
+}
+
+.social-footer li{
+	display:block;
+}
+
+.icon:after {
+  content: " +";
+  transform: rotate(45deg);
+}
+
+.logo .fas,.logo strong{
+	color:black;
+	text-shadow:1px 1px 0px white;
+}
+
+.wrapper {
+  max-width: 100%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
     grid-template-areas: 
-    "headerFill1 header header header header headerFill2"
-    "homeBackground homeBackground homeBackground homeBackground homeBackground homeBackground"
-    ". main main main profile ."
-    ". content content content content ."
-    "footer footer footer footer footer footer"
-    ;
+      "featuredMain featuredMain featuredSub"
+      "contentMain contentMain contentSub";
+  color: #FFF;
+	
 }
 
-
-
-
-
-
-/* || Header and Main Navigation */
-
-
-.headerFill1 {
-    grid-area: headerFill1;
+.wrapper > .featured, .wrapper > .sub-featured > div, .wrapper > .main-content, .wrapper > .main-sidebar,  .wrapper > .sub-featured > a {
+  padding: 20px;
 }
 
-.headerFill2 {
-    grid-area: headerFill2;
+.featured {
+  grid-area: featuredMain;
+  min-height: 500px;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.69)) border-box, url(../images/featuredMain.jpg) no-repeat center center;
+  background-size: cover;
+	display:grid;
+	align-content: flex-end;
+}
+.main-wrapper a:hover {
+  transform: scale(1.02);
 }
 
-.header {           /* container til bl.a navbar */
-    grid-area: header;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.header .logo{
-    margin-left: 1em;
-    width: 65px; /* 1:1.3 */
-    height: 85px;
-}
-.header > .nav{
-    list-style: none;
-    display: flex;
-}
-.header > .nav a{ /* gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) */
-    text-decoration: none;
-    border: 2px solid rgb(45, 90, 130);
-    border-radius: 50em; /* pille-effekt */
-    color: rgb(45, 90, 130);
-    filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.1));
-    padding: 15px 30px;
-    margin: 0 8px;
-    font-weight: bold
-}
-.header > .nav a:hover, .header > .nav .active{ /* gjelder når man har musen over lenkene, eller gir noe i nav .active */
-    transition: all 0.2s ease-in-out;
-    background-color: rgb(45, 90, 130);
-    color: #e8e6e3;
+.featured h1 {
+  font-size: 36px;
+  max-width: 650px;
 }
 
+.main-content,.featured,.sub-featured > div,.main-sidebar,.sub-featured > a {
+  box-shadow:0px 0px 4px rgba(0,0,0,.25);
 
-
-
-/* Hamburger meny */
-.burgerContainer { /* Beholderen til hamburgermenyen */
-    display: none; 
-    cursor: pointer; /* Gjør at musepekeren blir til en pekefinger */
-    align-content: end;
-    margin-right: 1em;
 }
 
-.burgerContainer {
-    transition: transform 250ms cubic-bezier(0.84, 0.06, .52, 1.8);
-}
-.burgerContainer:hover {
-    transform: scale(1.2);
-}
-
-.burgerBar1, .burgerBar2, .burgerBar3 {
-    margin: 4px 0;
-    transition: all 0.2s ease-in-out; /* Gjør at endringer på verdier for disse klassene skjer over 0.4 sekunder gradvis */
+.sub-featured {
+  grid-area: featuredSub;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
 }
 
-.change .burgerBar1 { /* når det ikkje er komma etter ".change" betyr det at alt innenfor {} vil skje med klassen .burgerBar1 dersom .change også er aktiv i parent-div */
-    transform: translate(0, 6px) rotate(-29.745deg); /* Setter change funksjonen til å transormere, altså endre burgerBar1 med å sette den 0 til høyre, 11px nedover, og rotere den 45 grader anti-clockwise */
+.sub-featured h2, h3 {
+  margin-top: 0;
 }
 
-.change .burgerBar2 {
-    opacity: 0; 
+.sub1 {
+  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.1)) border-box, url(https://source.unsplash.com/400x100/?technology) no-repeat center bottom;
+  background-size: cover;
 }
 
-.change .burgerBar3 {
-    transform: translate(0, -7px) rotate(29.745deg); /*samme som burgerBar1 bare andre retningen*/
+.sub2 {
+  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.1)) border-box, url(https://source.unsplash.com/400x100/?sports) no-repeat center center;
+  background-size: cover;
 }
 
-.burgerBar1 {
-    width: 35px;
-    height: 3px;
-    background-color: rgba(228, 228, 228, 0.5);
+.sub3 {
+  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.1)) border-box, url(https://source.unsplash.com/400x100/?winter) no-repeat center center;
+  background-size: cover;
 }
 
-.burgerBar2 {
-    width: 35px;
-    height: 2px;
-    background-color: rgba(228, 228, 228, 1);
+.main-content{
+  grid-area: contentMain;
+	z-index: 100;
+	background-color:rgba(255, 255, 255, 0.35);
+	color:#444;
+	line-height:1.5em;
 }
 
-.burgerBar3 {
-    width: 35px;
-    height: 3px;
-    background-color: rgba(228, 228, 228, 0.5);
+.main-sidebar{
+  grid-area: contentSub;
+	background-color:rgba(255, 255, 255, 0.35);
+	color:#444;
+  line-height:1.5em;
 }
 
-
-
-
-
-
-/* || Content */
-
-
-.homeBackground { /* området rett under header */
-    grid-area: homeBackground;
-    display: grid;
-    justify-items: center;
-    align-items: center;
+.contentSide{
+  font-size:1em;
+  background-color: #fbfbfb;
+  border: #e1e8ed solid 1px;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-
-.homeBackground > svg {
-    position: relative;
-    top: -3vh;
-}
-.homeBackground > svg path {
-    stroke-dasharray: 384; /* setter lengden til strekene svg-en skal lages av */
-    stroke-dashoffset: 384; /* setter hvor på pathen dashen til en stroke skal begynne */
-
-    animation: draw 2s ease-in-out forwards 100ms;
-    transition-delay: 2s;
-}
-
-
-@keyframes draw {
-    0% {
-        transform: rotate3d(1, 0.1, 0.05, 30deg);
-        stroke-dashoffset: 384;
-        fill: rgba(255, 255, 255, 0.0)
-    }
-    50% {
-        transform: rotate3d(0, 0, 0, 0);
-        stroke-dashoffset: 0;
-        fill: rgba(255, 255, 255, 0.4)
-    }
-    75% {
-        stroke-dashoffset: 0;
-        fill: rgba(255, 255, 255, 1);
-    }
-    99% {
-        stroke-dashoffset: 384;
-        fill: white;
-        ;
-    }
-    100% {
-        stroke-dashoffset: 384;
-        fill: white;
-        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))
-    }
-}
-
-
-#brynebyenebam { /* tittel svg */
-    width: 500px;
-}
-
-
-
-.main { /* Tekstområdet */
-    grid-area: main;
-}
-.main p a {
-    color: #e8e6e3
-}
-.main > p > a:active, .main > p > a:hover{
-    color: #bdbab2;
-    text-decoration: none;
-}
-
-.btn {
-    text-decoration: none;
-    background-color: rgb(90, 45, 130);
-    border: 2px solid rgb(90, 45, 130);
-    border-radius: 50em;
-    color: #e8e6e3;
-    padding: 15px 30px;
-    margin: 0 8px;
-    font-weight: bold;
-    float: right;
-}
-.btn:hover {
-    background-color: rgb(97, 69, 130);
-    border: 2px solid rgb(97, 69, 130);
-}
-
-.profile {  /* profile img container */
-    width: 100px;
-    padding: 2em 1em ;
-    grid-area: profile;
-}
-.profile > img {
-    width: 320px;
-    height: 450px;
-}
-
-
-.content { /* kode for image library, se 5.2 i grid øving */
-    grid-area: content;
-    display: grid;
-    grid-gap: 8px;
-    grid-template-columns: repeat(auto-fit, minmax(258px, auto));
-    justify-content: space-between;
-    margin: 1em 2em 1em;
-    overflow: hidden;
-}
-.content img {
-    width: 100%;
-    border-radius: 1em;
-}
 
 .footer {
-    background-color: rgb(32, 32, 32);
-    color: rgb(191, 187, 187);
+  display: grid;
+  background: linear-gradient(#333, rgba(0, 0, 0, 0.6)), url(../images/footer.jpg) no-repeat center bottom;
+  background-size: cover;
+  margin: auto;
+  margin-top: 10px;
+  grid-template-columns: minmax(20px, 300px) minmax(20px, 300px) minmax(20px, 300px) minmax(20px, 300px);
+  justify-content: center;
+  grid-template-rows: 1fr 1fr;
+  background-color: #333;
+  color: #ccc;
+}
+
+
+.footer > div{
+	padding:25px;
+
+}
+.copyright {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  grid-column: 1/-1;
+}
+
+.footer-list > li {
+  display: block;
+}
+
+/* TABLET MEDIA QUERY */
+@media screen and (max-width: 950px) {
+  .wrapper {
+    grid-template-areas: 
+      "featuredMain featuredMain featuredMain"
+      "featuredSub featuredSub featuredSub" 
+      "contentMain contentMain contentSub";
+  color: #FFF;
+  }
+
+  .sub-featured {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .nav-items {
+    grid-column: 1/5; /* Gjer at den starter på kolonne 1 og slutter på 5 */
     text-align: center;
-    padding: 2em 0;
-    grid-area: footer;
-}
-.footer a{
-    text-decoration: none;
-    color: #e8e6e3;
-}
-.footer a:active{
-    color: #dcd9d5;
-}
+  }
 
-.homeBackgroundBilde {  /* størrelsen er på 200% slik at halve er vist på skjermen, så åppnår vi animasjonen ved å bytte på hvilken halvdel som vises */
-    background-size: 200%;
-    background-image: linear-gradient(135deg, #FFAA00aa, #00FFFFaa, #ff00f0aa);
-    background-attachment: fixed; /* skalerer bakgrunnen til viewport sin størrelse og viser den hvor den er skrudd på, slik at den kan dekke flere elementer */
-    animation: homeBackgroundAnim 20s ease-in-out infinite; /* bakgrunnen er satt til  */
+  .logo {
+    grid-column: 1/5;
+    text-align: center;
+  }
+
+  .nav-wrapper {
+    margin-top: 0;
+  }
 }
 
-@keyframes homeBackgroundAnim {
-    0% {
-        background-position: left;
-    }
-    50% {
-        background-position: right;
-    }
-    100% {
-        background-position: left;
-    }
+/* MOBILE MEDIA QUERY */
+@media screen and (max-width: 690px) {
+  .logo {
+    grid-column: 1/3;
+    padding-top: 7px;
+  }
+
+  .nav-items {
+    grid-column: 1/5;
+    text-align: center;
+  }
+    
+    .nav-items li {
+    display:block;
+  }
+
+  .burger-icon {
+    grid-column: 4/5;
+    justify-self: end;
+    color: #333;
+    padding: 10px;
+    padding-top: 30px;
+    font-weight: bold;
+    border-radius: 3px;
+  }
+  .burger-icon:hover {
+    cursor: pointer;
+  }
+	
+  .featured h1 {
+    font-size: 30px;
+  }
+
+   .wrapper {
+    grid-template-areas: 
+    "featuredMain featuredMain featuredMain"
+    "featuredSub featuredSub featuredSub" 
+    "contentMain contentMain contentMain"
+	  "contentSub contentSub contentSub";
+  	color: #FFF;
+  }
+  
+.mobile-hide {
+    display: none;
+  }
+
+.mobile-show{
+	display:block;
 }
 
-@media only screen and (max-width:1300px) { /* setter reglene under bare dersom viewport er lik eller mindre enn 1300px */
-    #siteWrap{
-        grid-template-areas: /* fjerner profile og stacker ting for mindre skjermer */
-        "header header header header header header"
-        "homeBackground homeBackground homeBackground homeBackground homeBackground homeBackground"
-        ". main main main main ."
-        "content content content content content content"
-        "footer footer footer footer footer footer"
-        ;
-    }
+  .burger-icon {
+    display: inline-block;
+  }
 
-    .profile{
-        display: none;
-    }
-    .header .logo{
-        margin-left: 1em;
-        width: 56px; /* 1:1.3 */
-        height: 73px;
-    }
+  .footer > div{
+	grid-column: 1/-1; /* Fra starten til slutten (-1=5 her) */
+  }
 
-    #siteWrap{
-    grid-template-rows: 
-    144px
-    450px
-    min-content
-    min-content
-    1fr
-    ;
-    }
+  .sub-featured {
+     grid-template-columns: 1fr;
+  }
 
-    #brynebyenebam {
-        width: 400px;
-    }
-
-    .header > .nav a{ 
-        font-size: 0.8em;
-    }
+  
 }
-    @media only screen and (max-width:768px){ 
 
-        #siteWrap{
-        grid-template-rows: 
-        144px
-        315px
-        min-content
-        min-content
-        1fr
-        ;
-        }
-        .header .logo{
-            width: 50px; /* 1:1.3 */
-            height: 65px;
-        }
 
-        #brynebyenebam {
-            width: 300px; 
-        }
-        .header .nav {
-            display: none;
-        }
-        .nav.change{
-            display: flex;
-            position: fixed;
-            left: 0;
-        }
-        .nav.change a{
-            margin: 0 1vw;
-        }
-
-        .burgerContainer {
-            display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
-        }
-    }
-
-/* … */

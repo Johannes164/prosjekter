@@ -20,7 +20,7 @@ hr {
     box-sizing: content-box; /* Rett box sizing for Firefox */
     height: 0; /* -,- */
     overflow: visible; /* Viser overflow i Edge og IE */
-  }
+}
 
 #siteWrap{      /* div som dekker hele siden */
     height: 100%;
@@ -366,6 +366,19 @@ hr {
 
         .burgerContainer {
             display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
+        }
+        .header > .nav a{ /* gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) */
+            text-decoration: none;
+            border: 2px solid rgb(15, 35, 50);
+            border-radius: 1em;
+            color: rgb(15, 35, 50);
+            filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.1));
+            padding: 8px 16px;
+            margin: 0 2px;
+            font-weight: bold
+        }
+        .header > .nav a:hover, .header > .nav .active{ /* gjelder når man har musen over lenkene, eller gir noe i nav .active */
+            background-color: rgb(15, 35, 50);
         }
     }
 

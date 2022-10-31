@@ -1,118 +1,113 @@
-<!DOCTYPE html> <!-- setter dokumentet -->
-<html lang="no"> <!-- setter språket -->
+<!DOCTYPE html>
+<html lang="no">
 <head>
 
 
-<meta charset="utf-8"> <!-- Setter character set -->
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"> <!-- Setter viewporten -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"> <!-- Brukes for ting med fa. Brukes kun til liste-elementene i footer, og burgerbar-ikonet -->
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hjemmeside">
-<meta property="og:description" content="Velkommen! Dette er nettstedet til brynebyen, hvor du blandt annet kan lese om byutviklingen til bryne. Lorem, ipsum dolor sit amet consectetur adipisicing elit.">
+<meta property="og:description" content="Velkommen! Dette er nettstedet til brynebyen, hvor du blandt annet kan lese om byutviklingen til bryne.">
 <meta property="og:url" content="https://johannes164.github.io/brynebyen">
 <meta property="og:site_name" content="Brynebyen">
 <meta property="og:image" content="https://johannes164.github.io/brynebyen/images/BB.png">
 <meta property="og:image:secure_url" content="https://johannes164.github.io/brynebyen/images/BB.png">
 <meta property="og:image-width" content="673">
 <meta property="og:image-height" content="870">
-<meta property="og:image:alt" content="logo">    <!-- meta og tags er for url preview -->
+<meta property="og:image:alt" content="logo">    <!-- De fleste comments som trengs er gjort i andre dokument, gjer ikkje meining å skriva det fleire gonger, blir bare meir rot å se på -->
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> <!-- Fant opplegget her: https://youtu.be/gH3sBOj6CGA, scriptet app.js trenger denne for å fungere /JavaScript library; https://releases.jquery.com/ -->
+<script src="js/app.js"></script>
 
-    <link rel="stylesheet" href="css/index.css"> <!-- css link -->
-
-
-    <title>Brynebyen</title>
-
+<title>Hello!</title>
 </head>
 
+
 <body>
-
-<div id="siteWrap">
-
-    <div class="headerFill1 homeBackgroundBilde"></div>                         <!-- header grid elementet skal være på midten for bedre navbar funksjonalitet, fill1 og 2 er for å få bakgrunnsgradienten i hjørnene -->
-    <div class="headerFill2 homeBackgroundBilde"></div>
-
-    <div class="header homeBackgroundBilde">                                    <!-- ting i navbaren (homebackgroundbilde er bare gradient bakgrunnen) -->
-        <a href="index.html">
-            <img class="logo" src="images/BB.png" alt="logo" width="65"> 
-        </a>
-        
-        <ul class="nav">                                                        <!-- navbar -->
-            <li><a class="active" href="byutvikling.html">Byutvikling</a></li>
-            <li><a href="#">Om</a></li>
-            <li><a href="#">link 3</a></li>
-            <li><a href="#">link 4</a></li>
-        </ul>
-
-        <div class="burgerContainer">      <!-- hamburgermeny og animasjon (klikker du den gis barene klassen change) -->
-            <div class="burgerBar1"></div>
-            <div class="burgerBar2"></div>
-            <div class="burgerBar3"></div>
-        </div>
-
-    </div><!-- header end -->
-
-    <div class="homeBackground homeBackgroundBilde">                            <!-- området mellom navbar og "Velkommen!" delen (homebackgroundbilde er bare gradient bakgrunnen) -->
-
-        <svg id="brynebyenebam" width="637" height="202" viewbox="0 0 637 202" fill="none" xmlns="http://www.w3.org/2000/svg">  <!-- på "Figma.com" kan du designe ting, og blant annet hente svg-koden for det du lagde, brukte det på teksten "Brynebyen En by av muligheter" -->
-            <path d="M3.4375 98V8.375H36.0625C46.0625 8.375 53.75 10.2083 59.125 13.875C64.5 17.5417 67.1875 22.7083 67.1875 29.375C67.1875 34.2083 65.5417 38.4375 62.25 42.0625C59 45.6875 54.8333 48.2083 49.75 49.625V49.875C56.125 50.6667 61.2083 53.0208 65 56.9375C68.8333 60.8542 70.75 65.625 70.75 71.25C70.75 79.4583 67.8125 85.9792 61.9375 90.8125C56.0625 95.6042 48.0417 98 37.875 98H3.4375ZM23.625 23.25V44.5H32.5C36.6667 44.5 39.9375 43.5 42.3125 41.5C44.7292 39.4583 45.9375 36.6667 45.9375 33.125C45.9375 26.5417 41.0208 23.25 31.1875 23.25H23.625ZM23.625 59.5V83.125H34.5625C39.2292 83.125 42.875 82.0417 45.5 79.875C48.1667 77.7083 49.5 74.75 49.5 71C49.5 67.4167 48.1875 64.6042 45.5625 62.5625C42.9792 60.5208 39.3542 59.5 34.6875 59.5H23.625Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M125.375 51.8125C123 50.5208 120.229 49.875 117.062 49.875C112.771 49.875 109.417 51.4583 107 54.625C104.583 57.75 103.375 62.0208 103.375 67.4375V98H83.625V34H103.375V45.875H103.625C106.75 37.2083 112.375 32.875 120.5 32.875C122.583 32.875 124.208 33.125 125.375 33.625V51.8125Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M200.688 34L174.688 103.125C168.438 119.75 159.021 128.062 146.438 128.062C141.646 128.062 137.708 127.521 134.625 126.438V110.688C137.25 112.229 140.104 113 143.188 113C148.271 113 151.812 110.604 153.812 105.812L157.188 97.875L131.188 34H153.062L165 72.9375C165.75 75.3542 166.333 78.2083 166.75 81.5H167C167.375 79.0833 168.062 76.2708 169.062 73.0625L181.125 34H200.688Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M270.438 98H250.75V62.4375C250.75 52.5208 247.208 47.5625 240.125 47.5625C236.708 47.5625 233.896 48.875 231.688 51.5C229.479 54.125 228.375 57.4583 228.375 61.5V98H208.625V34H228.375V44.125H228.625C233.333 36.3333 240.188 32.4375 249.188 32.4375C263.354 32.4375 270.438 41.2292 270.438 58.8125V98Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M343.625 71.625H301.875C302.542 80.9167 308.396 85.5625 319.438 85.5625C326.479 85.5625 332.667 83.8958 338 80.5625V94.8125C332.083 97.9792 324.396 99.5625 314.938 99.5625C304.604 99.5625 296.583 96.7083 290.875 91C285.167 85.25 282.312 77.25 282.312 67C282.312 56.375 285.396 47.9583 291.562 41.75C297.729 35.5417 305.312 32.4375 314.312 32.4375C323.646 32.4375 330.854 35.2083 335.938 40.75C341.062 46.2917 343.625 53.8125 343.625 63.3125V71.625ZM325.312 59.5C325.312 50.3333 321.604 45.75 314.188 45.75C311.021 45.75 308.271 47.0625 305.938 49.6875C303.646 52.3125 302.25 55.5833 301.75 59.5H325.312Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M375.375 90.5625H375.125V98H355.375V3.25H375.125V43.625H375.375C380.25 36.1667 387.188 32.4375 396.188 32.4375C404.438 32.4375 410.792 35.2708 415.25 40.9375C419.708 46.6042 421.938 54.3542 421.938 64.1875C421.938 74.8542 419.333 83.4167 414.125 89.875C408.917 96.3333 401.958 99.5625 393.25 99.5625C385.375 99.5625 379.417 96.5625 375.375 90.5625ZM374.812 63.5625V70.125C374.812 74.25 376 77.6667 378.375 80.375C380.75 83.0833 383.792 84.4375 387.5 84.4375C392 84.4375 395.479 82.7083 397.938 79.25C400.438 75.75 401.688 70.8125 401.688 64.4375C401.688 59.1458 400.542 55.0208 398.25 52.0625C396 49.0625 392.771 47.5625 388.562 47.5625C384.604 47.5625 381.312 49.0417 378.688 52C376.104 54.9583 374.812 58.8125 374.812 63.5625Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M495.688 34L469.688 103.125C463.438 119.75 454.021 128.062 441.438 128.062C436.646 128.062 432.708 127.521 429.625 126.438V110.688C432.25 112.229 435.104 113 438.188 113C443.271 113 446.812 110.604 448.812 105.812L452.188 97.875L426.188 34H448.062L460 72.9375C460.75 75.3542 461.333 78.2083 461.75 81.5H462C462.375 79.0833 463.062 76.2708 464.062 73.0625L476.125 34H495.688Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M559.875 71.625H518.125C518.792 80.9167 524.646 85.5625 535.688 85.5625C542.729 85.5625 548.917 83.8958 554.25 80.5625V94.8125C548.333 97.9792 540.646 99.5625 531.188 99.5625C520.854 99.5625 512.833 96.7083 507.125 91C501.417 85.25 498.562 77.25 498.562 67C498.562 56.375 501.646 47.9583 507.812 41.75C513.979 35.5417 521.562 32.4375 530.562 32.4375C539.896 32.4375 547.104 35.2083 552.188 40.75C557.312 46.2917 559.875 53.8125 559.875 63.3125V71.625ZM541.562 59.5C541.562 50.3333 537.854 45.75 530.438 45.75C527.271 45.75 524.521 47.0625 522.188 49.6875C519.896 52.3125 518.5 55.5833 518 59.5H541.562Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M633.438 98H613.75V62.4375C613.75 52.5208 610.208 47.5625 603.125 47.5625C599.708 47.5625 596.896 48.875 594.688 51.5C592.479 54.125 591.375 57.4583 591.375 61.5V98H571.625V34H591.375V44.125H591.625C596.333 36.3333 603.188 32.4375 612.188 32.4375C626.354 32.4375 633.438 41.2292 633.438 58.8125V98Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M66.4062 183H42.6562V138.188H65.4062V142.938H47.9062V157.844H64.0938V162.562H47.9062V178.25H66.4062V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M100.906 183H95.7812V164.75C95.7812 157.958 93.3021 154.562 88.3438 154.562C85.7812 154.562 83.6562 155.531 81.9688 157.469C80.3021 159.385 79.4688 161.812 79.4688 164.75V183H74.3438V151H79.4688V156.312H79.5938C82.0104 152.271 85.5104 150.25 90.0938 150.25C93.5938 150.25 96.2708 151.385 98.125 153.656C99.9792 155.906 100.906 159.167 100.906 163.438V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M133.406 178.375H133.281V183H128.156V135.625H133.281V156.625H133.406C135.927 152.375 139.615 150.25 144.469 150.25C148.573 150.25 151.781 151.688 154.094 154.562C156.427 157.417 157.594 161.25 157.594 166.062C157.594 171.417 156.292 175.708 153.688 178.938C151.083 182.146 147.521 183.75 143 183.75C138.771 183.75 135.573 181.958 133.406 178.375ZM133.281 165.469V169.938C133.281 172.583 134.135 174.833 135.844 176.688C137.573 178.521 139.76 179.438 142.406 179.438C145.51 179.438 147.938 178.25 149.688 175.875C151.458 173.5 152.344 170.198 152.344 165.969C152.344 162.406 151.521 159.615 149.875 157.594C148.229 155.573 146 154.562 143.188 154.562C140.208 154.562 137.812 155.604 136 157.688C134.188 159.75 133.281 162.344 133.281 165.469Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M191.25 151L176.531 188.125C173.906 194.75 170.219 198.062 165.469 198.062C164.135 198.062 163.021 197.927 162.125 197.656V193.062C163.229 193.438 164.24 193.625 165.156 193.625C167.74 193.625 169.677 192.083 170.969 189L173.531 182.938L161.031 151H166.719L175.375 175.625C175.479 175.938 175.698 176.75 176.031 178.062H176.219C176.323 177.562 176.531 176.771 176.844 175.688L185.938 151H191.25Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M237.25 183H232.125V178H232C229.771 181.833 226.49 183.75 222.156 183.75C218.969 183.75 216.469 182.906 214.656 181.219C212.865 179.531 211.969 177.292 211.969 174.5C211.969 168.521 215.49 165.042 222.531 164.062L232.125 162.719C232.125 157.281 229.927 154.562 225.531 154.562C221.677 154.562 218.198 155.875 215.094 158.5V153.25C218.24 151.25 221.865 150.25 225.969 150.25C233.49 150.25 237.25 154.229 237.25 162.188V183ZM232.125 166.812L224.406 167.875C222.031 168.208 220.24 168.802 219.031 169.656C217.823 170.49 217.219 171.979 217.219 174.125C217.219 175.688 217.771 176.969 218.875 177.969C220 178.948 221.49 179.438 223.344 179.438C225.885 179.438 227.979 178.552 229.625 176.781C231.292 174.99 232.125 172.729 232.125 170V166.812Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M272.062 151L259.312 183H254.281L242.156 151H247.781L255.906 174.25C256.51 175.958 256.885 177.448 257.031 178.719H257.156C257.365 177.115 257.698 175.667 258.156 174.375L266.656 151H272.062Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M340.594 183H335.469V164.625C335.469 161.083 334.917 158.521 333.812 156.938C332.729 155.354 330.896 154.562 328.312 154.562C326.125 154.562 324.26 155.562 322.719 157.562C321.198 159.562 320.438 161.958 320.438 164.75V183H315.312V164C315.312 157.708 312.885 154.562 308.031 154.562C305.781 154.562 303.927 155.51 302.469 157.406C301.01 159.281 300.281 161.729 300.281 164.75V183H295.156V151H300.281V156.062H300.406C302.677 152.188 305.99 150.25 310.344 150.25C312.531 150.25 314.438 150.865 316.062 152.094C317.688 153.302 318.802 154.896 319.406 156.875C321.781 152.458 325.323 150.25 330.031 150.25C337.073 150.25 340.594 154.594 340.594 163.281V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M376.156 183H371.031V177.938H370.906C368.781 181.812 365.49 183.75 361.031 183.75C353.406 183.75 349.594 179.208 349.594 170.125V151H354.688V169.312C354.688 176.062 357.271 179.438 362.438 179.438C364.938 179.438 366.99 178.521 368.594 176.688C370.219 174.833 371.031 172.417 371.031 169.438V151H376.156V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M391.656 183H386.531V135.625H391.656V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M404.656 142.875C403.74 142.875 402.958 142.562 402.312 141.938C401.667 141.312 401.344 140.521 401.344 139.562C401.344 138.604 401.667 137.812 402.312 137.188C402.958 136.542 403.74 136.219 404.656 136.219C405.594 136.219 406.385 136.542 407.031 137.188C407.698 137.812 408.031 138.604 408.031 139.562C408.031 140.479 407.698 141.26 407.031 141.906C406.385 142.552 405.594 142.875 404.656 142.875ZM407.156 183H402.031V151H407.156V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M444.844 180.438C444.844 192.188 439.219 198.062 427.969 198.062C424.01 198.062 420.552 197.312 417.594 195.812V190.688C421.198 192.688 424.635 193.688 427.906 193.688C435.781 193.688 439.719 189.5 439.719 181.125V177.625H439.594C437.156 181.708 433.49 183.75 428.594 183.75C424.615 183.75 421.406 182.333 418.969 179.5C416.552 176.646 415.344 172.823 415.344 168.031C415.344 162.594 416.646 158.271 419.25 155.062C421.875 151.854 425.458 150.25 430 150.25C434.312 150.25 437.51 151.979 439.594 155.438H439.719V151H444.844V180.438ZM439.719 168.531V163.812C439.719 161.271 438.854 159.094 437.125 157.281C435.417 155.469 433.281 154.562 430.719 154.562C427.552 154.562 425.073 155.719 423.281 158.031C421.49 160.323 420.594 163.542 420.594 167.688C420.594 171.25 421.448 174.104 423.156 176.25C424.885 178.375 427.167 179.438 430 179.438C432.875 179.438 435.208 178.417 437 176.375C438.812 174.333 439.719 171.719 439.719 168.531Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M481.781 183H476.656V164.562C476.656 157.896 474.177 154.562 469.219 154.562C466.719 154.562 464.615 155.531 462.906 157.469C461.198 159.385 460.344 161.854 460.344 164.875V183H455.219V135.625H460.344V156.312H460.469C462.927 152.271 466.427 150.25 470.969 150.25C478.177 150.25 481.781 154.594 481.781 163.281V183Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M517.188 168.281H494.594C494.677 171.844 495.635 174.594 497.469 176.531C499.302 178.469 501.823 179.438 505.031 179.438C508.635 179.438 511.948 178.25 514.969 175.875V180.688C512.156 182.729 508.438 183.75 503.812 183.75C499.292 183.75 495.74 182.302 493.156 179.406C490.573 176.49 489.281 172.396 489.281 167.125C489.281 162.146 490.688 158.094 493.5 154.969C496.333 151.823 499.844 150.25 504.031 150.25C508.219 150.25 511.458 151.604 513.75 154.312C516.042 157.021 517.188 160.781 517.188 165.594V168.281ZM511.938 163.938C511.917 160.979 511.198 158.677 509.781 157.031C508.385 155.385 506.438 154.562 503.938 154.562C501.521 154.562 499.469 155.427 497.781 157.156C496.094 158.885 495.052 161.146 494.656 163.938H511.938Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M539.812 182.688C538.604 183.354 537.01 183.688 535.031 183.688C529.427 183.688 526.625 180.562 526.625 174.312V155.375H521.125V151H526.625V143.188L531.75 141.531V151H539.812V155.375H531.75V173.406C531.75 175.552 532.115 177.083 532.844 178C533.573 178.917 534.781 179.375 536.469 179.375C537.76 179.375 538.875 179.021 539.812 178.312V182.688Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M572.375 168.281H549.781C549.865 171.844 550.823 174.594 552.656 176.531C554.49 178.469 557.01 179.438 560.219 179.438C563.823 179.438 567.135 178.25 570.156 175.875V180.688C567.344 182.729 563.625 183.75 559 183.75C554.479 183.75 550.927 182.302 548.344 179.406C545.76 176.49 544.469 172.396 544.469 167.125C544.469 162.146 545.875 158.094 548.688 154.969C551.521 151.823 555.031 150.25 559.219 150.25C563.406 150.25 566.646 151.604 568.938 154.312C571.229 157.021 572.375 160.781 572.375 165.594V168.281ZM567.125 163.938C567.104 160.979 566.385 158.677 564.969 157.031C563.573 155.385 561.625 154.562 559.125 154.562C556.708 154.562 554.656 155.427 552.969 157.156C551.281 158.885 550.24 161.146 549.844 163.938H567.125Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-            <path d="M596.844 156.188C595.948 155.5 594.656 155.156 592.969 155.156C590.781 155.156 588.948 156.188 587.469 158.25C586.01 160.312 585.281 163.125 585.281 166.688V183H580.156V151H585.281V157.594H585.406C586.135 155.344 587.25 153.594 588.75 152.344C590.25 151.073 591.927 150.438 593.781 150.438C595.115 150.438 596.135 150.583 596.844 150.875V156.188Z" stroke="white" stroke-width="6" mask="url(#path-1-outside-1_4_3)"/>
-        </svg>
+<nav class="nav-wrapper">
+  <a class="logo" href="index.html"> 
+    <img class="logo" src="images/BB.png" alt="logo" width="40">
+  </a>
+  <div class="burger-icon"><i class="fas fa-bars"></i> MENY</div>
+  <ul class="nav-items main-nav mobile-hide">
+    <li class="list-item"><a href="byutvikling.html">Byutvikling</a></li>
+    <li class="list-item"><a href="#">Om</a></li>
+    <li class="list-item"><a href="#">Kontakt oss</a></li>
+    <li class="list-item"><a href="#">Link</a></li>
+    <li class="list-item"><a href="#">Link</a></li>
+  </ul>
+</nav>
+<div class="main-wrapper">
+  <div class="wrapper">
+    <a class="featured" href="byutvikling.html">
+      <div id="meta">Rogaland fylkeskommune</div>
+      <h1>Byutvikling</h1>
+      <span id="hero-date">Næringsforeningen</span> 
+    </a>
+    <div class="sub-featured">
+      <a class="sub1" href="#">
+        <h3>Statistikk</h3>
+      </a>
+      <a class="sub2" href="#">
+        <h3>Link 2</h3>
+      </a>
+      <a class="sub3" href="#">
+        <h3>Link 3</h3>
+      </a>
     </div>
-
-    <div class="main">
-        <h1>Velkommen!</h1>
-        <p> Dette er nettstedet til brynebyen, hvor du blandt annet kan lese om <a href="byutvikling.html">byutviklingen</a> til bryne. Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-            Quae dicta totam nisi doloremque impedit nostrum, odio libero dolorem fugit quidem tempora voluptate corrupti quis blanditiis deserunt porro consectetur delectus ea 
-            optio officia? Rem labore aut fuga repudiandae temporibus cupiditate inventore est adipisci soluta, vitae animi accusamus reprehenderit illo. Dolor alias repellendus 
-            odio. Nesciunt eos, aut consequatur voluptatibus hic eveniet beatae accusantium, culpa incidunt rerum adipisci est debitis quam neque. </p>
-        <a class="btn" href="#">Link</a>
+    <div class="main-content">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo molestiae sequi ea doloribus? Nulla ipsam magni aliquam nemo laborum exercitationem itaque quasi voluptatum obcaecati, sed reprehenderit adipisci corporis odit quas consequatur optio unde ullam earum qui doloremque et repellat eius. Reiciendis ea, culpa accusamus assumenda repellat, quis suscipit ipsum pariatur tempore ipsa enim quo doloribus placeat at voluptates. Saepe id quae ipsum harum assumenda! Consectetur fuga reiciendis itaque vero iure tempora eveniet omnis consequuntur quisquam nobis natus sint, aspernatur exercitationem repellendus voluptatibus in aliquam vitae officiis. Adipisci velit soluta inventore hic repellat quas excepturi sed numquam laborum. At, cupiditate labore!</p>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo molestiae sequi ea doloribus? Nulla ipsam magni aliquam nemo laborum exercitationem itaque quasi voluptatum obcaecati, sed reprehenderit adipisci corporis odit quas consequatur optio unde ullam earum qui doloremque et repellat eius. Reiciendis ea, culpa accusamus assumenda repellat, quis suscipit ipsum pariatur tempore ipsa enim quo doloribus placeat at voluptates. Saepe id quae ipsum harum assumenda! Consectetur fuga reiciendis itaque vero iure tempora eveniet omnis consequuntur quisquam nobis natus sint, aspernatur exercitationem repellendus voluptatibus in aliquam vitae officiis. Adipisci velit soluta inventore hic repellat quas excepturi sed numquam laborum. At, cupiditate labore!</p>
     </div>
-
-    <div class="profile"> 
-        <img src="images/bryne.png" alt="bryne høghus" width="500">
+    <div class="main-sidebar">
+      <div class="contentSide">
+        <h2>Bryne</h2>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam voluptas, incidunt magnam sint tempore maxime qui deserunt facere repellendus beatae sed. Quis culpa praesentium minima explicabo eligendi sequi doloremque quo!</p>
+        </form>
+      </div>
     </div>
-
-    <div class="content">
-        <a class="contentImage" href="https://images.pexels.com/photos/12595759/pexels-photo-12595759.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"><img src="images/one.jpg" alt="one" width="268" height="402"></a>
-        <a class="contentImage" href="https://images.pexels.com/photos/5422596/pexels-photo-5422596.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"><img src="images/two.jpg" alt="two" width="268" height="402"></a>
-        <a class="contentImage" href="https://images.pexels.com/photos/13592310/pexels-photo-13592310.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"><img src="images/three.jpg" alt="three" width="268" height="402"></a>
-        <a class="contentImage" href="https://images.pexels.com/photos/14010115/pexels-photo-14010115.jpeg"><img src="images/four.jpg" alt="four" width="268" height="402"></a>
-    </div>
-
-    <div class="footer">
-        &copy; Copyright 2022 Brynebyen
-        <h2><a href="#">Tilbake til toppen</a></h2>
-    </div>
-
-</div> <!-- siteWrap end -->
-
-
-
-
-<script src="js/scripts.js"></script>        <!-- js link (kjøres på slutten for at queryselector skal fungere (kan også legge til defer i script tag))-->
+  </div>
+</div>
+<footer class="footer">
+  <div class="foot1">
+    <h3 class="logo">Brynebyen</h3>
+    <br/>
+    <p>Bryne VGS</p>
+    <p>Bryne, Norge</p>
+    <br/>
+    <p>+47 519 23 100</p>
+  </div>
+  <div class="foot2">
+    <h4>Lenker</h4>
+    <ul class="fa-ul social-footer">
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Home</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">About us</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Contact</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Til toppen</a></li>
+    </ul>
+  </div>
+  <div class="foot3">
+    <h4>Flere lenker</h4>
+    <ul class="fa-ul social-footer">
+      <li><span class="fa-li" ><i class="fas fa-check-square"></i></span><a href="#">Home</a></li>
+      <li><span class="fa-li"><i class="fas fa-check-square"></i></span><a href="#">About us</a></li>
+      <li><span class="fa-li"><i class="fas fa-spinner fa-pulse"></i></span><a href="#">Contact</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Til Toppen</a></li>
+    </ul>
+  </div>
+  <div class="foot4">
+    <h4>Enda flere lenker</h4>
+    <ul class="fa-ul social-footer">
+      <li><span class="fa-li" ><i class="fas fa-check-square"></i></span><a href="#">Home</a></li>
+      <li><span class="fa-li"><i class="fas fa-check-square"></i></span><a href="#">About us</a></li>
+      <li><span class="fa-li"><i class="fas fa-spinner fa-pulse"></i></span><a href="#">Contact</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Til Toppen</a></li>
+    </ul>
+  </div>
+  <div class="copyright">&copy; Copyright 2022 Brynebyen </div>
+</footer>
 </body>
 </html>
