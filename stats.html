@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="css/stats.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"> <!-- Brukes for ting med fa. Brukes kun til liste-elementene i footer, og burgerbar-ikonet -->
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hjemmeside">
+<meta property="og:description" content="Velkommen! Dette er nettstedet til brynebyen, hvor du blandt annet kan lese om byutviklingen til bryne.">
+<meta property="og:url" content="https://johannes164.github.io/brynebyen">
+<meta property="og:site_name" content="Brynebyen">
+<meta property="og:image" content="https://johannes164.github.io/brynebyen/images/BB.png">
+<meta property="og:image:secure_url" content="https://johannes164.github.io/brynebyen/images/BB.png">
+<meta property="og:image-width" content="673">
+<meta property="og:image-height" content="870">
+<meta property="og:image:alt" content="logo">    <!-- De fleste comments som trengs er gjort i andre dokument, gjer ikkje meining å skriva det fleire gonger, blir bare meir rot å se på -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> <!-- Fant opplegget her: https://youtu.be/gH3sBOj6CGA, scriptet app.js trenger denne for å fungere /JavaScript library; https://releases.jquery.com/ -->
+<script src="js/app.js"></script>
+
+<title>Hello!</title>
+</head>
+
+
+<body>
+<nav class="nav-wrapper">
+  <a class="logo" href="index.html"> 
+    <img class="logo" src="images/BB.png" alt="logo" width="40">
+  </a>
+  <div class="burger-icon"><i class="fas fa-bars"></i> MENY</div>
+  <ul class="nav-items main-nav mobile-hide">
+    <li class="list-item"><a href="index.html">Hjem</a></li>
+    <li class="list-item"><a href="byutvikling.html">Byutvikling</a></li>
+    <li class="list-item"><a href="stats.html">Statistikk</a></li>
+    <li class="list-item"><a href="#">Kontakt</a></li>
+    <li class="list-item"><a href="#">Link</a></li>
+  </ul>
+</nav>
+<div class="main-wrapper">
+  <div class="wrapper">
+    <div class="featured" href="byutvikling.html">
+      <table class="tableATK">
+        <caption class="table-caption">Aldersfordeling time kommune (01.11.22)</caption>
+
+        <thead><tr><th>Alder</th><th>Menn</th><th>Kvinner</th></tr></thead>
+
+        <tbody>
+            <tr><th>0-4 år             </th><td>612</td><td>572</td></tr>
+            <tr><th>5-9 år             </th><td>651</td><td>696</td></tr>
+            <tr><th>10-14 år           </th><td>759</td><td>712</td></tr>
+            <tr><th>15-19 år           </th><td>636</td><td>578</td></tr>
+            <tr><th>20-24 år           </th><td>611</td><td>562</td></tr>
+            <tr><th>25-29 år           </th><td>660</td><td>612</td></tr>
+            <tr><th>30-34 år           </th><td>710</td><td>697</td></tr>
+            <tr><th>35-39 år           </th><td>695</td><td>657</td></tr>
+            <tr><th>40-44 år           </th><td>704</td><td>666</td></tr>
+            <tr><th>45-49 år           </th><td>671</td><td>565</td></tr>
+            <tr><th>50-54 år           </th><td>644</td><td>644</td></tr>
+            <tr><th>55-59 år           </th><td>538</td><td>499</td></tr>
+            <tr><th>60-64 år           </th><td>509</td><td>536</td></tr>
+            <tr><th>65-69 år           </th><td>473</td><td>455</td></tr>
+            <tr><th>70-74 år           </th><td>362</td><td>377</td></tr>
+            <tr><th>75-79 år           </th><td>275</td><td>306</td></tr>
+            <tr><th>80-84 år           </th><td>159</td><td>188</td></tr>
+            <tr><th>85-89 år           </th><td>90 </td><td>148</td></tr>
+            <tr><th>90-94 år           </th><td>41 </td><td>54 </td></tr>
+            <tr><th>95-99 år           </th><td>8  </td><td>18 </td></tr>
+            <tr><th>100 år &leq;       </th><td>1  </td><td>2  </td></tr>
+        </tbody>
+
+    </table>
+    </div>
+    <div class="sub-featured">
+      <div class="sub1" href="#">
+        <div class="dFT">
+          <h3>Folketallet</h3><h4>2. kvartal 2022</h4>
+        </div>
+        <img class="FolketalletImg" src="images/fTall.svg">
+        <div class="dataFT"><h1>19 542</h1> <h5>innbyggere</h5></div>
+      </div>
+      <div class="sub2" href="#">
+        <div class="dFT">
+          <h3>Folketallet</h3><h4>2. kvartal 2022</h4>
+        </div>
+        <img class="FolketalletImg" src="images/fodte.svg">
+        <div class="dataFT"><h1>240</h1> <h5>personer</h5></div>
+      </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo molestiae sequi ea doloribus? Nulla ipsam magni aliquam nemo laborum exercitationem itaque quasi voluptatum obcaecati, sed reprehenderit adipisci corporis odit quas consequatur optio unde ullam earum qui doloremque et repellat eius. Reiciendis ea, culpa accusamus assumenda repellat, quis suscipit ipsum pariatur tempore ipsa enim quo doloribus placeat at voluptates. Saepe id quae ipsum harum assumenda! Consectetur fuga reiciendis itaque vero iure tempora eveniet omnis consequuntur quisquam nobis natus sint, aspernatur exercitationem repellendus voluptatibus in aliquam vitae officiis. Adipisci velit soluta inventore hic repellat quas excepturi sed numquam laborum. At, cupiditate labore!</p>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo molestiae sequi ea doloribus? Nulla ipsam magni aliquam nemo laborum exercitationem itaque quasi voluptatum obcaecati, sed reprehenderit adipisci corporis odit quas consequatur optio unde ullam earum qui doloremque et repellat eius. Reiciendis ea, culpa accusamus assumenda repellat, quis suscipit ipsum pariatur tempore ipsa enim quo doloribus placeat at voluptates. Saepe id quae ipsum harum assumenda! Consectetur fuga reiciendis itaque vero iure tempora eveniet omnis consequuntur quisquam nobis natus sint, aspernatur exercitationem repellendus voluptatibus in aliquam vitae officiis. Adipisci velit soluta inventore hic repellat quas excepturi sed numquam laborum. At, cupiditate labore!</p>
+    </div>
+    <div class="main-sidebar">
+      <div>
+        <h2>Kilde</h2>
+        <p>Statistikk hentet fra: <a href="https://www.ssb.no/kommunefakta/time">ssb</a></p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam voluptas, incidunt magnam sint tempore maxime qui deserunt facere repellendus beatae sed. Quis culpa praesentium minima explicabo eligendi sequi doloremque quo!</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="footer">
+  <div class="foot1">
+    <h3 class="logo">Brynebyen</h3>
+    <br/>
+    <p>Bryne VGS</p>
+    <p>Bryne, Norge</p>
+    <br/>
+    <p>+47 519 23 100</p>
+  </div>
+  <div class="foot2">
+    <h4>Lenker</h4>
+    <ul class="fa-ul social-footer">
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Home</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">About us</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Contact</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Til toppen</a></li>
+    </ul>
+  </div>
+  <div class="foot3">
+    <h4>Flere lenker</h4>
+    <ul class="fa-ul social-footer">
+      <li><span class="fa-li" ><i class="fas fa-check-square"></i></span><a href="#">Home</a></li>
+      <li><span class="fa-li"><i class="fas fa-check-square"></i></span><a href="#">About us</a></li>
+      <li><span class="fa-li"><i class="fas fa-spinner fa-pulse"></i></span><a href="#">Contact</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Til Toppen</a></li>
+    </ul>
+  </div>
+  <div class="foot4">
+    <h4>Enda flere lenker</h4>
+    <ul class="fa-ul social-footer">
+      <li><span class="fa-li" ><i class="fas fa-check-square"></i></span><a href="#">Home</a></li>
+      <li><span class="fa-li"><i class="fas fa-check-square"></i></span><a href="#">About us</a></li>
+      <li><span class="fa-li"><i class="fas fa-spinner fa-pulse"></i></span><a href="#">Contact</a></li>
+      <li><span class="fa-li"><i class="far fa-square"></i></span><a href="#">Til Toppen</a></li>
+    </ul>
+  </div>
+  <div class="copyright">&copy; Copyright 2022 Brynebyen </div>
+</footer>
+</body>
+</html>
