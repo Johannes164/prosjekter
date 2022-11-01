@@ -211,6 +211,10 @@ table thead {
 .sub1 .dFT, .sub2 .dFT,  .dFT {
   grid-column: 1;
 }
+#displacedFT {
+  position: relative;
+  right: 2.5vw;
+}
 .sub1 .dataFT h4, .sub2 .dataFT h4,  .dataFT h4 {
   position: relative;
   bottom: 10px;
@@ -241,6 +245,10 @@ table thead {
   z-index: 100;
   color: var(--Secondary);
   line-height:1.5em;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.main-content p {
+  padding: 20px;
 }
 
 .main-sidebar{
@@ -255,6 +263,9 @@ table thead {
 .main-sidebar a:hover {
   text-decoration: none;
   color: var(--Primary);
+}
+.main-sidebar h2, .main-sidebar p {
+  padding: 20px;
 }
 
 
