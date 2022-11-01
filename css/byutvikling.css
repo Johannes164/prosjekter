@@ -2,6 +2,18 @@
 * {
     box-sizing: border-box; /* inkluderer border i størrelsen i stedet for å legge den til https://www.w3schools.com/css/css3_box-sizing.asp */
 }
+div:not(.headerFill1), div:not(.headerFill2) {
+    animation: initialAnimation 0.5s ease-in-out;
+}
+
+@keyframes initialAnimation { 
+    0% {
+        filter: brightness(0);
+    }
+    100%{
+        filter: brightness(1);
+    }
+}
 
 body {      /* body regler */
     margin: 0; /* Fjerner marg og padding for alle browsers */
@@ -15,6 +27,21 @@ html {
     line-height: 1.15; /* fikser line height for alle browsers */
     -webkit-text-size-adjust: 100%; /* Stopper justring av fontstørrelse når orientering endres på iOS */
 }
+::-webkit-scrollbar {
+    width: 20px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgb(24, 26, 27);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(#3baaaa, #a8884d);
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(#11e7e7aa, #e49c0daa);
+  }
 
 hr {
     box-sizing: content-box; /* Rett box sizing for Firefox */
@@ -256,9 +283,21 @@ hr {
     margin: 1em 2em 1em;
     overflow: hidden;
 }
+.content a {
+    color: #e8e6e3;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+.content a:hover {
+    transform: scale(1.03);
+    color: beige;
+}
+
 .content img {
     width: 100%;
     border-radius: 1em;
+    object-fit: cover;
 }
 
 .footer {
@@ -358,7 +397,7 @@ hr {
         .nav.change{
             display: flex;
             position: fixed;
-            left: 0;
+            left: 30px;
         }
         .nav.change a{
             margin: 0 1vw;
@@ -369,11 +408,12 @@ hr {
         }
         .header > .nav a{ /* gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) */
             text-decoration: none;
+            font-size: 1.5em;
             border: 2px solid rgb(15, 35, 50);
-            border-radius: 1em;
+            border-radius: 0.69em;
             color: rgb(15, 35, 50);
             filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.1));
-            padding: 8px 16px;
+            padding: 25px;
             margin: 0 2px;
             font-weight: bold
         }
@@ -383,3 +423,10 @@ hr {
     }
 
 /* … */
+
+@media only screen and (max-width:585px){ /* I tilfelle skjermen er veldig smal */
+    .header > .nav a{
+        font-size: 0.8em;
+        padding: 30px 8px; /* Bruker vertikal plass for at knappene skal være store nok til å enkelt kunne trykkes på */
+    }
+}
