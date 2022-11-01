@@ -1,0 +1,21 @@
+#hoved {
+    width: 600px;
+    height: 400px;
+    display: grid;
+    gap: 5px;
+    background-color: #c6c6c6;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas: "h h h h v" 
+                         "h h h h v"
+                         "t t t t t";
+}
+
+#hoved > div {
+    background-color: #aac9c6;
+    border: 1px solid black;
+}
+
+.topp    { grid-area : t; }
+.venstre { grid-area : v; }
+.hoyre   { grid-area : h; }
