@@ -202,7 +202,7 @@ ul li {
 }
 
 .sub1 {
-  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.2)) border-box, url(../images/stats.jpg) no-repeat center bottom;
+  background: linear-gradient(rgba(0, 0, 0, var(--darken)), rgba(0, 0, 0, 0.2)) border-box, url(../images/stats.jpg) no-repeat center bottom;
   background-size: cover;
 }
 
