@@ -1,6 +1,7 @@
 :root{
   --Primary: rgba(255, 255, 255, 0.8);
   --Secondary: rgb(255, 255, 255);
+  --darken: 0.79
 }
 
 html {
@@ -169,13 +170,14 @@ ul li {
 .featured {
   grid-area: featuredMain;
   min-height: 500px;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.69)) border-box, url(../images/featuredMain.jpg) no-repeat center center;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, var(--darken))) border-box, url(../images/featuredMain.jpg) no-repeat center center;
   background-size: cover;
 	display:grid;
 	align-content: flex-end;
 }
 .main-wrapper a:hover {
   transform: scale(1.02);
+  --darken: 0.3;
 }
 
 .featured h1 {
@@ -200,17 +202,17 @@ ul li {
 }
 
 .sub1 {
-  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.1)) border-box, url(../images/stats.jpg) no-repeat center bottom;
+  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.2)) border-box, url(../images/stats.jpg) no-repeat center bottom;
   background-size: cover;
 }
 
 .sub2 {
-  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.1)) border-box, url(https://source.unsplash.com/400x100/?sports) no-repeat center center;
+  background: linear-gradient(rgba(0, 0, 0, var(--darken)), rgba(0, 0, 0, 0.5)) border-box, url(../images/contact.jpg) no-repeat center center;
   background-size: cover;
 }
 
 .sub3 {
-  background: linear-gradient(rgba(0, 0, 0, 0.69), rgba(0, 0, 0, 0.1)) border-box, url(https://source.unsplash.com/400x100/?winter) no-repeat center center;
+  background: linear-gradient(rgba(0, 0, 0, var(--darken)), rgba(0, 0, 0, 0.5)) border-box, url(../images/about.jpg) no-repeat center center;
   background-size: cover;
 }
 
