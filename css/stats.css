@@ -211,10 +211,7 @@ table thead {
 .sub1 .dFT, .sub2 .dFT,  .dFT {
   grid-column: 1;
 }
-#displacedFT {
-  position: relative;
-  right: 2.5vw;
-}
+
 .sub1 .dataFT h4, .sub2 .dataFT h4,  .dataFT h4 {
   position: relative;
   bottom: 10px;
