@@ -20,20 +20,7 @@
     box-sizing: border-box;
     /* border: 1px solid red; */
 }
-div:not(.headertop) {
-    animation: initialAnimation 0.5s ease-in-out;
-}
 
-@keyframes initialAnimation{
-    0%{
-      opacity: 0;
-      transform: translateY(100px);
-    }
-    100%{
-      opacity: 1;
-      transform: translateY(0px);
-    }
-}
 body, html {
     margin: 0;
     padding: 0;
