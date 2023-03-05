@@ -59,6 +59,35 @@ body {
     color: #ffffffdd;
     font-family: sans-serif;
 }
+
+.headertop h1 span a {
+    color: #ffffff69;
+    text-decoration: none;
+    font-size: 0.5em;
+    border: 0.3vh solid #ffffff69;
+    padding: 1vh;
+    border-radius: 0.5em;
+    font-weight: 400;
+    position: absolute;
+    top: 10vh;
+    right: 10vh;
+    transition: 0.3s;
+}
+.headertop h1 span a:hover {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.5em;
+    border: 0.3vh solid #ffffff;
+    padding: 0.5vh;
+    border-radius: 0.5em;
+    font-weight: 400;
+    position: absolute;
+    top: 10vh;
+    right: 10vh;
+    background-color: #ffffff;
+    color: #131c23;
+}
+
 /* ------------------ */
 /* ----- HEADER ----- */
 /* ------------------ */
