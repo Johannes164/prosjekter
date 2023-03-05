@@ -144,7 +144,7 @@ function fjernValgt() {
     valgtDør.addEventListener("click", velgDør);
     valgtDør = null;
     dørSomErValgt = null;
-    string = "Du ikke lenger valgt en dør. Velg en dør.";
+    string = "Du har ikke lenger valgt en dør. Velg en dør.";
     helperHeaderEl.innerHTML = "Velg en dør";
     typeWriter(string);
 
