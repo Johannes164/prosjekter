@@ -170,7 +170,7 @@ ul li {
 .featured {
   grid-area: featuredMain;
   min-height: 500px;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, var(--darken))) border-box, url(../images/featuredMain.jpg) no-repeat center center;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, var(--darken))) border-box, url(../images/monty.png) no-repeat center center;
   background-size: cover;
 	display:grid;
 	align-content: flex-end;
