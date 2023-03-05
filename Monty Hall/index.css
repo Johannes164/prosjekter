@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Golos+Text:wght@700&display=swap');
 
 /* ---------------- */
 /* ----- MAIN ----- */
@@ -16,11 +16,38 @@
     padding: 0.5vh;
     height: 100vh;
 }
+
+@media screen and (max-width: 1600) {
+
+}
+@media screen and (min-width: 2200px) {
+    .grid-container {
+        max-width: 2200px;
+        min-width: 2200px;
+        margin: 0 auto;
+    }
+}
+@media screen and (min-width: 3600px) {
+    .grid-container {
+        max-width: 2200px;
+        min-width: 2700px;
+        margin: 0 auto;
+    }
+}
+@media screen and (min-width: 5300px) {
+    .grid-container {
+        max-width: 2200px;
+        min-width: 3200px;
+        margin: 0 auto;
+    }
+}
+    
+
+
 * {
     box-sizing: border-box;
     /* border: 1px solid red; */
 }
-
 body, html {
     margin: 0;
     padding: 0;
@@ -44,33 +71,6 @@ body {
     font-family: 'Golos Text', sans-serif;
     font-size: 2.5em;
     color: #ffffff69;
-}
-.headertop h1 span a {
-    color: #ffffff69;
-    text-decoration: none;
-    font-size: 0.5em;
-    border: 0.3vh solid #ffffff69;
-    padding: 1vh;
-    border-radius: 0.5em;
-    font-weight: 400;
-    position: absolute;
-    top: 10vh;
-    right: 10vh;
-    transition: 0.3s;
-}
-.headertop h1 span a:hover {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 0.5em;
-    border: 0.3vh solid #ffffff;
-    padding: 0.5vh;
-    border-radius: 0.5em;
-    font-weight: 400;
-    position: absolute;
-    top: 10vh;
-    right: 10vh;
-    background-color: #ffffff;
-    color: #131c23;
 }
 
 
@@ -241,4 +241,17 @@ body {
     font-size: 1em;
     cursor: pointer;
     display: none;
+}
+
+#helperHeader {
+    transition: all 0.5s;
+}
+
+.remove {
+    transition: all 0.5s;
+    opacity: 0;
+}
+.add {
+    transition: all 0.5s;
+    opacity: 1;
 }
