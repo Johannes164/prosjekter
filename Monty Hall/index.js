@@ -12,7 +12,8 @@ let dører = [dør1El, dør2El, dør3El];
 
 let vinnerIndex = Math.floor(Math.random() * 3); //random tall mellom 0 og 2
 let dorer = document.querySelectorAll(".bakDør");
-let vinnerDørEl = dorer[vinnerIndex];
+let helperHeaderEl = document.querySelector("#helperHeader");
+helperHeaderEl.innerHTML = "Velg en dør";
 
 for (let i = 0; i < dorer.length; i++) {
     if (i === vinnerIndex) {
@@ -113,8 +114,7 @@ typeWriter(string);
 
 let valgtDør = null;
 let dørSomErValgt
-let stringFør = string;
-let dørValgt = false;
+
 
 function velgDør() {
     if (valgtDør !== null) {
@@ -133,6 +133,7 @@ function velgDør() {
     dørSomErValgt = valgtDør.id.replace(/[^0-9]/g, ""); 
     //dørSomErValgt = valgtDør.id gir dør1, dør2, eller dør3, .replace() tar inn en ting a, som vil bli byttet med en ting b, /[^0-9]/g betyr alt som ikke er et tall 0-9, "" er en tom streng
     string = "Du har valgt dør " + dørSomErValgt + ". Bekrefte valg?"
+    helperHeaderEl.innerHTML = "Bekreft valg";
     createButton("Bekreft", buttonClicked);
     typeWriter(string);
 }
@@ -144,6 +145,7 @@ function fjernValgt() {
     valgtDør = null;
     dørSomErValgt = null;
     string = "Du ikke lenger valgt en dør. Velg en dør.";
+    helperHeaderEl.innerHTML = "Velg en dør";
     typeWriter(string);
 
     buttonContainerEl.innerHTML = ""; //fjerner knappen
@@ -180,6 +182,7 @@ for (let dor of dorer) {
 
       function buttonClicked() {
         string = "Du valgte dør " + dørSomErValgt + ". Dør " + finnDørMedGeit().id.replace(/[^0-9]/g, "") + " har en geit bak seg. Vil du bytte til dør " + sisteDør().id.replace(/[^0-9]/g, "") + "?";
+        helperHeaderEl.innerHTML = "Bytte dør?";
         //setter opacities til 1
         for (let dor of dorer) {
             dor.style.opacity = "1";
@@ -199,8 +202,10 @@ for (let dor of dorer) {
       function byttFunc() {
         if (sisteDør().style.backgroundImage === "url(\"bil.jpg\")") {
             string = "Du vant! ";
+            helperHeaderEl.innerHTML = "Gratulerer!";
         } else {
             string = "Du tapte. ";
+            helperHeaderEl.innerHTML = "Bedre lykke neste gang.";
         }
         åpneDør(dører[(sisteDør().id.replace(/[^0-9]/g, ""))-1]) //åpner døren valgt over (-1 fordi dette teller 1-3, mens arrayet er 0-2)
         typeWriter(string);
@@ -210,8 +215,10 @@ for (let dor of dorer) {
         function beholdFunc() {
             if (valgtDør.style.backgroundImage === "url(\"bil.jpg\")") {
                 string = "Du vant! ";
+                helperHeaderEl.innerHTML = "Gratulerer!";
             } else {
                 string = "Du tapte. ";
+                helperHeaderEl.innerHTML = "Bedre lykke neste gang.";
             }
             åpneDør(dører[(valgtDør.id.replace(/[^0-9]/g, ""))-1]) //åpner døren valgt over (-1 fordi dette teller 1-3, mens arrayet er 0-2)
             typeWriter(string);
