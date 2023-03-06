@@ -1,0 +1,432 @@
+/* || General styles */
+* {
+    box-sizing: border-box; /* inkluderer border i størrelsen i stedet for å legge den til https://www.w3schools.com/css/css3_box-sizing.asp */
+}
+div:not(.headerFill1), div:not(.headerFill2) {
+    animation: initialAnimation 0.5s ease-in-out;
+}
+
+@keyframes initialAnimation { 
+    0% {
+        filter: brightness(0);
+    }
+    100%{
+        filter: brightness(1);
+    }
+}
+
+body {      /* body regler */
+    margin: 0; /* Fjerner marg og padding for alle browsers */
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; /* Segoe UI targeter Windows og Windows phone, Roboto targeter Android og nyere Chrome OS, oxygen targeter oxygen OS, ubuntu er linux https://github.com/necolas/normalize.css/issues/665 */
+    line-height: 1.5em;
+    background-color: rgb(24, 26, 27);
+    color: #e8e6e3
+}
+html {
+    line-height: 1.15; /* fikser line height for alle browsers */
+    -webkit-text-size-adjust: 100%; /* Stopper justring av fontstørrelse når orientering endres på iOS */
+}
+::-webkit-scrollbar {
+    width: 20px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgb(24, 26, 27);
+  }
+  ::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(#3baaaa, #a8884d);
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(#11e7e7aa, #e49c0daa);
+  }
+
+hr {
+    box-sizing: content-box; /* Rett box sizing for Firefox */
+    height: 0; /* -,- */
+    overflow: visible; /* Viser overflow i Edge og IE */
+}
+
+#siteWrap{      /* div som dekker hele siden */
+    height: 100%;
+    display: grid;
+    grid-template-columns: 
+        1fr
+        repeat(4, minmax(0, 300px))
+        1fr
+    ;
+    grid-template-rows: 
+    144px
+    700px
+    min-content
+    min-content
+    1fr
+    ;
+    grid-template-areas: 
+    "headerFill1 header header header header headerFill2"
+    "homeBackground homeBackground homeBackground homeBackground homeBackground homeBackground"
+    ". main main main profile ."
+    ". content content content content ."
+    "footer footer footer footer footer footer"
+    ;
+}
+
+
+
+
+
+
+/* || Header and Main Navigation */
+
+
+.headerFill1 {
+    grid-area: headerFill1;
+}
+
+.headerFill2 {
+    grid-area: headerFill2;
+}
+
+.header {           /* container til bl.a navbar */
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .logo{
+    margin-left: 1em;
+    width: 65px; /* 1:1.3 */
+    height: 85px;
+}
+.header > .nav{
+    list-style: none;
+    display: flex;
+}
+.header > .nav a{ /* gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) */
+    text-decoration: none;
+    border: 2px solid rgb(45, 90, 130);
+    border-radius: 50em; /* pille-effekt */
+    color: rgb(45, 90, 130);
+    filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.1));
+    padding: 15px 30px;
+    margin: 0 8px;
+    font-weight: bold
+}
+.header > .nav a:hover, .header > .nav .active{ /* gjelder når man har musen over lenkene, eller gir noe i nav .active */
+    transition: all 0.2s ease-in-out;
+    background-color: rgb(45, 90, 130);
+    color: #e8e6e3;
+}
+
+
+
+
+/* Hamburger meny */
+.burgerContainer { /* Beholderen til hamburgermenyen */
+    display: none; 
+    cursor: pointer; /* Gjør at musepekeren blir til en pekefinger */
+    align-content: end;
+    margin-right: 1em;
+}
+
+.burgerContainer {
+    transition: transform 250ms cubic-bezier(0.84, 0.06, .52, 1.8);
+}
+.burgerContainer:hover {
+    transform: scale(1.2);
+}
+
+.burgerBar1, .burgerBar2, .burgerBar3 {
+    margin: 4px 0;
+    transition: all 0.2s ease-in-out; /* Gjør at endringer på verdier for disse klassene skjer over 0.4 sekunder gradvis */
+}
+
+.change .burgerBar1 { /* når det ikkje er komma etter ".change" betyr det at alt innenfor {} vil skje med klassen .burgerBar1 dersom .change også er aktiv i parent-div */
+    transform: translate(0, 6px) rotate(-29.745deg); /* Setter change funksjonen til å transormere, altså endre burgerBar1 med å sette den 0 til høyre, 11px nedover, og rotere den 45 grader anti-clockwise */
+}
+
+.change .burgerBar2 {
+    opacity: 0; 
+}
+
+.change .burgerBar3 {
+    transform: translate(0, -7px) rotate(29.745deg); /*samme som burgerBar1 bare andre retningen*/
+}
+
+.burgerBar1 {
+    width: 35px;
+    height: 3px;
+    background-color: rgba(228, 228, 228, 0.5);
+}
+
+.burgerBar2 {
+    width: 35px;
+    height: 2px;
+    background-color: rgba(228, 228, 228, 1);
+}
+
+.burgerBar3 {
+    width: 35px;
+    height: 3px;
+    background-color: rgba(228, 228, 228, 0.5);
+}
+
+
+
+
+
+
+/* || Content */
+
+
+.homeBackground { /* området rett under header */
+    grid-area: homeBackground;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+
+
+.homeBackground > svg {
+    position: relative;
+    top: -3vh;
+}
+.homeBackground > svg path {
+    stroke-dasharray: 427; /* setter lengden til strekene svg-en skal lages av */
+    stroke-dashoffset: 427; /* setter hvor på pathen dashen til en stroke skal begynne */
+
+    animation: draw 2s ease-in-out forwards 100ms;
+    transition-delay: 2s; 
+}
+
+
+@keyframes draw {
+    0% {
+        transform: rotate3d(1, 0.1, 0.05, 30deg);
+        stroke-dashoffset: 427;
+        fill: rgba(255, 255, 255, 0.0)
+    }
+    50% {
+        transform: rotate3d(0, 0, 0, 0);
+        stroke-dashoffset: 0;
+        fill: rgba(255, 255, 255, 0.4)
+    }
+    75% {
+        stroke-dashoffset: 0;
+        fill: rgba(255, 255, 255, 1);
+    }
+    99% {
+        stroke-dashoffset: 427;
+        fill: white;
+        ;
+    }
+    100% {
+        stroke-dashoffset: 427;
+        fill: white;
+        filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4))
+    }
+}
+
+
+#byutviklingTittel { /* tittel svg */
+    width: 500px;
+}
+
+
+
+.main { /* Tekstområdet */
+    grid-area: main;
+}
+.main p a {
+    color: #e8e6e3
+}
+.main > p > a:active, .main > p > a:hover{
+    color: #bdbab2;
+    text-decoration: none;
+}
+
+.btn {
+    text-decoration: none;
+    background-color: rgb(90, 45, 130);
+    border: 2px solid rgb(90, 45, 130);
+    border-radius: 50em;
+    color: #e8e6e3;
+    padding: 15px 30px;
+    margin: 0 8px;
+    font-weight: bold;
+    float: right;
+}
+.btn:hover {
+    background-color: rgb(97, 69, 130);
+    border: 2px solid rgb(97, 69, 130);
+}
+
+.profile {  /* profile img container */
+    width: 100px;
+    padding: 2em 1em ;
+    grid-area: profile;
+}
+.profile > img {
+    width: 320px;
+    height: 450px;
+}
+
+
+.content { /* kode for image library, se 5.2 i grid øving */
+    grid-area: content;
+    display: grid;
+    grid-gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(258px, auto));
+    justify-content: space-between;
+    margin: 1em 2em 1em;
+    overflow: hidden;
+}
+.content a {
+    color: #e8e6e3;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+.content a:hover {
+    transform: scale(1.03);
+    color: beige;
+}
+
+.content img {
+    width: 100%;
+    border-radius: 1em;
+    object-fit: cover;
+}
+
+.footer {
+    background-color: rgb(32, 32, 32);
+    color: rgb(191, 187, 187);
+    text-align: center;
+    padding: 2em 0;
+    grid-area: footer;
+}
+.footer a{
+    text-decoration: none;
+    color: #e8e6e3;
+}
+.footer a:active{
+    color: #dcd9d5;
+}
+
+.homeBackgroundBilde {  /* størrelsen er på 200% slik at halve er vist på skjermen, så åppnår vi animasjonen ved å bytte på hvilken halvdel som vises */
+    background-size: 200%;
+    background-image: linear-gradient(135deg, #FFAA00aa, #00FFFFaa, #ff00f0aa);
+    background-attachment: fixed; /* skalerer bakgrunnen til viewport sin størrelse og viser den hvor den er skrudd på, slik at den kan dekke flere elementer */
+    animation: homeBackgroundAnim 20s ease-in-out infinite; /* bakgrunnen er satt til  */
+}
+
+@keyframes homeBackgroundAnim {
+    0% {
+        background-position: left;
+    }
+    50% {
+        background-position: right;
+    }
+    100% {
+        background-position: left;
+    }
+}
+
+@media only screen and (max-width:1300px) { /* setter reglene under bare dersom viewport er lik eller mindre enn 1300px */
+    #siteWrap{
+        grid-template-areas: /* fjerner profile og stacker ting for mindre skjermer */
+        "header header header header header header"
+        "homeBackground homeBackground homeBackground homeBackground homeBackground homeBackground"
+        ". main main main main ."
+        "content content content content content content"
+        "footer footer footer footer footer footer"
+        ;
+    }
+
+    .profile{
+        display: none;
+    }
+    .header .logo{
+        margin-left: 1em;
+        width: 56px; /* 1:1.3 */
+        height: 73px;
+    }
+
+    #siteWrap{
+    grid-template-rows: 
+    144px
+    450px
+    min-content
+    min-content
+    1fr
+    ;
+    }
+
+    #byutviklingTittel {
+        width: 400px;
+    }
+
+    .header > .nav a{ 
+        font-size: 0.8em;
+    }
+}
+    @media only screen and (max-width:768px){ 
+
+        #siteWrap{
+        grid-template-rows: 
+        144px
+        315px
+        min-content
+        min-content
+        1fr
+        ;
+        }
+        .header .logo{
+            width: 50px; /* 1:1.3 */
+            height: 65px;
+        }
+
+        #byutviklingTittel {
+            width: 300px; 
+        }
+        .header .nav {
+            display: none;
+        }
+        .nav.change{
+            display: flex;
+            position: fixed;
+            left: 30px;
+        }
+        .nav.change a{
+            margin: 0 1vw;
+        }
+
+        .burgerContainer {
+            display: inline-block; /* Display setter typen rendering box til et element, inline er som <span>, det blir linet opp på linjen, mens block er som <p> at det starter ny linje. inline-block gjør at elementet formateres som inline, men kan i motsetning til inline bli gitt verdier som width og height. https://www.w3schools.com/cssref/pr_class_display.asp */
+        }
+        .header > .nav a{ /* gjelder spesifikt lenkene i .nav så lenge .nav er i .header(som den er) */
+            text-decoration: none;
+            font-size: 1.5em;
+            border: 2px solid rgb(15, 35, 50);
+            border-radius: 0.69em;
+            color: rgb(15, 35, 50);
+            filter: drop-shadow(3px 5px 2px rgba(0, 0, 0, 0.1));
+            padding: 25px;
+            margin: 0 2px;
+            font-weight: bold
+        }
+        .header > .nav a:hover, .header > .nav .active{ /* gjelder når man har musen over lenkene, eller gir noe i nav .active */
+            background-color: rgb(15, 35, 50);
+        }
+    }
+
+/* … */
+
+@media only screen and (max-width:585px){ /* I tilfelle skjermen er veldig smal */
+    .header > .nav a{
+        font-size: 0.8em;
+        padding: 30px 8px; /* Bruker vertikal plass for at knappene skal være store nok til å enkelt kunne trykkes på */
+    }
+}
