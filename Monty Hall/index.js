@@ -244,6 +244,7 @@ for (let dor of dorer) {
         buttonEl.style.padding = "0.6em 1.25em";
         buttonEl.style.fontSize = "1em";
         buttonEl.style.cursor = "pointer";
+        buttonEl.style.zIndex = "5";
 
 
         divEl.appendChild(buttonEl);
