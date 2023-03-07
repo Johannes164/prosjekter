@@ -209,9 +209,9 @@ body {
 
 .dørhåndtak {
     position: absolute;
-    width: 40px;
-    height:60px;
-    background-color: #3c3d3a;
+    width: 4vh;
+    height:6vh;
+    background-color: #444c3d;
     top:20vh;
     left:23vh;
     border-radius:2px;
