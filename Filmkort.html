@@ -31,7 +31,10 @@
         border: 2px solid var(--secondary-color);
         border-radius: 10px;
       }
-      input, textarea, select {
+      
+      input[type="text"],
+      input[type="number"],
+      /*input,*/ textarea, select {
         display: block;
         margin-top: 6px;
         margin-bottom: 20px;
@@ -76,6 +79,12 @@
         border-radius: 10px;
       }
 
+      .checkboxradio > label {
+        display: block;
+        margin-top: 2px;
+        margin-bottom: 10px;
+      }
+
     </style>
   </head>
   <body>
@@ -100,7 +109,33 @@
         <option >18 år</option>
       </select>
 
+      <div class="checkboxradio checkboxradio1">
+        <h3>Format</h3>
+        <label>
+          <input type="checkbox" value="Kino" id="kino"> Kino
+        </label>
+        <label>
+          <input type="checkbox" value="DVD" id="dvd"> DVD
+        </label>
+        <label>
+          <input type="checkbox" value="Strømmetjeneste" id="strommetjeneste"> Strømmetjeneste
+        </label>
+        <label>
+          <input type="checkbox" value="TV" id="tv"> TV
+        </label>
+      </div>
+
+      <div class="checkboxradio checkboxradio2">
+        <h3>Fått Oscar?</h3>
+        <label>
+          <input type="radio" name="oscar" value="Ja" id="jaOscar"> Ja
+        </label>
+        <label>
+          <input type="radio" name="oscar" value="Nei" id="neiOscar" checked> Nei
+        </label>
+      </div>
       <button id="knappRegistrer">Registrer</button>
+    </div>
     </div>
 
     <script type="text/javascript">
@@ -120,12 +155,49 @@
         utskriftEl.innerHTML += "<p> Beskrivelse: " + beskrivelseEl.value + "</p>";
         utskriftEl.innerHTML += "<p> Årstall: " + aarstallEl.value + "</p>";
         utskriftEl.innerHTML += "<p> Aldersgrense: " + aldersgrenseEl.value + "</p>";
+
+        //checkbox
+        let checkboxEl = document.querySelectorAll(".checkboxradio1 input");
+        let checkboxTekst = "";
+        for (let i of checkboxEl) {
+          if (i.checked) {
+            checkboxTekst += i.value + ", ";
+          }
+        }
+        if (checkboxTekst.length > 0) {
+          utskriftEl.innerHTML += "<p> Format: " + checkboxTekst + "</p>";
+        }
+        else {
+          utskriftEl.innerHTML += "<p> Format: Ikke valgt </p>";
+        }
+
+        //radio
+        let radioEl = document.querySelectorAll(".checkboxradio2 input");
+        let radioTekst = "";
+        for (let i of radioEl) {
+          if (i.checked) {
+            radioTekst += i.value;
+          }
+        }
+        utskriftEl.innerHTML += "<p> Fått Oscar: " + radioTekst + "</p>";
+
         utskriftEl.innerHTML += "<button class='knappSlett'>Slett</button>";
         slettKnappEl = utskriftEl.querySelector(".knappSlett");
         slettKnappEl.addEventListener("click", function() {
           utskriftEl.remove();
         });
         document.body.appendChild(utskriftEl);
+
+        /*listener som live oppdaterer teksten viss den endres i inputfelt
+        tittelEl.addEventListener("input", function() {
+          utskriftEl.querySelector("h1").innerHTML = "Tittel: " + tittelEl.value;
+        });
+        beskrivelseEl.addEventListener("input", function() {
+          utskriftEl.querySelector("p").innerHTML = "Beskrivelse: " + beskrivelseEl.value;
+        });
+        aarstallEl.addEventListener("input", function() {
+          utskriftEl.querySelector("p").innerHTML = "Årstall: " + aarstallEl.value;
+        });*/
       }
     </script>
   </body>
