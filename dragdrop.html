@@ -82,31 +82,31 @@ for (let empty of empties) {
     empty.addEventListener("dragleave", dragLeave);
     empty.addEventListener("drop", dragDrop);
 
-    empty.addEventListener("touchmove", dragOver);
-    empty.addEventListener("touchstart", dragEnter);
-    empty.addEventListener("touchend", dragLeave);
-    empty.addEventListener("touchend", dragDrop);
+    empty.addEventListener("touchmove", touchMove);
+    empty.addEventListener("touchstart", touchStart);
+    empty.addEventListener("touchend", touchEnd);
 }
 
 // Drag Functions
-function dragStart() {
-    let e = this;
+function dragStart(e) {
+    e.dataTransfer.setData("text/plain", "");
     this.className += " hold";
-    setTimeout(function () { e.className = "invisible"; }, 0); //kan ikke bruke this siden det i setTimeout refererer til window
+    setTimeout(() => (this.className = "invisible"), 0);
 }
 
 function touchStart(e) {
     e.preventDefault();
-    let touch = e.touches[0];
     this.className += " hold";
-    setTimeout(function () { e.target.className = "invisible"; }, 0);
+    setTimeout(() => (this.className = "invisible"), 0);
 }
 
 function touchMove(e) {
     e.preventDefault();
     let touch = e.touches[0];
-    this.style.left = touch.pageX - (this.offsetWidth / 2) + 'px';
-    this.style.top = touch.pageY - (this.offsetHeight / 2) + 'px';
+    let mouseX = touch.clientX - (this.offsetWidth / 2);
+    let mouseY = touch.clientY - (this.offsetHeight / 2);
+    this.style.left = mouseX + "px";
+    this.style.top = mouseY + "px";
 }
 
 function touchEnd(e) {
@@ -114,12 +114,12 @@ function touchEnd(e) {
     this.className = "fill";
 }
 
-function dragEnd() {
+function dragEnd(e) {
     this.className = "fill";
 }
 
 function dragOver(e) {
-    e.preventDefault(); //default oppførsel er å ikke tillate drop
+    e.preventDefault();
 }
 
 function dragEnter(e) {
@@ -127,12 +127,15 @@ function dragEnter(e) {
     this.className += " hovered";
 }
 
-function dragLeave() {
+function dragLeave(e) {
+    e.preventDefault();
     this.className = "empty";
 }
 
-function dragDrop() {
+function dragDrop(e) {
+    e.preventDefault();
     this.className = "empty";
     this.append(fill);
 }
+
 </script>
