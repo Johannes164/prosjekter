@@ -71,55 +71,27 @@ let empties = document.querySelectorAll(".empty");
 fill.addEventListener("dragstart", dragStart);
 fill.addEventListener("dragend", dragEnd);
 
-fill.addEventListener("touchstart", touchStart);
-fill.addEventListener("touchmove", touchMove);
-fill.addEventListener("touchend", touchEnd);
-
 // Loop through empties and call drag events
 for (let empty of empties) {
     empty.addEventListener("dragover", dragOver);
     empty.addEventListener("dragenter", dragEnter);
     empty.addEventListener("dragleave", dragLeave);
     empty.addEventListener("drop", dragDrop);
-
-    empty.addEventListener("touchmove", touchMove);
-    empty.addEventListener("touchstart", touchStart);
-    empty.addEventListener("touchend", touchEnd);
 }
 
 // Drag Functions
-function dragStart(e) {
-    e.dataTransfer.setData("text/plain", "");
+function dragStart() {
+    let e = this;
     this.className += " hold";
-    setTimeout(() => (this.className = "invisible"), 0);
+    setTimeout(function () { e.className = "invisible"; }, 0); //kan ikke bruke this siden det i setTimeout refererer til window
 }
 
-function touchStart(e) {
-    e.preventDefault();
-    this.className += " hold";
-    setTimeout(() => (this.className = "invisible"), 0);
-}
-
-function touchMove(e) {
-    e.preventDefault();
-    let touch = e.touches[0];
-    let mouseX = touch.clientX - (this.offsetWidth / 2);
-    let mouseY = touch.clientY - (this.offsetHeight / 2);
-    this.style.left = mouseX + "px";
-    this.style.top = mouseY + "px";
-}
-
-function touchEnd(e) {
-    e.preventDefault();
-    this.className = "fill";
-}
-
-function dragEnd(e) {
+function dragEnd() {
     this.className = "fill";
 }
 
 function dragOver(e) {
-    e.preventDefault();
+    e.preventDefault(); //default oppførsel er å ikke tillate drop
 }
 
 function dragEnter(e) {
@@ -127,15 +99,36 @@ function dragEnter(e) {
     this.className += " hovered";
 }
 
-function dragLeave(e) {
-    e.preventDefault();
+function dragLeave() {
     this.className = "empty";
 }
 
-function dragDrop(e) {
-    e.preventDefault();
+function dragDrop() {
     this.className = "empty";
     this.append(fill);
+}
+
+fill.addEventListener("touchstart", touchStart);
+fill.addEventListener("touchmove", touchMove);
+fill.addEventListener("touchend", touchEnd);
+
+function touchStart(e) {
+    e.preventDefault();
+    let touch = e.touches[0];
+    this.className += " hold";
+    setTimeout(function () { e.target.className = "invisible"; }, 0);
+}
+
+function touchMove(e) {
+    e.preventDefault();
+    let touch = e.touches[0];
+    this.style.left = touch.pageX - (this.offsetWidth / 2) + 'px';
+    this.style.top = touch.pageY - (this.offsetHeight / 2) + 'px';
+}
+
+function touchEnd(e) {
+    e.preventDefault();
+    this.className = "fill";
 }
 
 </script>
