@@ -1,0 +1,391 @@
+        /* || Hovudgreier || */
+
+
+        :root { /*Variabler*/
+            --base-3d-shadow-height: clamp(-1.5vmin, -10px, -1.5vmin); /* for bruk senere */
+            --input-border-color: #646a6e;
+            --input-border-color-hover: #6f9086;
+            --input-background-color: #b6bfc3;
+            --input-background-color-hover: #abb8b7;
+            --input-text-color: #585d61;
+        }
+
+        html, body { /* Her sier vi at html og body skal ta opp hele siden */
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        body {
+            background-color: #111216; /* bakgrunnsfarge */
+        }
+
+        #siteWrap {
+            display: grid; /*grid for 2-dimensjonal posisjonering*/
+            grid-template-columns: 1fr repeat(3, 1fr) 1fr; /* begge sider har 1fr, med 3 på 1fr mellom (for å kunne endre de i midten) */
+            grid-template-areas: /* Definerer posisjonen til elementene */
+            ". . . . ." /* "." betyr tom */
+            ". dI dI dI ."
+            ". gW gW gW ."
+            ". bW bW bW ."
+            ". . . . .";
+            height: 100%; /* tar opp hele siden */
+            width: 100%; /* tar opp hele siden */
+
+            /*Vi har altså et 3x3 område med tom plass rundt, akkurat som margin eller padding. I 3x3 området tar diskInput første rad, gameWrap andre rad, og buttonsWrap tredje rad*/
+        }
+
+        /* Mediaqueries for ultrawide og super ultrawide skjermer (21:9 og 32:9), siden er responsiv for mindre skjermer via ting som %, viewport width/height og clamp */
+        /* Gjør at første og siste kolonne, altså sidene, tar opp en større andel, her bytter vi fra et forhold på 2:3 til 1:1, deretter til 5:3 */
+        @media screen and (min-width: 2700px) {
+            #siteWrap {
+                grid-template-columns: 3fr repeat(3, 2fr) 3fr;
+            }
+        }
+        @media screen and (min-width: 3200px) {
+            #siteWrap {
+                grid-template-columns: 5fr repeat(3, 2fr) 5fr;
+            }
+        }
+
+
+
+        /* || Inputbar || */
+        .input {
+            box-sizing: border-box; /* gjør at paddingen ikke blir med i størrelsen på elementet */
+            background-color: var(--input-background-color); /* universell utforming */
+            color: var(--input-text-color); /* universell utforming */
+            border: 4px solid var(--input-border-color); /* universell utforming */
+            transition: 0.2s ease-in-out; /* animasjon */
+        }
+        .input::-webkit-inner-spin-button,
+        .input::-webkit-outer-spin-button { /* fjerner pilene på inputfeltet */
+            -webkit-appearance: none; /* fjerner pilene på inputfeltet */
+            appearance: none; /* for comatibility */
+        }
+        .input:focus { /* fjerner outline på inputfeltet når du klikker det */
+            outline: none;
+        }
+        .input:hover { /* endrer farge på inputfeltet når du holder musepekeren over */
+            border-color: var(--input-border-color-hover); /* universell utforming */
+            background-color: var(--input-background-color-hover); /* universell utforming */
+        }
+
+        #diskInput { /* styling for inputfeltet */
+            grid-area: dI; /* alt av %, margin og lignende vil være med henhold til dette området */
+            width: 90%; /* tar opp 90% av plassen */
+            margin: auto; /* sentrerer elementet */
+            height: clamp(3rem, 8vmin, 5rem); /* her vil høyden minst være 2rem, størst 4rem og mellom 2rem og 4rem vil den være 8vmin */
+            font-size: clamp(1rem, 5vmin, 2rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-weight: 550;
+            text-align: left;
+            padding-left: 5vmin; /* flytter teksten */
+            border-radius: 1.5rem;
+            position: relative;
+            bottom: 20%;
+        }
+
+        .error-message { /* styling for feilmelding dersom invalid tall skrives inn, se js */
+            position: absolute;
+            left: 50vw;
+            top: 50vh;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 60%;
+            background-color: var(--input-background-color);
+            border: 4px solid #646a6e;
+            border-radius: 1.5rem;
+            z-index: 100;
+            display: grid;
+            place-items: center;
+            font-size: 10vmin;
+            font-weight: 550;
+            color: #624c4c;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            text-shadow: 0 0 0.5vmin #000000;
+            box-shadow: 0 0 3vmin 3vmin #624c4c;
+        }
+        #countdown {
+            position: relative;
+            top: -20%;
+        }
+        
+
+
+        /* || Spillområdet || */
+
+        #gameWrap {
+            grid-area: gW;
+            box-sizing: border-box; /* gjør at paddingen ikke blir med i størrelsen på elementet */
+            display: flex; /* flex for 1-dimensjonal posisjonering */
+            width: 100px;
+            /*background-color: rgba(109, 118, 112, 0.5);/*
+            justify-content: space-between; /* plasserer elementene med like mellomrom mellom */
+            align-items: flex-end; /* plasserer elementene på bunnen */
+            padding: clamp(0.1vw, 2vmin, 2vmin); /* her vil paddingen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            gap: clamp(0.1vw, 2vmin, 2vmin); /* her vil gapet minst være 0.1vw, størst 0.5vw og mellom 0.1vw og 0.5vw vil den være 1vmin */
+            width: 100%;
+            height: 500px;
+        }
+
+        /*Stolpene*/
+        .tower {
+            width: 100%; /* tar opp hele bredden */
+            height: 100%; /* tar opp hele høyden */
+            background-color: #21782500;
+            display: flex; /* flex for 1-dimensjonal posisjonering */
+            flex-direction: column; /* plasserer rod på base */
+            justify-content: center; /* sentrerer elementene */
+            align-items: center; /* sentrerer rod */
+            box-sizing: border-box; /* gjør at en kan legge til border uten å ødelegge ting pga bredden*/
+            }
+
+            .tower .base {
+            width: 100%; /* tar opp hele bredden */
+            height: clamp(10vmin, 15%, 30vmin); /* her vil høyden minst være 10vmin, størst 30vmin og mellom 10vmin og 30vmin vil den være 15% */
+            background-color: #ffffff;
+            border-radius: 0.5em;
+            box-shadow: 0 var(--base-3d-shadow-height) 0 rgb(181, 181, 181); /* skygge uten blur for 3d effekt */
+            z-index: 1;
+            }
+            .tower .rod {
+            width: 15%;
+            height: clamp(5vmin, calc(100% - 2rem), 35vmin);
+            background-color: #dfdfdf;
+            border-radius: 0.5em;
+            position: relative; /* sånn at diskene kan posisjoneres lettere og for z-index */
+            transition: 0.15s ease-in-out;
+            }
+            .tower .rod:hover {
+            background-color: #dfdfdf89;
+            }
+
+        /*Skivene*/
+        
+        .disk {
+            --disk-3d-shadow-height: calc(0.6*clamp(-1.2vmin, -8px, -1.2vmin));
+            position: absolute;
+            border-radius: 0.5em;
+            left: 50%; /* venstre kant midt på rod (100% er rod sin størrelse)*/
+            transform: translateX(-50%); /* flytter disken til venstre med minus halvparten av sin egen bredde, altså til høyre */
+            z-index: 2; /* for at disken skal ligge over base */
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+        }
+        .disk:hover {
+            margin-left: 50%; /* flytter disken til høyre, translateX og Y funka rart i dette tilfelle */
+            filter: hue-rotate(-20deg);
+        }
+        /* selektor for disken med data-attributten "selected" lik true */
+        .disk[data-selected="true"] {
+            margin-bottom: 50%;
+            filter: hue-rotate(10deg);
+        }
+
+        .selected-disk {
+            margin-bottom: 50%;
+            filter: hue-rotate(30deg);
+        }
+
+        /* || Knapper || */
+
+        #buttonsWrap {
+            grid-area: bW;
+            box-sizing: border-box; /* gjør at paddingen ikke blir med i størrelsen på elementet */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 0 20%;
+            position: relative; /* for å kunne posisjonere inputfeltet */
+        }
+
+        .button {
+            box-sizing: border-box; /* gjør at paddingen ikke blir med i størrelsen på elementet */
+            width: 40%;
+            height: 100%;
+            font-size: clamp(0.7rem, 5vmin, 2rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-weight: 700;
+            text-align: center;
+            color: #585d61;
+            border-radius: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+            z-index: 2;
+        }
+        @media screen and (max-width: 800px) { /* bedre skalering for fleksibiliteten var nødvendig for mihndre skjermer */
+            #buttonsWrap {
+                padding: 0 5%;
+            }
+        }
+
+        #reset {
+            background-color: #ef3c3c;
+            border: 6px solid #d22828;
+            color: #a71f1f;
+            text-shadow: 0.1rem 0.05rem 0.1rem #941b1bbc;
+        }
+
+        #solve {
+            background-color: #58e158;
+            border: 6px solid #37b437;
+            color: #188618;
+            text-shadow: 0.1rem 0.05rem 0.1rem #0f6b0fbc;
+        }
+
+        #reset:hover {
+            background-color: #d22828;
+            border: 6px solid #ef3c3c;
+            color: #ef3c3c;
+            text-shadow: 0.1rem 0.05rem 0.1rem #8e3131bc;
+        }
+
+        #solve:hover {
+            background-color: #37b437;
+            border: 6px solid #58e158;
+            color: #58e158;
+            text-shadow: 0.1rem 0.05rem 0.1rem #0f6b0fbc;
+        }
+
+        #reset:active {
+            background-color: #a71f1f;
+            border: 6px solid #d22828;
+            color: #d22828;
+            text-shadow: 0.1rem 0.05rem 0.1rem #941b1bbc;
+        }
+        
+        #solve:active {
+            background-color: #188618;
+            border: 6px solid #37b437;
+            color: #37b437;
+            text-shadow: 0.1rem 0.05rem 0.1rem #0f6b0fbc;
+        }
+
+        #solveDelayInput {
+            position: absolute; /* for å kunne posisjonere inputfeltet */
+            top: 50%; /* midt på knappen */
+            left: 83%; /* til midten + solve sin størrelse */
+            transform: translate(-50%, -50%); /* flytter inputfeltet til midten */
+            width: 13%;
+            height: 70%;
+            font-size: clamp(0.7rem, 5vmin, 2rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-weight: 700;
+            padding-left: 5%;
+            color: var(--input-text-color);
+            border-radius: 1.5rem;
+            z-index: 1; /*bak knappen*/
+        }
+
+        .tooltip {
+            box-shadow: 0 0 0.5rem 0.1rem #000000;
+        }
+
+        #tooltip {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff22;
+            z-index: 50;
+        }
+
+        #inputDisk {
+            position: absolute;
+            top: 4%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: 2rem;
+            background-color: #95d5df;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-size: clamp(0.64rem, 1.4vw, 1.6rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: #971717;
+            z-index: 51;
+        }
+
+        #inputDelay {
+            position: absolute;
+            top: 75%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 10%;
+            background-color: #95d5df;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-size: clamp(0.64rem, 1.4vw, 1.6rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: #971717;
+            z-index: 51;
+        }
+
+        #resetTT {
+            position: absolute;
+            top: 75%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+            width: 40%;
+            height: 10%;
+            background-color: #95d5df;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-size: clamp(1.1rem, 2.4vw, 3.2rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: #971717;
+            z-index: 51;
+        }
+
+        #spillet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 10%;
+            background-color: #95d5df;
+            border-radius: 1rem;
+            padding: 1rem;
+            font-size: clamp(0.64rem, 1.4vw, 1.6rem); /* her vil fontstørrelsen minst være 1rem, størst 2rem og mellom 1rem og 2rem vil den være 5vmin */
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: #971717;
+            z-index: 51;
+        }
+
+        #crossButt {
+            position: absolute;
+            top: 25%;
+            right: 5%;
+            width: 10vmin;
+            height: 10vmin;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 8vmin;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            color: #ffffff;
+            z-index: 300;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            background-color: #d72c2c;
+            transition: 0.2s ease-in-out;
+        }
+
+        #crossButt:hover {
+            background-color: #929436 !important;
+        }
