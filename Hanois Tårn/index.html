@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Hanois Tårn </title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+    <div id="siteWrap">
+        <input type="number" class="input" id="diskInput" min="1" max="9" value="4">
+
+        <div id="gameWrap">
+            <div id="tower1" class="tower">
+                <div class="rod" id="rod1"></div>
+                <div class="base"></div>
+            </div>
+            <div id="tower2" class="tower">
+                <div class="rod" id="rod2"></div>
+                <div class="base"></div>
+            </div>
+            <div id="tower3" class="tower">
+                <div class="rod" id="rod3"></div>
+                <div class="base"></div>
+            </div>
+        </div>
+
+        <div id="buttonsWrap">
+            <button class="button" id="reset">Reset</button>
+            <button class="button" id="solve">Solve</button>
+            <input type="number" class="input" id="solveDelayInput" min="0" max="9999" value="100">
+        </div>
+    </div>
+
+    <div id="tooltip">
+        <span class="tooltip" id="inputDisk">I feltet under angir du hvor mange skiver det skal være, må være et tall fra 0-9</span>
+        <span class="tooltip" id="inputDelay">Der det står "100" skriver du antall millisekunder det skal gå mellom foflytning av skive når du trykker solve, som løser tårnet for deg</span>
+        <span class="tooltip" id="resetTT">Reset knappen tilbakestiller tårnet</span>
+        <span class="tooltip" id="spillet">Spillet funker som hanois tårn, trykk på en skive fra stolpen du vil flytte fra, eller på stolpen, så trykker du på stolpen du vil flytte til</span>
+    </div>
+    <div class="tooltip close" id="crossButt">x</div>
+<script src="js/index.js"></script>
+</body>
+</html>
