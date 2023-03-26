@@ -4,21 +4,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prosjekter</title>
-    <link rel="stylesheet" href="hyperplexed.css">
+    <title> Hanois Tårn </title>
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <div id="menu">
-        <div id="menu-items">
-            <a href="Hyperplexed - Copy/Imagescroll/index.html" class="menu-item">Image Scroll</a>
-            <a href="Prosjekt - Copy/index.html" class="menu-item">BB + Monty hall</a>
-            <a href="Filmkort.html" class="menu-item">Filmkort</a>
-            <a href="Hanoi/index.html" class="menu-item">Hanois Tårn</a>
+
+    <div id="siteWrap">
+        <input type="number" class="input" id="diskInput" min="1" max="9" value="4">
+        <input type="number" class="input" id="solveDelayInput" min="0" max="9999" value="100">
+
+        <div id="gameWrap">
+            <div id="tower1" class="tower">
+                <div class="rod clickable" id="rod1"></div>
+                <div class="base"></div>
+            </div>
+            <div id="tower2" class="tower">
+                <div class="rod" id="rod2"></div>
+                <div class="base"></div>
+            </div>
+            <div id="tower3" class="tower">
+                <div class="rod" id="rod3"></div>
+                <div class="base"></div>
+            </div>
         </div>
-        <div id="menu-background-pattern"></div>
-        <div id="menu-background-image"></div>
+
+        <div id="buttonsWrap">
+            <button class="button clickable" id="reset">Reset</button>
+            <button class="button clickable" id="solve">Solve</button>
+        </div>
     </div>
 
-    <script src="hyperplexed.js"></script>
+    <div id="tooltip">
+        <span class="tooltip" id="inputDiskTT">I feltet under angir du hvor mange skiver det skal være, må være et tall fra 0-9</span>
+        <span class="tooltip" id="inputDelayTT">Ovenfor der det står "100" skriver du antall millisekunder det skal gå mellom foflytning av skive når du trykker solve, som løser tårnet for deg</span>
+        <span class="tooltip" id="resetTT">Reset knappen tilbakestiller tårnet</span>
+        <span class="tooltip" id="gameTT">Spillet funker som hanois tårn, trykk på en skive fra stolpen du vil flytte fra, eller på stolpen, så trykker du på stolpen du vil flytte til</span>
+    </div>
+    <div class="tooltip clickable" id="crossButt">x</div>
+<script src="js/index.js"></script>
 </body>
 </html>
