@@ -11,10 +11,11 @@
 
     <div id="siteWrap">
         <input type="number" class="input" id="diskInput" min="1" max="9" value="4">
+        <input type="number" class="input" id="solveDelayInput" min="0" max="9999" value="100">
 
         <div id="gameWrap">
             <div id="tower1" class="tower">
-                <div class="rod" id="rod1"></div>
+                <div class="rod clickable" id="rod1"></div>
                 <div class="base"></div>
             </div>
             <div id="tower2" class="tower">
@@ -28,19 +29,18 @@
         </div>
 
         <div id="buttonsWrap">
-            <button class="button" id="reset">Reset</button>
-            <button class="button" id="solve">Solve</button>
-            <input type="number" class="input" id="solveDelayInput" min="0" max="9999" value="100">
+            <button class="button clickable" id="reset">Reset</button>
+            <button class="button clickable" id="solve">Solve</button>
         </div>
     </div>
 
     <div id="tooltip">
-        <span class="tooltip" id="inputDisk">I feltet under angir du hvor mange skiver det skal være, må være et tall fra 0-9</span>
-        <span class="tooltip" id="inputDelay">Der det står "100" skriver du antall millisekunder det skal gå mellom foflytning av skive når du trykker solve, som løser tårnet for deg</span>
+        <span class="tooltip" id="inputDiskTT">I feltet under angir du hvor mange skiver det skal være, må være et tall fra 0-9</span>
+        <span class="tooltip" id="inputDelayTT">Ovenfor der det står "100" skriver du antall millisekunder det skal gå mellom foflytning av skive når du trykker solve, som løser tårnet for deg</span>
         <span class="tooltip" id="resetTT">Reset knappen tilbakestiller tårnet</span>
-        <span class="tooltip" id="spillet">Spillet funker som hanois tårn, trykk på en skive fra stolpen du vil flytte fra, eller på stolpen, så trykker du på stolpen du vil flytte til</span>
+        <span class="tooltip" id="gameTT">Spillet funker som hanois tårn, trykk på en skive fra stolpen du vil flytte fra, eller på stolpen, så trykker du på stolpen du vil flytte til</span>
     </div>
-    <div class="tooltip close" id="crossButt">x</div>
+    <div class="tooltip clickable" id="crossButt">x</div>
 <script src="js/index.js"></script>
 </body>
 </html>
