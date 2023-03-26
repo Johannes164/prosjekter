@@ -2,7 +2,7 @@
 
 
         :root { /*Variabler*/
-            --base-3d-shadow-height: clamp(-1.5vmin, -10px, -1.5vmin);
+            --base-3d-shadow-height: clamp(-1.5vmin, -10px, -1.5vmin); /* min, max og preffered, https://developer.mozilla.org/en-US/docs/Web/CSS/clamp#parameters */
 
             --input-border-color: #646a6e;
             --input-border-color-hover: #6f9086;
@@ -119,7 +119,7 @@
 
         #solveDelayInput { /* styling for inputfeltet ved solve-knappen */
             position: absolute; /* for å kunne posisjonere inputfeltet */
-            top: 20%; /* midt på knappen */
+            top: 22%; /* midt på knappen */
             left: 30%; /* til midten + solve sin størrelse */
             transform: translate(-50%, -50%); /* flytter inputfeltet til midten */
             width: 13%;
@@ -233,30 +233,30 @@
         }
 
         #reset { /* styling for reset knappen */
-            background-color: #ef3c3c;
-            border: 6px solid #d22828;
-            color: #a71f1f;
-            text-shadow: 0.1rem 0.05rem 0.1rem #941b1bbc;
+            background-color: #d22828;
+            border: 6px solid #ef3c3c;
+            color: #d19393;
+            text-shadow: 0.1rem 0.05rem 0.1rem #8e3131bc;
         }
 
         #solve { /* styling for solve knappen */
-            background-color: #58e158;
-            border: 6px solid #37b437;
-            color: #188618;
+            background-color: #37b437;
+            border: 6px solid #58e158;
+            color: #8bc88b;
             text-shadow: 0.1rem 0.05rem 0.1rem #0f6b0fbc;
         }
 
         #reset:hover { /* styling for reset knappen når musen er over */
             background-color: #d22828;
             border: 6px solid #ef3c3c;
-            color: #ef3c3c;
-            text-shadow: 0.1rem 0.05rem 0.1rem #8e3131bc;
+            color: #a71f1f;
+            text-shadow: 0.1rem 0.05rem 0.1rem #941b1bbc;
         }
 
         #solve:hover {
             background-color: #37b437;
             border: 6px solid #58e158;
-            color: #58e158;
+            color: #188618;
             text-shadow: 0.1rem 0.05rem 0.1rem #0f6b0fbc;
         }
 

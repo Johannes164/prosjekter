@@ -107,7 +107,7 @@ function checkInput() {                                         //funksjon som v
         diskInput.parentElement.appendChild(errorMessage); //legger errorMessage til på siden
         
         // Oppdaterer nedtellingen hvert sekund (countdown)
-        let countdownInterval = setInterval(() => { //setInterval gjentar en funksjon hvert x millisekund, her gjentas den til count er 0
+        let countdownInterval = setInterval(function() { //setInterval gjentar en funksjon hvert x millisekund, her gjentas den til count er 0
             count--;
             countdown.innerHTML = count;
           if (count === 0) {
@@ -184,6 +184,9 @@ function clickableRods() {                                      //funksjon som g
 }
 
 function selectrod(rod) {                                       //funksjon som lar brukeren velge en stolpe som skal flyttes fra og en stolpe som skal flyttes til (selectedRod er den som allerede er valgt, altså forrige valg, rod er den du tryker)
+    if (solving === true) { //viss tårnet holder på å løses, lar vi ikke brukeren flytte på skivene
+        return;
+    }
     if (selectedRod === rod) { //viss du trykker på samme stolpe
         selectedRod.dataset.selected = "false"; //setter selected til false
         selectedRod.lastChild.classList.remove("selected-disk"); //fjerner klassen selected-disk fra den øverste skiven (styling som viser at den er valgt)
