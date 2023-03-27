@@ -184,7 +184,7 @@ function clickableRods() {                                      //funksjon som g
 }
 
 function selectrod(rod) {                                       //funksjon som lar brukeren velge en stolpe som skal flyttes fra og en stolpe som skal flyttes til (selectedRod er den som allerede er valgt, altså forrige valg, rod er den du tryker)
-    if (solving === true) { //viss tårnet holder på å løses, lar vi ikke brukeren flytte på skivene
+    if (solving === true || (!rod.lastChild && selectedRod == null)) { //viss tårnet holder på å løses, eller viss det er første gang du trykker samt at du trykker på en tom stolpe returner vi tidlig for å hindre feil
         return;
     }
     if (selectedRod === rod) { //viss du trykker på samme stolpe
