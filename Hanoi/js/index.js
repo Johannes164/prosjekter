@@ -144,6 +144,9 @@ function solveDisks() {                                //funksjon som løser tå
     solveH(rods[0].dataset.disks, rods[0], rods[2], rods[1]);
     //fjern funksjonen for å legge den til igjen når den er ferdig
     solveButton.removeEventListener("click", solveDisks); //fjerner eventlisteneren for å hindre at brukeren trykker på knappen flere ganger, den legges til igjen når solveH er ferdig
+    for (let i = 0; i < rods.length; i++) { //fjerner clickable klassen fra alle stolpene
+        rods[i].classList.remove("clickable")
+    }
     solveButton.innerHTML = "Solving..."; //endrer teksten på knappen til "Solving..."
     solving = true; //setter solving til true sånn at reset kan stoppe solveH
 }
@@ -168,6 +171,7 @@ async function solveH(n, from, to, extra) {                     //rekursiv funks
 
         if (rods[2].dataset.disks === n) { //viss tredje stolpe har n skiver, er tårnet løst, så vi gir solveButton tilbake eventlistener
             solveButton.addEventListener("click", solveDisks);
+            rods[2].classList.add("clickable"); //gir tredje stolpe clickable klassen
             solveButton.innerHTML = "Solve";
             solving = false;
         }
