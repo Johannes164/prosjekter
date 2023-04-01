@@ -141,14 +141,18 @@ function resetDisks() {                                         //funksjon som r
 
 function solveDisks() {                                //funksjon som løser tårnet når brukeren trykker på "solve" knappen (brukes til solve knapp)
     resetDisks();
-    solveH(rods[0].dataset.disks, rods[0], rods[2], rods[1]);
-    //fjern funksjonen for å legge den til igjen når den er ferdig
-    solveButton.removeEventListener("click", solveDisks); //fjerner eventlisteneren for å hindre at brukeren trykker på knappen flere ganger, den legges til igjen når solveH er ferdig
-    for (let i = 0; i < rods.length; i++) { //fjerner clickable klassen fra alle stolpene
+    if (rods[0].dataset.disks > 1) { //hvis antall skiver er over 1, løser den normalt
+        solveH(rods[0].dataset.disks, rods[0], rods[2], rods[1]);
+        //fjern funksjonen for å legge den til igjen når den er ferdig
+        solveButton.removeEventListener("click", solveDisks); //fjerner eventlisteneren for å hindre at brukeren trykker på knappen flere ganger, den legges til igjen når solveH er ferdig
+        for (let i = 0; i < rods.length; i++) { //fjerner clickable klassen fra alle stolpene
         rods[i].classList.remove("clickable")
+        }
+        solveButton.innerHTML = "Solving..."; //endrer teksten på knappen til "Solving..."
+        solving = true; //setter solving til true sånn at reset kan stoppe solveH
+    } else if (rods[0].dataset.disks == 1) { //hvis antall skiver er 1, flytter den bare skiven til stolpe 3 (av en eller annnen grunn funker ikke solveH med 1 skive)
+        moveDisk2(rods[0], rods[2]);
     }
-    solveButton.innerHTML = "Solving..."; //endrer teksten på knappen til "Solving..."
-    solving = true; //setter solving til true sånn at reset kan stoppe solveH
 }
 
 function updateSolveDelay() {                                   //funksjon som oppdaterer solveDelay fortløpende
