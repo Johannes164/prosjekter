@@ -34,6 +34,7 @@
             text-align: center;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
+            width: 200px;
         }
         .exercise:hover {
             background-color: #e0e0e0;
@@ -57,6 +58,12 @@
         th, td {
             padding: 10px;
             text-align: center;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #e6f7ff;
         }
         @media (max-width: 600px) {
             .exercise {
@@ -123,6 +130,12 @@
             <div class="exercise" data-name="Lean-Away Dumbbell Lateral Raise" data-sets="2-3 per arm" data-reps="10-15" data-rest="1 between arms">
                 Lean-Away Dumbbell Lateral Raise
             </div>
+            <div class="exercise" data-name="Seated Decline Cable Flies W/ Supination" data-sets="2-3" data-reps="10-15" data-rest="1.5-2">
+                Seated Decline Cable Flies W/ Supination
+            </div>
+            <div class="exercise" data-name="Incline Dumbbell Overhead Extensions" data-sets="2-3" data-reps="10-15" data-rest="1.5-2">
+                Incline Dumbbell Overhead Extensions
+            </div>
             <h2>Pull Workout</h2>
             <div class="exercise" data-name="Pull-Ups OR Kneeling Lat Pulldowns" data-sets="3-4" data-reps="6-10 OR 10-15" data-rest="2-2.5">
                 Pull-Ups OR Kneeling Lat Pulldowns
@@ -133,6 +146,18 @@
             <div class="exercise" data-name="Reverse Grip Lat Pulldowns" data-sets="3-4" data-reps="8-12" data-rest="2">
                 Reverse Grip Lat Pulldowns
             </div>
+            <div class="exercise" data-name="Chest Supported Rear Delt Row" data-sets="3-4" data-reps="10-15" data-rest="2">
+                Chest Supported Rear Delt Row
+            </div>
+            <div class="exercise" data-name="Narrow Grip Barbell Curl" data-sets="2-3" data-reps="8-12" data-rest="1.5-2">
+                Narrow Grip Barbell Curl
+            </div>
+            <div class="exercise" data-name="Kneeling Face Pulls" data-sets="2" data-reps="10-15" data-rest="1.5">
+                Kneeling Face Pulls
+            </div>
+            <div class="exercise" data-name="Lying Face Pulls" data-sets="2" data-reps="10-15" data-rest="1.5">
+                Lying Face Pulls
+            </div>
             <h2>Legs Workout</h2>
             <div class="exercise" data-name="Back Squats OR Front Squats" data-sets="3-4" data-reps="6-10" data-rest="2-3">
                 Back Squats OR Front Squats
@@ -142,6 +167,9 @@
             </div>
             <div class="exercise" data-name="Split Squats (beginner) OR Bulgarian Split Squats (advanced)" data-sets="4 each leg" data-reps="8-12" data-rest="1 min between each leg">
                 Split Squats (beginner) OR Bulgarian Split Squats (advanced)
+            </div>
+            <div class="exercise" data-name="Glute Ham Raise" data-sets="3-4" data-reps="10-15" data-rest="2">
+                Glute Ham Raise
             </div>
         </div>
         <div id="selected-exercises">
@@ -162,5 +190,5 @@
         </div>
     </main>
 </body>
-                </html>
-                                    
+    </html>
+    
