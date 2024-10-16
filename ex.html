@@ -43,6 +43,9 @@
         .selected {
             background-color: #d1ffd1;
         }
+        .completed {
+            background-color: #ffd1d1;
+        }
         #selected-exercises {
             margin-top: 20px;
             overflow-x: auto;
@@ -65,6 +68,19 @@
         tbody tr:nth-child(even) {
             background-color: #e6f7ff;
         }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #555;
+        }
         @media (max-width: 600px) {
             .exercise {
                 flex: 1 1 calc(100% - 20px);
@@ -75,8 +91,18 @@
         document.addEventListener('DOMContentLoaded', function () {
             const exercises = document.querySelectorAll('.exercise');
             const exerciseTableBody = document.querySelector('#exercise-table tbody');
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Confirm Workout Completed';
+            document.querySelector('main').appendChild(completeButton);
+
+            // Load completed exercises from localStorage
+            const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || [];
 
             exercises.forEach(exercise => {
+                if (completedExercises.includes(exercise.dataset.name)) {
+                    exercise.classList.add('completed');
+                }
+
                 exercise.addEventListener('click', function () {
                     if (exercise.classList.contains('selected')) {
                         exercise.classList.remove('selected');
@@ -86,6 +112,24 @@
                         addExerciseToTable(exercise);
                     }
                 });
+            });
+
+            completeButton.addEventListener('click', function () {
+                const selectedExercises = document.querySelectorAll('.exercise.selected');
+                const completedExerciseNames = Array.from(selectedExercises).map(ex => ex.dataset.name);
+
+                // Save completed exercises to localStorage
+                localStorage.setItem('completedExercises', JSON.stringify(completedExerciseNames));
+
+                // Update exercise styles
+                exercises.forEach(exercise => {
+                    exercise.classList.remove('completed');
+                });
+                completedExerciseNames.forEach(name => {
+                    document.querySelector(`.exercise[data-name="${name}"]`).classList.add('completed');
+                });
+
+                alert('Workout completed and saved!');
             });
 
             function addExerciseToTable(exercise) {
