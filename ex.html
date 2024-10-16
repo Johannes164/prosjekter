@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Workout Planner</h1>
+        <p>Select the exercises to create your personalized workout plan</p>
+    </header>
+    <main>
+        <div id="exercise-selection" class="exercise-container">
+            <h2>Push Workout</h2>
+            <div class="exercise" data-name="Incline Barbell Bench Press" data-sets="3-4" data-reps="6-8" data-rest="2-3">
+                Incline Barbell Bench Press
+            </div>
+            <div class="exercise" data-name="Standing Dumbbell Shoulder Press" data-sets="3-4" data-reps="10-15" data-rest="2-3">
+                Standing Dumbbell Shoulder Press
+            </div>
+            <div class="exercise" data-name="Paused Flat Dumbbell Press" data-sets="3-4" data-reps="8-12" data-rest="2-3">
+                Paused Flat Dumbbell Press
+            </div>
+            <div class="exercise" data-name="Lean-Away Dumbbell Lateral Raise" data-sets="2-3 per arm" data-reps="10-15" data-rest="1 between arms">
+                Lean-Away Dumbbell Lateral Raise
+            </div>
+            <h2>Pull Workout</h2>
+            <div class="exercise" data-name="Pull-Ups OR Kneeling Lat Pulldowns" data-sets="3-4" data-reps="6-10 OR 10-15" data-rest="2-2.5">
+                Pull-Ups OR Kneeling Lat Pulldowns
+            </div>
+            <div class="exercise" data-name="Barbell Row" data-sets="3-4" data-reps="10-15" data-rest="2-2.5">
+                Barbell Row
+            </div>
+            <div class="exercise" data-name="Reverse Grip Lat Pulldowns" data-sets="3-4" data-reps="8-12" data-rest="2">
+                Reverse Grip Lat Pulldowns
+            </div>
+            <h2>Legs Workout</h2>
+            <div class="exercise" data-name="Back Squats OR Front Squats" data-sets="3-4" data-reps="6-10" data-rest="2-3">
+                Back Squats OR Front Squats
+            </div>
+            <div class="exercise" data-name="Barbell Hip Thrust" data-sets="3-4" data-reps="12-15" data-rest="2-3">
+                Barbell Hip Thrust
+            </div>
+            <div class="exercise" data-name="Split Squats (beginner) OR Bulgarian Split Squats (advanced)" data-sets="4 each leg" data-reps="8-12" data-rest="1 min between each leg">
+                Split Squats (beginner) OR Bulgarian Split Squats (advanced)
+            </div>
+        </div>
+        <div id="selected-exercises">
+            <h2>Your Selected Workout</h2>
+            <table id="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Rest</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Selected exercises will be appended here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
