@@ -4,8 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workout Planner</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        .exercise-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .exercise {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .exercise:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+        }
+        .selected {
+            background-color: #d1ffd1;
+        }
+        #selected-exercises {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .exercise {
+                flex: 1 1 calc(100% - 20px);
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const exercises = document.querySelectorAll('.exercise');
+            const exerciseTableBody = document.querySelector('#exercise-table tbody');
+
+            exercises.forEach(exercise => {
+                exercise.addEventListener('click', function () {
+                    if (exercise.classList.contains('selected')) {
+                        exercise.classList.remove('selected');
+                        removeExerciseFromTable(exercise.dataset.name);
+                    } else {
+                        exercise.classList.add('selected');
+                        addExerciseToTable(exercise);
+                    }
+                });
+            });
+
+            function addExerciseToTable(exercise) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${exercise.dataset.name}</td>
+                    <td>${exercise.dataset.sets}</td>
+                    <td>${exercise.dataset.reps}</td>
+                    <td>${exercise.dataset.rest}</td>
+                `;
+                exerciseTableBody.appendChild(row);
+            }
+
+            function removeExerciseFromTable(name) {
+                const rows = exerciseTableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    if (row.children[0].textContent === name) {
+                        exerciseTableBody.removeChild(row);
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -66,4 +162,5 @@
         </div>
     </main>
 </body>
-</html>
+                </html>
+                                    
