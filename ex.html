@@ -97,19 +97,27 @@
 
             // Load completed exercises from localStorage
             const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || [];
+            const selectedExercises = JSON.parse(localStorage.getItem('selectedExercises')) || [];
 
+            // Highlight completed exercises
             exercises.forEach(exercise => {
                 if (completedExercises.includes(exercise.dataset.name)) {
                     exercise.classList.add('completed');
+                }
+                if (selectedExercises.includes(exercise.dataset.name)) {
+                    exercise.classList.add('selected');
+                    addExerciseToTable(exercise);
                 }
 
                 exercise.addEventListener('click', function () {
                     if (exercise.classList.contains('selected')) {
                         exercise.classList.remove('selected');
                         removeExerciseFromTable(exercise.dataset.name);
+                        updateSelectedExercises();
                     } else {
                         exercise.classList.add('selected');
                         addExerciseToTable(exercise);
+                        updateSelectedExercises();
                     }
                 });
             });
@@ -150,6 +158,11 @@
                         exerciseTableBody.removeChild(row);
                     }
                 });
+            }
+
+            function updateSelectedExercises() {
+                const selectedExerciseNames = Array.from(document.querySelectorAll('.exercise.selected')).map(ex => ex.dataset.name);
+                localStorage.setItem('selectedExercises', JSON.stringify(selectedExerciseNames));
             }
         });
     </script>
@@ -234,5 +247,5 @@
         </div>
     </main>
 </body>
-    </html>
-    
+                            </html>
+                            
