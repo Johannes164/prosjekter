@@ -6,15 +6,10 @@
     <title>Workout Planner</title>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        body.dark-mode {
-            background-color: #121212;
-            color: #ffffff;
         }
         header {
             background-color: #333;
@@ -23,43 +18,23 @@
             text-align: center;
         }
         main {
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .exercise-section {
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 40px;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .exercise-section.dark-mode {
-            background-color: #1e1e1e;
         }
         .exercise-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
             justify-content: center;
-            margin-top: 20px;
         }
         .exercise {
             background-color: #fff;
-            border: 2px solid #ccc;
-            border-radius: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             padding: 15px;
             text-align: center;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
             width: 200px;
-        }
-        .exercise.dark-mode {
-            background-color: #2e2e2e;
-            border: 2px solid #444;
         }
         .exercise:hover {
             background-color: #e0e0e0;
@@ -72,16 +47,8 @@
             background-color: #ffd1d1;
         }
         #selected-exercises {
-            width: 100%;
-            max-width: 1200px;
             margin-top: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        #selected-exercises.dark-mode {
-            background-color: #1e1e1e;
+            overflow-x: auto;
         }
         table {
             width: 100%;
@@ -114,168 +81,26 @@
         button:hover {
             background-color: #555;
         }
-        .weight-input {
-            margin-top: 10px;
-            padding: 5px;
-            width: calc(100% - 20px);
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .section-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        #settings-panel {
-            display: none;
-            position: fixed;
-            top: 10%;
-            right: 10%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-        }
-        #settings-panel.dark-mode {
-            background-color: #1e1e1e;
-            color: #fff;
-        }
-        #settings-panel button {
-            margin: 10px 0;
-        }
         @media (max-width: 600px) {
             .exercise {
                 flex: 1 1 calc(100% - 20px);
-            }
-            main {
-                padding: 20px;
             }
         }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            let exerciseSections = document.querySelectorAll('.exercise-section');
+            const exercises = document.querySelectorAll('.exercise');
             const exerciseTableBody = document.querySelector('#exercise-table tbody');
             const completeButton = document.createElement('button');
             completeButton.textContent = 'Confirm Workout Completed';
             document.querySelector('main').appendChild(completeButton);
-            const addSectionButton = document.createElement('button');
-            addSectionButton.textContent = 'Add New Section';
-            document.querySelector('main').insertBefore(addSectionButton, document.querySelector('#selected-exercises'));
 
-            const settingsButton = document.createElement('button');
-            settingsButton.textContent = 'Settings';
-            document.querySelector('main').insertBefore(settingsButton, addSectionButton);
-
-            const settingsPanel = document.createElement('div');
-            settingsPanel.id = 'settings-panel';
-            settingsPanel.innerHTML = `
-                <h3>Settings</h3>
-                <button id="toggle-dark-mode">Toggle Dark Mode</button>
-                <button id="close-settings">Close Settings</button>
-            `;
-            document.body.appendChild(settingsPanel);
-
-            settingsButton.addEventListener('click', () => {
-                settingsPanel.style.display = 'block';
-            });
-
-            document.getElementById('close-settings').addEventListener('click', () => {
-                settingsPanel.style.display = 'none';
-            });
-
-            document.getElementById('toggle-dark-mode').addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-                document.querySelectorAll('.exercise-section, #selected-exercises, .exercise').forEach(el => {
-                    el.classList.toggle('dark-mode');
-                });
-                settingsPanel.classList.toggle('dark-mode');
-
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                localStorage.setItem('darkMode', isDarkMode);
-            });
-
-            // Load dark mode setting from localStorage
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                document.querySelectorAll('.exercise-section, #selected-exercises, .exercise').forEach(el => {
-                    el.classList.add('dark-mode');
-                });
-                settingsPanel.classList.add('dark-mode');
-            }
-
-            // Load completed exercises, weights, and sections from localStorage
+            // Load completed exercises from localStorage
             const completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || [];
             const selectedExercises = JSON.parse(localStorage.getItem('selectedExercises')) || [];
-            const exerciseWeights = JSON.parse(localStorage.getItem('exerciseWeights')) || {};
-            const sectionData = JSON.parse(localStorage.getItem('sectionData')) || [];
 
-            // Load sections from localStorage if available
-            if (sectionData.length > 0) {
-                document.querySelectorAll('.exercise-section').forEach(section => section.remove());
-                sectionData.forEach(section => addSection(section.title, section.exercises));
-            }
-
-            function addSection(title, exercises = []) {
-                const section = document.createElement('div');
-                section.className = 'exercise-section';
-                const sectionTitle = document.createElement('h2');
-                sectionTitle.textContent = title;
-                const sectionControls = document.createElement('div');
-                sectionControls.className = 'section-controls';
-                const editTitleButton = document.createElement('button');
-                editTitleButton.textContent = 'Edit Section Title';
-                const deleteSectionButton = document.createElement('button');
-                deleteSectionButton.textContent = 'Delete Section';
-                sectionControls.appendChild(editTitleButton);
-                sectionControls.appendChild(deleteSectionButton);
-                section.appendChild(sectionControls);
-                section.appendChild(sectionTitle);
-                const exerciseContainer = document.createElement('div');
-                exerciseContainer.className = 'exercise-container';
-
-                exercises.forEach(exerciseData => {
-                    addExerciseToContainer(exerciseData, exerciseContainer);
-                });
-
-                section.appendChild(exerciseContainer);
-                document.querySelector('main').insertBefore(section, document.querySelector('#selected-exercises'));
-
-                editTitleButton.addEventListener('click', () => {
-                    const newTitle = prompt('Enter new section title:', title);
-                    if (newTitle) {
-                        sectionTitle.textContent = newTitle;
-                        saveSections();
-                    }
-                });
-
-                deleteSectionButton.addEventListener('click', () => {
-                    if (confirm('Are you sure you want to delete this section?')) {
-                        section.remove();
-                        saveSections();
-                    }
-                });
-            }
-
-            addSectionButton.addEventListener('click', () => {
-                const newSectionTitle = prompt('Enter title for new section:');
-                if (newSectionTitle) {
-                    addSection(newSectionTitle);
-                    saveSections();
-                }
-            });
-
-            function addExerciseToContainer(exerciseData, container) {
-                const exercise = document.createElement('div');
-                exercise.className = 'exercise';
-                exercise.dataset.name = exerciseData.name;
-                exercise.dataset.sets = exerciseData.sets;
-                exercise.dataset.reps = exerciseData.reps;
-                exercise.dataset.rest = exerciseData.rest;
-                exercise.textContent = exerciseData.name;
-                container.appendChild(exercise);
-
+            // Highlight completed exercises
+            exercises.forEach(exercise => {
                 if (completedExercises.includes(exercise.dataset.name)) {
                     exercise.classList.add('completed');
                 }
@@ -295,7 +120,7 @@
                         updateSelectedExercises();
                     }
                 });
-            }
+            });
 
             completeButton.addEventListener('click', function () {
                 const selectedExercises = document.querySelectorAll('.exercise.selected');
@@ -317,25 +142,12 @@
 
             function addExerciseToTable(exercise) {
                 const row = document.createElement('tr');
-                const weightInput = document.createElement('input');
-                weightInput.type = 'text';
-                weightInput.className = 'weight-input';
-                weightInput.placeholder = 'Enter weight used';
-                weightInput.value = exerciseWeights[exercise.dataset.name] || '';
-                weightInput.addEventListener('input', function () {
-                    exerciseWeights[exercise.dataset.name] = weightInput.value;
-                    localStorage.setItem('exerciseWeights', JSON.stringify(exerciseWeights));
-                });
-
                 row.innerHTML = `
                     <td>${exercise.dataset.name}</td>
                     <td>${exercise.dataset.sets}</td>
                     <td>${exercise.dataset.reps}</td>
                     <td>${exercise.dataset.rest}</td>
                 `;
-                const weightCell = document.createElement('td');
-                weightCell.appendChild(weightInput);
-                row.appendChild(weightCell);
                 exerciseTableBody.appendChild(row);
             }
 
@@ -352,22 +164,6 @@
                 const selectedExerciseNames = Array.from(document.querySelectorAll('.exercise.selected')).map(ex => ex.dataset.name);
                 localStorage.setItem('selectedExercises', JSON.stringify(selectedExerciseNames));
             }
-
-            function saveSections() {
-                const sections = Array.from(document.querySelectorAll('.exercise-section')).map(section => {
-                    const title = section.querySelector('h2').textContent;
-                    const exercises = Array.from(section.querySelectorAll('.exercise')).map(exercise => {
-                        return {
-                            name: exercise.dataset.name,
-                            sets: exercise.dataset.sets,
-                            reps: exercise.dataset.reps,
-                            rest: exercise.dataset.rest
-                        };
-                    });
-                    return { title, exercises };
-                });
-                localStorage.setItem('sectionData', JSON.stringify(sections));
-            }
         });
     </script>
 </head>
@@ -377,6 +173,62 @@
         <p>Select the exercises to create your personalized workout plan</p>
     </header>
     <main>
+        <div id="exercise-selection" class="exercise-container">
+            <h2>Push Workout</h2>
+            <div class="exercise" data-name="Incline Barbell Bench Press" data-sets="3-4" data-reps="6-8" data-rest="2-3">
+                Incline Barbell Bench Press
+            </div>
+            <div class="exercise" data-name="Standing Dumbbell Shoulder Press" data-sets="3-4" data-reps="10-15" data-rest="2-3">
+                Standing Dumbbell Shoulder Press
+            </div>
+            <div class="exercise" data-name="Paused Flat Dumbbell Press" data-sets="3-4" data-reps="8-12" data-rest="2-3">
+                Paused Flat Dumbbell Press
+            </div>
+            <div class="exercise" data-name="Lean-Away Dumbbell Lateral Raise" data-sets="2-3 per arm" data-reps="10-15" data-rest="1 between arms">
+                Lean-Away Dumbbell Lateral Raise
+            </div>
+            <div class="exercise" data-name="Seated Decline Cable Flies W/ Supination" data-sets="2-3" data-reps="10-15" data-rest="1.5-2">
+                Seated Decline Cable Flies W/ Supination
+            </div>
+            <div class="exercise" data-name="Incline Dumbbell Overhead Extensions" data-sets="2-3" data-reps="10-15" data-rest="1.5-2">
+                Incline Dumbbell Overhead Extensions
+            </div>
+            <h2>Pull Workout</h2>
+            <div class="exercise" data-name="Pull-Ups OR Kneeling Lat Pulldowns" data-sets="3-4" data-reps="6-10 OR 10-15" data-rest="2-2.5">
+                Pull-Ups OR Kneeling Lat Pulldowns
+            </div>
+            <div class="exercise" data-name="Barbell Row" data-sets="3-4" data-reps="10-15" data-rest="2-2.5">
+                Barbell Row
+            </div>
+            <div class="exercise" data-name="Reverse Grip Lat Pulldowns" data-sets="3-4" data-reps="8-12" data-rest="2">
+                Reverse Grip Lat Pulldowns
+            </div>
+            <div class="exercise" data-name="Chest Supported Rear Delt Row" data-sets="3-4" data-reps="10-15" data-rest="2">
+                Chest Supported Rear Delt Row
+            </div>
+            <div class="exercise" data-name="Narrow Grip Barbell Curl" data-sets="2-3" data-reps="8-12" data-rest="1.5-2">
+                Narrow Grip Barbell Curl
+            </div>
+            <div class="exercise" data-name="Kneeling Face Pulls" data-sets="2" data-reps="10-15" data-rest="1.5">
+                Kneeling Face Pulls
+            </div>
+            <div class="exercise" data-name="Lying Face Pulls" data-sets="2" data-reps="10-15" data-rest="1.5">
+                Lying Face Pulls
+            </div>
+            <h2>Legs Workout</h2>
+            <div class="exercise" data-name="Back Squats OR Front Squats" data-sets="3-4" data-reps="6-10" data-rest="2-3">
+                Back Squats OR Front Squats
+            </div>
+            <div class="exercise" data-name="Barbell Hip Thrust" data-sets="3-4" data-reps="12-15" data-rest="2-3">
+                Barbell Hip Thrust
+            </div>
+            <div class="exercise" data-name="Split Squats (beginner) OR Bulgarian Split Squats (advanced)" data-sets="4 each leg" data-reps="8-12" data-rest="1 min between each leg">
+                Split Squats (beginner) OR Bulgarian Split Squats (advanced)
+            </div>
+            <div class="exercise" data-name="Glute Ham Raise" data-sets="3-4" data-reps="10-15" data-rest="2">
+                Glute Ham Raise
+            </div>
+        </div>
         <div id="selected-exercises">
             <h2>Your Selected Workout</h2>
             <table id="exercise-table">
@@ -386,7 +238,6 @@
                         <th>Sets</th>
                         <th>Reps</th>
                         <th>Rest</th>
-                        <th>Weight Used</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -395,16 +246,6 @@
             </table>
         </div>
     </main>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(function (registration) {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch(function (error) {
-                    console.log('Service Worker registration failed:', error);
-                });
-        }
-    </script>
 </body>
-</html>
+                            </html>
+                            
