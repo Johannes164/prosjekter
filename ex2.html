@@ -35,6 +35,10 @@
             --font-size-large: 18px;
         }
 
+        .tooltip {
+            font-size: 5
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             font-size: var(--font-size);
@@ -1376,8 +1380,8 @@
     <header>
         <h1>Workout Planner</h1>
         <p>Select the exercises to create your personalized workout plan</p>
-        <p>Drag exercises to reorder them, also works in Your Selected Workout</p>
-        <p>In development, expect changes, made with almost entirely with ChatGPT</p>
+        <p class="tooltip">Drag exercises to reorder them, also works in Your Selected Workout</p>
+        <p class="tooltip">In development, expect changes, made almost entirely with ChatGPT</p>
     </header>
     <main>
         <input type="text" id="exercise-search" placeholder="Search exercises..." aria-label="Search exercises">
