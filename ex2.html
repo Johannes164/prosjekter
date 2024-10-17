@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Planner</title>
+    <style>
+        /* CSS Variables for easy color customization */
+        :root {
+            --main-color: #6200ea; /* Default purple */
+            --secondary-color: #018786; /* Darker secondary color */
+            --accent-color: #388e3c; /* Accent color for buttons */
+            --danger-color: #d32f2f; /* Danger color for delete buttons */
+            --warning-color: #ffb300; /* Warning color for edit buttons */
+            --text-color: #fff;
+            --background-color: #f5f5f5;
+            --dark-background-color: #1e1e1e;
+            --dark-text-color: #eaeaea;
+            --header-background-color: var(--main-color);
+            --header-text-color: var(--text-color);
+            --button-background-color: var(--main-color);
+            --button-text-color: var(--text-color);
+            --settings-button-background-color: var(--secondary-color);
+            --settings-button-text-color: #fff;
+            --exercise-selected-color: #c8e6c9;
+            --exercise-selected-border-color: #388e3c;
+            --exercise-completed-color: #d1c4e9;
+            --popup-background-color: #fff;
+            --popup-text-color: #000;
+            --popup-background-color-dark: #2e2e2e;
+            --popup-text-color-dark: #eaeaea;
+
+            /* Font Sizes */
+            --font-size-small: 14px;
+            --font-size-medium: 16px;
+            --font-size-large: 18px;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: var(--font-size);
+            background-color: var(--background-color);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s, font-size 0.3s;
+        }
+        body.small-font {
+            --font-size: var(--font-size-small);
+        }
+        body.medium-font {
+            --font-size: var(--font-size-medium);
+        }
+        body.large-font {
+            --font-size: var(--font-size-large);
+        }
+        body.dark-mode {
+            background-color: var(--dark-background-color);
+            color: var(--dark-text-color);
+        }
+
+        header {
+            background-color: var(--header-background-color);
+            color: var(--header-text-color);
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        #settings-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: var(--settings-button-background-color);
+            color: var(--settings-button-text-color);
+            border: none;
+            border-radius: 5px;
+            z-index: 100;
+        }
+        #settings-button:hover {
+            background-color: #005f56;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #exercise-search {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .exercise-section {
+            background-color: #fff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .exercise-section.dark-mode {
+            background-color: #2e2e2e;
+        }
+        .exercise-section h2 {
+            margin: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        .section-header h2 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: left;
+        }
+        .section-header .add-exercise-button {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 10px;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .section-header .edit-section-button {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-left: auto;
+            color: inherit; /* Use inherited color */
+        }
+
+        .exercise-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 40px; /* Adjusted for new header layout */
+        }
+
+        .exercise {
+            background-color: #f9f9f9;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            width: calc(33.333% - 10px);
+            box-sizing: border-box;
+            transition: background-color 0.3s, border-color 0.3s;
+            color: #000;
+            position: relative;
+        }
+        .exercise.dark-mode {
+            background-color: #3a3a3a;
+            border-color: #555;
+            color: #eaeaea;
+        }
+        .exercise.selected {
+            background-color: var(--exercise-selected-color);
+            border-color: var(--exercise-selected-border-color);
+        }
+        .exercise.selected.dark-mode {
+            background-color: #2e7d32;
+            color: #fff;
+        }
+        .exercise.completed {
+            background-color: var(--exercise-completed-color);
+        }
+        .exercise.completed.dark-mode {
+            background-color: #5e35b1;
+            color: #fff;
+        }
+        .exercise.completed.selected {
+            border-color: var(--exercise-selected-border-color); /* Green border */
+        }
+
+        .note {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+            display: none;
+        }
+        .note.visible {
+            display: block;
+        }
+        .exercise.dark-mode .note {
+            color: #bbb;
+        }
+
+        .exercise-menu-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: inherit; /* Use inherited color */
+            padding: 0 3px; /* Add 3px padding on left and right */
+            margin: 0;
+        }
+        .exercise-menu-button:hover {
+            background-color: transparent; /* Transparent background on hover */
+            color: gray; /* Change text color to gray on hover */
+        }
+        .exercise-menu-button:focus {
+            outline: none;
+        }
+        .exercise-menu {
+            display: none;
+            position: absolute;
+            top: 25px;
+            right: 5px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 10;
+            min-width: 150px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .exercise-menu.dark-mode {
+            background-color: #3a3a3a;
+            border-color: #555;
+        }
+        .exercise-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            color: inherit; /* Use inherited color */
+        }
+        .exercise-menu button:hover {
+            background-color: #f0f0f0;
+        }
+        .exercise-menu.dark-mode button:hover {
+            background-color: #555;
+        }
+
+        #selected-exercises {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            margin-top: 20px; /* Added margin-top for spacing */
+        }
+        #selected-exercises.dark-mode {
+            background-color: #2e2e2e;
+        }
+        #selected-exercises h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            color: #000;
+        }
+        th {
+            background-color: #f1f1f1;
+        }
+        tbody tr:hover {
+            background-color: #f9f9f9;
+            cursor: grab; /* Indicate draggable rows */
+        }
+        tbody tr.dark-mode:hover {
+            background-color: #3a3a3a;
+        }
+        th.dark-mode {
+            background-color: #3a3a3a;
+            color: #eaeaea;
+        }
+        td.dark-mode {
+            color: #eaeaea;
+        }
+
+        .weight-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            color: #000;
+        }
+        .dark-mode .weight-input {
+            background-color: #555;
+            border-color: #777;
+            color: #eaeaea;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        /* Controls container */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .controls button {
+            flex: 1;
+            color: #fff; /* Ensure consistent text color */
+        }
+
+        /* Settings panel styles */
+        #settings-panel {
+            display: none;
+            position: fixed;
+            top: 70px; /* Adjusted to appear lower */
+            right: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 200;
+            width: 250px;
+        }
+        #settings-panel.dark-mode {
+            background-color: #2e2e2e;
+            color: #eaeaea;
+        }
+        #settings-panel button {
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: var(--secondary-color);
+            color: var(--settings-button-text-color);
+        }
+        #settings-panel button:hover {
+            background-color: #005f56;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-switch .slider {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: 0.4s;
+            cursor: pointer;
+        }
+
+        .toggle-switch .slider::before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        .toggle-switch input:checked + .slider {
+            background-color: #66bb6a; /* Green color when checked */
+        }
+
+        .toggle-switch input:checked + .slider::before {
+            transform: translateX(20px);
+        }
+
+        .toggle-switch .toggle-label {
+            margin-left: 10px;
+            font-size: 16px;
+            color: inherit;
+        }
+
+        .toggle-switch .slider {
+            flex-shrink: 0;
+        }
+
+        .toggle-switch .toggle-label {
+            flex-grow: 1;
+        }
+
+        /* For dark mode */
+        #settings-panel.dark-mode .toggle-switch .slider {
+            background-color: #555;
+        }
+
+        #settings-panel.dark-mode .toggle-switch input:checked + .slider {
+            background-color: #388e3c;
+        }
+
+        /* Confirmation and alert overlay */
+        #confirmation-overlay,
+        #alert-overlay,
+        #exercise-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+        }
+        #confirmation-popup,
+        #alert-popup,
+        #modal-content {
+            background-color: var(--popup-background-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            box-sizing: border-box;
+            color: var(--popup-text-color);
+        }
+        body.dark-mode #confirmation-popup,
+        body.dark-mode #alert-popup,
+        body.dark-mode #modal-content {
+            background-color: var(--popup-background-color-dark);
+            color: var(--popup-text-color-dark);
+        }
+        #confirmation-popup button,
+        #alert-popup button,
+        #modal-content button {
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        #confirm-yes {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        #confirm-no {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+        #alert-ok {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        #modal-save {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        #modal-close {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+        #import-file-input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #import-file-input.dark-mode {
+            background-color: #555;
+            color: #eaeaea;
+            border-color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .exercise {
+                width: calc(50% - 10px);
+            }
+            .controls {
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 480px) {
+            .exercise {
+                width: 100%;
+            }
+            .section-header .add-exercise-button {
+                position: static;
+                transform: none;
+                margin-top: 10px;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <!-- Include SortableJS library for drag-and-drop functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const exerciseTableBody = document.querySelector('#exercise-table tbody');
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Confirm Workout Completed';
+            document.querySelector('main').appendChild(completeButton);
+
+            const printButton = document.createElement('button');
+            printButton.textContent = 'Print Workout';
+            document.querySelector('main').appendChild(printButton);
+
+            const controlsDiv = document.createElement('div');
+            controlsDiv.className = 'controls';
+
+            const loadDefaultButton = document.createElement('button');
+            loadDefaultButton.textContent = 'Load Default';
+            loadDefaultButton.style.backgroundColor = 'var(--accent-color)';
+            loadDefaultButton.style.color = '#fff';
+
+            const exportButton = document.createElement('button');
+            exportButton.textContent = 'Export';
+            exportButton.style.backgroundColor = 'var(--main-color)';
+            exportButton.style.color = '#fff';
+
+            const importButton = document.createElement('button');
+            importButton.textContent = 'Import';
+            importButton.style.backgroundColor = 'var(--secondary-color)';
+            importButton.style.color = '#fff'; // Changed to match other buttons
+
+            const addSectionButton = document.createElement('button');
+            addSectionButton.textContent = 'Add New Section';
+            addSectionButton.style.backgroundColor = 'var(--accent-color)';
+            addSectionButton.style.color = '#fff';
+
+            controlsDiv.appendChild(loadDefaultButton);
+            controlsDiv.appendChild(exportButton);
+            controlsDiv.appendChild(importButton);
+            controlsDiv.appendChild(addSectionButton);
+
+            document.querySelector('main').insertBefore(controlsDiv, document.querySelector('#selected-exercises'));
+
+            let selectedExercises = JSON.parse(localStorage.getItem('selectedExercises')) || [];
+            let completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || [];
+            let selectedExerciseOrder = JSON.parse(localStorage.getItem('selectedExerciseOrder')) || [];
+
+            // Set default notesVisible to true if not set
+            if (localStorage.getItem('notesVisible') === null) {
+                localStorage.setItem('notesVisible', 'true');
+            }
+
+            // Load sections from localStorage or use default sections
+            const defaultSections = [
+                {
+                    title: 'PUSH',
+                    exercises: [
+                        { name: 'Incline Barbell Bench Press', sets: '3-4', reps: '6-8', rest: '2-3' },
+                        { name: 'Standing Dumbbell Shoulder Press', sets: '3-4', reps: '10-15', rest: '2-3' },
+                        { name: 'Paused Flat Dumbbell Press', sets: '3-4', reps: '8-12', rest: '2-3' },
+                        { name: 'Lean-Away Dumbbell Lateral Raise', sets: '2-3 per arm', reps: '10-15', rest: '1 between arms' },
+                        { name: 'Seated Decline Cable Flies W/ Supination', sets: '2-3', reps: '10-15', rest: '1.5-2' },
+                        { name: 'Incline Dumbbell Overhead Extensions', sets: '2-3', reps: '10-15', rest: '1.5-2' }
+                    ]
+                },
+                {
+                    title: 'PULL',
+                    exercises: [
+                        { name: 'Pull-Ups OR Kneeling Lat Pulldowns', sets: '3-4', reps: '6-10 OR 10-15', rest: '2-2.5' },
+                        { name: 'Barbell Row', sets: '3-4', reps: '10-15', rest: '2-2.5' },
+                        { name: 'Reverse Grip Lat Pulldowns', sets: '3-4', reps: '8-12', rest: '2' },
+                        { name: 'Chest Supported Rear Delt Row', sets: '3-4', reps: '10-15', rest: '2' },
+                        { name: 'Narrow Grip Barbell Curl', sets: '2-3', reps: '8-12', rest: '1.5-2' },
+                        { name: 'Kneeling Face Pulls', sets: '2', reps: '10-15', rest: '1.5' },
+                        { name: 'Lying Face Pulls', sets: '2', reps: '10-15', rest: '1.5' }
+                    ]
+                },
+                {
+                    title: 'LEGS',
+                    exercises: [
+                        { name: 'Back Squats OR Front Squats', sets: '3-4', reps: '6-10', rest: '2-3' },
+                        { name: 'Barbell Hip Thrust', sets: '3-4', reps: '12-15', rest: '2-3' },
+                        { name: 'Split Squats (beginner) OR Bulgarian Split Squats (advanced)', sets: '4 each leg', reps: '8-12', rest: '1 min between each leg' },
+                        { name: 'Glute Ham Raise', sets: '3-4', reps: '10-15', rest: '2' }
+                    ]
+                }
+            ];
+
+            let exerciseMap = new Map(); // To store exercises by name for selection order
+
+            // Function to load sections (used for initial load and Load Default button)
+            function loadSections(sectionsData) {
+                // Clear existing sections
+                document.querySelectorAll('.exercise-section').forEach(section => section.remove());
+                exerciseMap.clear();
+
+                sectionsData.forEach(section => addSection(section.title, section.exercises));
+
+                // After adding sections and exercises, adjust notes visibility
+                adjustNotesVisibility();
+
+                // After all exercises are loaded, add selected exercises to the table in order
+                selectedExerciseOrder.forEach(exName => {
+                    const exercise = exerciseMap.get(exName);
+                    if (exercise && exercise.classList.contains('selected')) {
+                        addExerciseToTable(exercise);
+                    }
+                });
+
+                // Ensure dark mode is applied to #selected-exercises if active
+                if (document.body.classList.contains('dark-mode')) {
+                    document.getElementById('selected-exercises').classList.add('dark-mode');
+                    document.querySelectorAll('#selected-exercises th').forEach(el => el.classList.add('dark-mode'));
+                }
+            }
+
+            const savedSections = JSON.parse(localStorage.getItem('sectionData'));
+            if (savedSections && savedSections.length > 0) {
+                loadSections(savedSections);
+            } else {
+                loadSections(defaultSections);
+            }
+
+            loadDefaultButton.addEventListener('click', () => {
+                showConfirmation('Are you sure you want to load the default sections? This will replace your current sections.', () => {
+                    localStorage.removeItem('sectionData');
+                    loadSections(defaultSections);
+                    saveSections();
+                    showAlert('Default sections loaded.');
+                });
+            });
+
+            exportButton.addEventListener('click', () => {
+                const sections = JSON.parse(localStorage.getItem('sectionData')) || [];
+                const dataStr = JSON.stringify(sections, null, 2);
+
+                // Create a blob and trigger a download
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'workout_sections.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            importButton.addEventListener('click', () => {
+                const overlay = document.getElementById('confirmation-overlay');
+                const popup = document.getElementById('confirmation-popup');
+                overlay.style.display = 'flex';
+                popup.innerHTML = `
+                    <p>Import workout:</p>
+                    <input type="file" id="import-file-input" accept=".json">
+                    <button id="confirm-import" style="background-color: var(--accent-color); color: #fff;">Import</button>
+                    <button id="cancel-import" style="background-color: var(--danger-color); color: #fff;">Cancel</button>
+                `;
+
+                applyPopupDarkMode();
+
+                const fileInput = document.getElementById('import-file-input');
+                const confirmImportButton = document.getElementById('confirm-import');
+                const cancelImportButton = document.getElementById('cancel-import');
+
+                // Apply dark mode to file input if necessary
+                if (document.body.classList.contains('dark-mode')) {
+                    fileInput.classList.add('dark-mode');
+                }
+
+                confirmImportButton.onclick = () => {
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            try {
+                                const importedSections = JSON.parse(e.target.result);
+                                if (Array.isArray(importedSections)) {
+                                    localStorage.setItem('sectionData', JSON.stringify(importedSections));
+                                    loadSections(importedSections);
+                                    saveSections();
+                                    overlay.style.display = 'none';
+                                    showAlert('Workout imported successfully.');
+                                } else {
+                                    showAlert('Invalid JSON format.');
+                                }
+                            } catch (error) {
+                                showAlert('Error parsing JSON.');
+                            }
+                        };
+                        reader.readAsText(file);
+                    } else {
+                        showAlert('Please select a file to import.');
+                    }
+                };
+
+                cancelImportButton.onclick = () => {
+                    overlay.style.display = 'none';
+                };
+            });
+
+            addSectionButton.addEventListener('click', () => {
+                showAddSectionPopup();
+            });
+
+            printButton.addEventListener('click', () => {
+                window.print();
+            });
+
+            function adjustNotesVisibility() {
+                let notesVisible = localStorage.getItem('notesVisible');
+                if (notesVisible === null) {
+                    notesVisible = 'true';
+                    localStorage.setItem('notesVisible', 'true');
+                }
+                const isVisible = notesVisible === 'true';
+                document.querySelectorAll('.note').forEach(note => {
+                    if (note.textContent.trim() !== '') {
+                        note.classList.toggle('visible', isVisible);
+                    } else {
+                        note.classList.remove('visible');
+                    }
+                });
+            }
+
+            function addSection(title, exercises = []) {
+                const section = document.createElement('div');
+                section.className = 'exercise-section';
+
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'section-header';
+
+                const sectionTitle = document.createElement('h2');
+                sectionTitle.textContent = title || 'Untitled Section';
+
+                const addExerciseButton = document.createElement('button');
+                addExerciseButton.textContent = 'Add Exercise';
+                addExerciseButton.className = 'add-exercise-button';
+
+                const editSectionButton = document.createElement('button');
+                editSectionButton.innerHTML = '📝';
+                editSectionButton.className = 'edit-section-button';
+
+                sectionHeader.appendChild(sectionTitle);
+                sectionHeader.appendChild(addExerciseButton);
+                sectionHeader.appendChild(editSectionButton);
+
+                section.appendChild(sectionHeader);
+
+                const exerciseContainer = document.createElement('div');
+                exerciseContainer.className = 'exercise-container';
+
+                exercises.forEach(exerciseData => {
+                    addExerciseToContainer(exerciseData, exerciseContainer);
+                });
+
+                section.appendChild(exerciseContainer);
+                document.querySelector('main').insertBefore(section, controlsDiv);
+
+                // Make the exercises sortable within the section
+                new Sortable(exerciseContainer, {
+                    animation: 150,
+                    onEnd: function () {
+                        saveSections(); // Save the new order
+                    }
+                });
+
+                if (document.body.classList.contains('dark-mode')) {
+                    section.classList.add('dark-mode');
+                    sectionHeader.classList.add('dark-mode');
+                    section.querySelectorAll('.exercise').forEach(exercise => {
+                        exercise.classList.add('dark-mode');
+                    });
+                }
+
+                editSectionButton.addEventListener('click', () => {
+                    showEditSectionPopup(sectionTitle, section);
+                });
+
+                addExerciseButton.addEventListener('click', () => {
+                    showAddExercisePopup(exerciseContainer);
+                });
+            }
+
+            function addExerciseToContainer(exerciseData, container) {
+                const exercise = document.createElement('div');
+                exercise.className = 'exercise';
+                exercise.dataset.name = exerciseData.name || '';
+                exercise.dataset.sets = exerciseData.sets || '';
+                exercise.dataset.reps = exerciseData.reps || '';
+                exercise.dataset.rest = exerciseData.rest || '';
+                exercise.textContent = exerciseData.name || 'Unnamed Exercise';
+
+                const note = document.createElement('div');
+                note.className = 'note';
+                exercise.appendChild(note);
+
+                // Set note text if it exists
+                if (exerciseData.note && exerciseData.note.trim() !== '') {
+                    note.textContent = exerciseData.note;
+                }
+
+                // Exercise menu button
+                const exerciseMenuButton = document.createElement('button');
+                exerciseMenuButton.innerHTML = '...';
+                exerciseMenuButton.className = 'exercise-menu-button';
+
+                const exerciseMenu = document.createElement('div');
+                exerciseMenu.className = 'exercise-menu';
+
+                const viewDetailsOption = document.createElement('button');
+                viewDetailsOption.textContent = 'Details';
+
+                const removeExerciseOption = document.createElement('button');
+                removeExerciseOption.textContent = 'Remove Exercise';
+                removeExerciseOption.style.color = '#d32f2f';
+
+                exerciseMenu.appendChild(viewDetailsOption);
+                exerciseMenu.appendChild(removeExerciseOption);
+                exercise.appendChild(exerciseMenuButton);
+                exercise.appendChild(exerciseMenu);
+
+                container.appendChild(exercise);
+
+                exerciseMap.set(exercise.dataset.name, exercise); // Store exercise for order preservation
+
+                // Apply 'selected' class if exercise is selected
+                if (selectedExercises.includes(exercise.dataset.name)) {
+                    exercise.classList.add('selected');
+                    // We'll add exercises to the table after all are loaded
+                }
+
+                // Apply 'completed' class if exercise is completed
+                if (completedExercises.includes(exercise.dataset.name)) {
+                    exercise.classList.add('completed');
+                }
+
+                if (document.body.classList.contains('dark-mode')) {
+                    exercise.classList.add('dark-mode');
+                    exerciseMenu.classList.add('dark-mode');
+                }
+
+                exerciseMenuButton.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    exerciseMenu.style.display = exerciseMenu.style.display === 'block' ? 'none' : 'block';
+                });
+
+                // Close the menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!exerciseMenu.contains(e.target) && !exerciseMenuButton.contains(e.target)) {
+                        exerciseMenu.style.display = 'none';
+                    }
+                });
+
+                removeExerciseOption.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    exerciseMenu.style.display = 'none';
+                    showConfirmation('Are you sure you want to remove this exercise?', () => {
+                        const name = exercise.dataset.name;
+                        // Update selected and completed exercises
+                        selectedExercises = selectedExercises.filter(exName => exName !== name);
+                        completedExercises = completedExercises.filter(exName => exName !== name);
+                        selectedExerciseOrder = selectedExerciseOrder.filter(exName => exName !== name);
+                        localStorage.setItem('selectedExercises', JSON.stringify(selectedExercises));
+                        localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+                        localStorage.setItem('selectedExerciseOrder', JSON.stringify(selectedExerciseOrder));
+
+                        if (exercise.classList.contains('selected')) {
+                            removeExerciseFromTable(name);
+                        }
+
+                        exercise.remove();
+                        exerciseMap.delete(name);
+                        saveSections();
+                    });
+                });
+
+                viewDetailsOption.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    exerciseMenu.style.display = 'none';
+                    showExerciseModal(exercise);
+                });
+
+                exercise.addEventListener('click', function (event) {
+                    if (event.target === exerciseMenuButton || exerciseMenu.contains(event.target)) {
+                        return;
+                    }
+                    const name = exercise.dataset.name;
+                    if (exercise.classList.contains('selected')) {
+                        exercise.classList.remove('selected');
+                        removeExerciseFromTable(name);
+                        selectedExercises = selectedExercises.filter(exName => exName !== name);
+                        selectedExerciseOrder = selectedExerciseOrder.filter(exName => exName !== name);
+                    } else {
+                        exercise.classList.add('selected');
+                        addExerciseToTable(exercise);
+                        selectedExercises.push(name);
+                        selectedExerciseOrder.push(name);
+                    }
+                    localStorage.setItem('selectedExercises', JSON.stringify(selectedExercises));
+                    localStorage.setItem('selectedExerciseOrder', JSON.stringify(selectedExerciseOrder));
+                });
+
+                // Display notes on the exercise button
+                if (note.textContent.trim() !== '') {
+                    note.classList.add('visible');
+                }
+            }
+
+            function addExerciseToTable(exercise) {
+                const row = document.createElement('tr');
+                row.classList.toggle('dark-mode', document.body.classList.contains('dark-mode'));
+
+                row.setAttribute('data-name', exercise.dataset.name);
+
+                row.innerHTML =
+                    `<td>${exercise.dataset.name}</td>
+                    <td>${exercise.dataset.sets}</td>
+                    <td>${exercise.dataset.reps}</td>
+                    <td>${exercise.dataset.rest}</td>`;
+
+                // Apply 'dark-mode' class to each 'td' in the row
+                if (document.body.classList.contains('dark-mode')) {
+                    row.querySelectorAll('td').forEach(td => td.classList.add('dark-mode'));
+                }
+
+                const weightInput = document.createElement('input');
+                weightInput.type = 'text';
+                weightInput.className = 'weight-input';
+                weightInput.placeholder = 'Add note';
+                weightInput.classList.toggle('dark-mode', document.body.classList.contains('dark-mode'));
+                const weightCell = document.createElement('td');
+                weightCell.appendChild(weightInput);
+                if (document.body.classList.contains('dark-mode')) {
+                    weightCell.classList.add('dark-mode');
+                }
+                row.appendChild(weightCell);
+                exerciseTableBody.appendChild(row);
+
+                const noteElement = exercise.querySelector('.note');
+                if (noteElement.textContent.trim() !== '') {
+                    weightInput.value = noteElement.textContent;
+                }
+
+                weightInput.addEventListener('input', function () {
+                    if (weightInput.value.trim() !== '') {
+                        noteElement.textContent = weightInput.value;
+                        noteElement.classList.toggle('visible', localStorage.getItem('notesVisible') === 'true');
+                    } else {
+                        noteElement.textContent = '';
+                        noteElement.classList.remove('visible');
+                    }
+                    saveSections(); // Save the updated note
+                });
+
+                // Ensure the note display is correct on reload
+                if (noteElement.textContent.trim() !== '') {
+                    noteElement.classList.toggle('visible', localStorage.getItem('notesVisible') === 'true');
+                } else {
+                    noteElement.classList.remove('visible');
+                }
+            }
+
+            function removeExerciseFromTable(name) {
+                const rows = exerciseTableBody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    if (row.children[0].textContent === name) {
+                        exerciseTableBody.removeChild(row);
+                    }
+                });
+            }
+
+            function saveSections() {
+                const sections = Array.from(document.querySelectorAll('.exercise-section')).map(section => {
+                    const title = section.querySelector('.section-header h2').textContent;
+                    const exercises = Array.from(section.querySelectorAll('.exercise')).map(exercise => {
+                        return {
+                            name: exercise.dataset.name,
+                            sets: exercise.dataset.sets,
+                            reps: exercise.dataset.reps,
+                            rest: exercise.dataset.rest,
+                            note: exercise.querySelector('.note').textContent
+                        };
+                    });
+                    return { title, exercises };
+                });
+                localStorage.setItem('sectionData', JSON.stringify(sections));
+            }
+
+            completeButton.addEventListener('click', () => {
+                if (selectedExercises.length === 0) {
+                    showAlert('Please select exercises before confirming the workout.');
+                    return;
+                }
+
+                // Remove 'completed' class from previous exercises
+                document.querySelectorAll('.exercise.completed').forEach(exercise => {
+                    exercise.classList.remove('completed');
+                });
+
+                // Mark selected exercises as completed
+                document.querySelectorAll('.exercise.selected').forEach(exercise => {
+                    exercise.classList.add('completed');
+                });
+
+                // Update completedExercises array
+                completedExercises = selectedExercises.slice(); // Copy the array
+                localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+
+                // Clear selectedExercises array and remove 'selected' classes
+                selectedExercises = [];
+                selectedExerciseOrder = [];
+                localStorage.removeItem('selectedExercises');
+                localStorage.removeItem('selectedExerciseOrder');
+                document.querySelectorAll('.exercise.selected').forEach(exercise => {
+                    exercise.classList.remove('selected');
+                });
+
+                // Clear the table
+                while (exerciseTableBody.firstChild) {
+                    exerciseTableBody.removeChild(exerciseTableBody.firstChild);
+                }
+
+                showAlert('Workout completed and saved!');
+            });
+
+            const settingsButton = document.createElement('button');
+            settingsButton.id = 'settings-button';
+            settingsButton.innerHTML = '⚙️'; // Settings emoji
+            settingsButton.setAttribute('aria-label', 'Settings');
+            document.body.appendChild(settingsButton);
+
+            const settingsPanel = document.createElement('div');
+            settingsPanel.id = 'settings-panel';
+            settingsPanel.innerHTML = `
+                <label class="toggle-switch">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="slider"></span>
+                    <span class="toggle-label">Dark Mode</span>
+                </label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="notes-display-toggle">
+                    <span class="slider"></span>
+                    <span class="toggle-label">Show Notes</span>
+                </label>
+                <label>
+                    Font Size:
+                    <select id="font-size-select" style="width: 100%; padding: 5px; margin-top: 5px;">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </label>
+                <button id="reset-data">Reset Data</button>
+                <button id="use-old-version">Use the Old Version</button>
+            `;
+            document.body.appendChild(settingsPanel);
+
+            let isSettingsPanelOpen = false;
+            settingsButton.addEventListener('click', () => {
+                isSettingsPanelOpen = !isSettingsPanelOpen;
+                settingsPanel.style.display = isSettingsPanelOpen ? 'block' : 'none';
+            });
+
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const notesDisplayToggle = document.getElementById('notes-display-toggle');
+            const fontSizeSelect = document.getElementById('font-size-select');
+
+            // Set initial state based on localStorage
+            darkModeToggle.checked = localStorage.getItem('darkMode') === 'true';
+            notesDisplayToggle.checked = localStorage.getItem('notesVisible') !== 'false'; // Default to true
+            const savedFontSize = localStorage.getItem('fontSize') || 'medium';
+            fontSizeSelect.value = savedFontSize;
+            document.body.classList.add(`${savedFontSize}-font`);
+
+            darkModeToggle.addEventListener('change', () => {
+                document.body.classList.toggle('dark-mode');
+                document.querySelectorAll('.exercise-section, #selected-exercises, .exercise, th, td, tbody tr, .weight-input, .section-header, .exercise-menu').forEach(el => {
+                    el.classList.toggle('dark-mode');
+                });
+                settingsPanel.classList.toggle('dark-mode');
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDarkMode);
+            });
+
+            notesDisplayToggle.addEventListener('change', () => {
+                const notesVisible = notesDisplayToggle.checked;
+                document.querySelectorAll('.note').forEach(note => {
+                    if (note.textContent.trim() !== '') {
+                        note.classList.toggle('visible', notesVisible);
+                    }
+                });
+                localStorage.setItem('notesVisible', notesVisible);
+            });
+
+            fontSizeSelect.addEventListener('change', () => {
+                const selectedFontSize = fontSizeSelect.value;
+                document.body.classList.remove('small-font', 'medium-font', 'large-font');
+                document.body.classList.add(`${selectedFontSize}-font`);
+                localStorage.setItem('fontSize', selectedFontSize);
+            });
+
+            document.getElementById('reset-data').addEventListener('click', () => {
+                showConfirmation('Are you sure you want to reset all data? This will clear your saved workouts and settings.', () => {
+                    localStorage.clear();
+                    location.reload();
+                });
+            });
+
+            document.getElementById('use-old-version').addEventListener('click', () => {
+                window.open('https://johannes164.github.io/prosjekter/ex.html', '_blank');
+            });
+
+            // Load dark mode setting from localStorage
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelectorAll('.exercise-section, #selected-exercises, .exercise, th, td, tbody tr, .weight-input, .section-header, .exercise-menu').forEach(el => {
+                    el.classList.add('dark-mode');
+                });
+                settingsPanel.classList.add('dark-mode');
+            }
+
+            function showConfirmation(message, onConfirm) {
+                const overlay = document.getElementById('confirmation-overlay');
+                const popup = document.getElementById('confirmation-popup');
+                overlay.style.display = 'flex';
+                popup.innerHTML = `
+                    <p>${message}</p>
+                    <button id="confirm-yes">Yes</button>
+                    <button id="confirm-no">No</button>
+                `;
+                const yesButton = document.getElementById('confirm-yes');
+                const noButton = document.getElementById('confirm-no');
+
+                applyPopupDarkMode();
+
+                yesButton.onclick = () => {
+                    onConfirm();
+                    overlay.style.display = 'none';
+                };
+
+                noButton.onclick = () => {
+                    overlay.style.display = 'none';
+                };
+            }
+
+            function showAlert(message) {
+                const overlay = document.getElementById('alert-overlay');
+                const popup = document.getElementById('alert-popup');
+                overlay.style.display = 'flex';
+                popup.innerHTML = `
+                    <p>${message}</p>
+                    <button id="alert-ok">OK</button>
+                `;
+
+                applyPopupDarkMode();
+
+                document.getElementById('alert-ok').onclick = () => {
+                    overlay.style.display = 'none';
+                };
+            }
+
+            function applyPopupDarkMode() {
+                const popups = [document.getElementById('confirmation-popup'), document.getElementById('alert-popup'), document.getElementById('modal-content')];
+                popups.forEach(popup => {
+                    if (document.body.classList.contains('dark-mode')) {
+                        popup.classList.add('dark-mode');
+                    } else {
+                        popup.classList.remove('dark-mode');
+                    }
+                });
+            }
+
+            function showEditSectionPopup(sectionTitleElement, sectionElement) {
+                const overlay = document.getElementById('confirmation-overlay');
+                const popup = document.getElementById('confirmation-popup');
+                overlay.style.display = 'flex';
+                popup.innerHTML = `
+                    <p>Edit section title:</p>
+                    <input type="text" id="edit-section-title" value="${sectionTitleElement.textContent}" style="padding: 5px; width: 80%; margin-bottom: 10px;">
+                    <button id="confirm-edit-section" style="background-color: var(--accent-color); color: #fff;">Save Changes</button>
+                    <button id="delete-section" style="background-color: var(--danger-color); color: #fff;">Delete Section</button>
+                    <button id="cancel-edit-section" style="background-color: #777; color: #fff;">Cancel</button>
+                `;
+
+                applyPopupDarkMode();
+
+                document.getElementById('confirm-edit-section').onclick = () => {
+                    const newTitle = document.getElementById('edit-section-title').value.trim();
+                    if (!newTitle) {
+                        showAlert('Section title is required.');
+                        return;
+                    }
+                    sectionTitleElement.textContent = newTitle || 'Untitled Section';
+                    saveSections();
+                    overlay.style.display = 'none';
+                };
+
+                document.getElementById('delete-section').onclick = () => {
+                    showConfirmation('Are you sure you want to delete this section?', () => {
+                        sectionElement.remove();
+                        saveSections();
+                        overlay.style.display = 'none';
+                    });
+                };
+
+                document.getElementById('cancel-edit-section').onclick = () => {
+                    overlay.style.display = 'none';
+                };
+            }
+
+            function showAddSectionPopup() {
+                const overlay = document.getElementById('confirmation-overlay');
+                const popup = document.getElementById('confirmation-popup');
+                overlay.style.display = 'flex';
+                popup.innerHTML = `
+                    <p>Enter new section title:</p>
+                    <input type="text" id="new-section-title" placeholder="Section Title (required)" style="padding: 5px; width: 80%; margin-bottom: 10px;">
+                    <button id="confirm-add-section" style="background-color: var(--accent-color); color: #fff;">Add Section</button>
+                    <button id="cancel-add-section" style="background-color: var(--danger-color); color: #fff;">Cancel</button>
+                `;
+
+                applyPopupDarkMode();
+
+                document.getElementById('confirm-add-section').onclick = () => {
+                    const newTitle = document.getElementById('new-section-title').value.trim();
+                    if (!newTitle) {
+                        showAlert('Section title is required.');
+                        return;
+                    }
+                    addSection(newTitle);
+                    saveSections();
+                    overlay.style.display = 'none';
+                };
+                document.getElementById('cancel-add-section').onclick = () => {
+                    overlay.style.display = 'none';
+                };
+            }
+
+            function showAddExercisePopup(container) {
+                const overlay = document.getElementById('confirmation-overlay');
+                const popup = document.getElementById('confirmation-popup');
+                overlay.style.display = 'flex';
+                popup.innerHTML = `
+                    <p>Add new exercise:</p>
+                    <input type="text" id="new-exercise-name" placeholder="Exercise Name (required)" style="padding: 5px; width: 80%; margin-bottom: 5px;">
+                    <input type="text" id="new-exercise-sets" placeholder="Sets (optional)" style="padding: 5px; width: 80%; margin-bottom: 5px;">
+                    <input type="text" id="new-exercise-reps" placeholder="Reps (optional)" style="padding: 5px; width: 80%; margin-bottom: 5px;">
+                    <input type="text" id="new-exercise-rest" placeholder="Rest (minutes) (optional)" style="padding: 5px; width: 80%; margin-bottom: 10px;">
+                    <button id="confirm-add-exercise" style="background-color: var(--accent-color); color: #fff;">Add Exercise</button>
+                    <button id="cancel-add-exercise" style="background-color: var(--danger-color); color: #fff;">Cancel</button>
+                `;
+
+                applyPopupDarkMode();
+
+                document.getElementById('confirm-add-exercise').onclick = () => {
+                    const exerciseName = document.getElementById('new-exercise-name').value.trim();
+                    if (!exerciseName) {
+                        showAlert('Exercise name is required.');
+                        return;
+                    }
+                    const sets = document.getElementById('new-exercise-sets').value.trim();
+                    const reps = document.getElementById('new-exercise-reps').value.trim();
+                    const rest = document.getElementById('new-exercise-rest').value.trim();
+                    const exerciseData = { name: exerciseName, sets, reps, rest };
+                    addExerciseToContainer(exerciseData, container);
+                    saveSections();
+                    overlay.style.display = 'none';
+                };
+                document.getElementById('cancel-add-exercise').onclick = () => {
+                    overlay.style.display = 'none';
+                };
+            }
+
+            function showExerciseModal(exercise) {
+                const modal = document.getElementById('exercise-modal');
+                document.getElementById('modal-exercise-name').value = exercise.dataset.name;
+                document.getElementById('modal-exercise-sets').value = exercise.dataset.sets;
+                document.getElementById('modal-exercise-reps').value = exercise.dataset.reps;
+                document.getElementById('modal-exercise-rest').value = exercise.dataset.rest;
+                modal.style.display = 'flex';
+
+                applyPopupDarkMode();
+
+                // Save changes
+                document.getElementById('modal-save').onclick = () => {
+                    const newName = document.getElementById('modal-exercise-name').value.trim();
+                    if (!newName) {
+                        showAlert('Exercise name is required.');
+                        return;
+                    }
+                    exercise.dataset.name = newName;
+                    exercise.dataset.sets = document.getElementById('modal-exercise-sets').value.trim();
+                    exercise.dataset.reps = document.getElementById('modal-exercise-reps').value.trim();
+                    exercise.dataset.rest = document.getElementById('modal-exercise-rest').value.trim();
+                    exercise.firstChild.textContent = newName;
+                    saveSections();
+                    modal.style.display = 'none';
+                };
+
+                // Close modal
+                document.getElementById('modal-close').onclick = () => {
+                    modal.style.display = 'none';
+                };
+            }
+
+            // Initialize sortable for the selected exercises table
+            new Sortable(exerciseTableBody, {
+                animation: 150,
+                onEnd: function (evt) {
+                    // Update the selectedExerciseOrder based on new order
+                    selectedExerciseOrder = Array.from(exerciseTableBody.querySelectorAll('tr')).map(row => row.dataset.name);
+                    localStorage.setItem('selectedExerciseOrder', JSON.stringify(selectedExerciseOrder));
+                }
+            });
+
+            // Search and filter functionality
+            const exerciseSearch = document.getElementById('exercise-search');
+            exerciseSearch.addEventListener('input', function () {
+                const query = exerciseSearch.value.toLowerCase();
+                document.querySelectorAll('.exercise').forEach(exercise => {
+                    const name = exercise.dataset.name.toLowerCase();
+                    if (name.includes(query)) {
+                        exercise.style.display = '';
+                    } else {
+                        exercise.style.display = 'none';
+                    }
+                });
+            });
+
+            // Accessibility: Close modals with Escape key
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    document.getElementById('exercise-modal').style.display = 'none';
+                    document.getElementById('confirmation-overlay').style.display = 'none';
+                    document.getElementById('alert-overlay').style.display = 'none';
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Workout Planner</h1>
+        <p>Select the exercises to create your personalized workout plan</p>
+    </header>
+    <main>
+        <input type="text" id="exercise-search" placeholder="Search exercises..." aria-label="Search exercises">
+        <div id="selected-exercises">
+            <h2>Your Selected Workout</h2>
+            <table id="exercise-table">
+                <thead>
+                    <tr>
+                        <th>Exercise</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Rest</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody id="exercise-table-body">
+                    <!-- Selected exercises will be appended here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <div id="confirmation-overlay">
+        <div id="confirmation-popup">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+    <div id="alert-overlay">
+        <div id="alert-popup">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+    <div id="exercise-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div id="modal-content">
+            <h2 id="modal-title">Exercise Details</h2>
+            <label>
+                Name:<br>
+                <input type="text" id="modal-exercise-name" style="width: 100%;">
+            </label><br><br>
+            <label>
+                Sets:<br>
+                <input type="text" id="modal-exercise-sets" style="width: 100%;">
+            </label><br><br>
+            <label>
+                Reps:<br>
+                <input type="text" id="modal-exercise-reps" style="width: 100%;">
+            </label><br><br>
+            <label>
+                Rest:<br>
+                <input type="text" id="modal-exercise-rest" style="width: 100%;">
+            </label><br><br>
+            <button id="modal-save">Save</button>
+            <button id="modal-close">Close</button>
+        </div>
+    </div>
+</body>
+</html>
