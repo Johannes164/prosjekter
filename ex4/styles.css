@@ -1,0 +1,912 @@
+/* styles.css */
+
+/* Default Theme (Blue) */
+:root {
+    --main-color: #1E88E5; /* Blue */
+    --secondary-color: #1565C0; /* Darker Blue */
+    --accent-color: #42A5F5; /* Light Blue */
+    --danger-color: #d32f2f; /* Red */
+    --warning-color: #ffb300; /* Amber */
+    --text-color: #000;
+    --background-color: #f5f5f5;
+    --dark-background-color: #1e1e1e;
+    --dark-text-color: #eaeaea;
+    --header-background-color: var(--main-color);
+    --header-text-color: #fff;
+    --button-background-color: var(--main-color);
+    --button-text-color: #fff;
+    --settings-button-background-color: var(--secondary-color);
+    --settings-button-text-color: #fff;
+    --exercise-selected-color: #afd5ff;
+    --exercise-selected-border-color: #0D47A1;
+    --exercise-completed-color: #1E88E5;
+    --popup-background-color: #fff;
+    --popup-text-color: #000;
+    --popup-background-color-dark: #2e2e2e;
+    --popup-text-color-dark: #eaeaea;
+
+    /* Font Sizes */
+    --font-size-small: 14px;
+    --font-size-medium: 16px;
+    --font-size-large: 18px;
+}
+
+/* High Contrast Theme */
+body.high-contrast {
+    --main-color: #000;
+    --secondary-color: #000;
+    --accent-color: #000;
+    --danger-color: #000;
+    --warning-color: #000;
+    --text-color: #fff;
+    --background-color: #000;
+    --dark-background-color: #000;
+    --dark-text-color: #fff;
+    --header-background-color: #000;
+    --header-text-color: #fff;
+    --button-background-color: #000;
+    --button-text-color: #fff;
+    --settings-button-background-color: #000;
+    --settings-button-text-color: #fff;
+    --exercise-selected-color: #fff;
+    --exercise-selected-border-color: #fff;
+    --exercise-completed-color: #fff;
+    --popup-background-color: #000;
+    --popup-text-color: #fff;
+    --popup-background-color-dark: #000;
+    --popup-text-color-dark: #fff;
+}
+
+/* Theme Classes */
+body.theme-red {
+    --main-color: #E53935; /* Red */
+    --secondary-color: #B71C1C; /* Dark Red */
+    --accent-color: #EF5350; /* Light Red */
+    --header-background-color: var(--main-color);
+    --exercise-selected-color: #C62828;
+    --exercise-selected-border-color: #B71C1C;
+    --exercise-completed-color: #E53935;
+}
+
+body.theme-green {
+    --main-color: #43A047; /* Green */
+    --secondary-color: #2E7D32; /* Dark Green */
+    --accent-color: #66BB6A; /* Light Green */
+    --header-background-color: var(--main-color);
+    --exercise-selected-color: #2E7D32;
+    --exercise-selected-border-color: #1B5E20;
+    --exercise-completed-color: #43A047;
+}
+
+body.theme-purple {
+    --main-color: #8E24AA; /* Purple */
+    --secondary-color: #6A1B9A; /* Dark Purple */
+    --accent-color: #AB47BC; /* Light Purple */
+    --header-background-color: var(--main-color);
+    --exercise-selected-color: #6A1B9A;
+    --exercise-selected-border-color: #4A148C;
+    --exercise-completed-color: #8E24AA;
+}
+
+body.theme-orange {
+    --main-color: #FB8C00; /* Orange */
+    --secondary-color: #E65100; /* Dark Orange */
+    --accent-color: #FFA726; /* Light Orange */
+    --header-background-color: var(--main-color);
+    --exercise-selected-color: #E65100;
+    --exercise-selected-border-color: #BF360C;
+    --exercise-completed-color: #FB8C00;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: var(--font-size-medium);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s, font-size 0.3s;
+}
+
+body.small-font {
+    font-size: var(--font-size-small);
+}
+
+body.medium-font {
+    font-size: var(--font-size-medium);
+}
+
+body.large-font {
+    font-size: var(--font-size-large);
+}
+
+body.dark-mode {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+}
+
+header {
+    background-color: var(--header-background-color);
+    color: var(--header-text-color);
+    padding: 10px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1em;
+}
+
+#settings-button,
+#help-button {
+    position: fixed;
+    top: 20px; /* Moved up 20 pixels */
+    padding: 8px;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: var(--settings-button-background-color);
+    color: var(--settings-button-text-color);
+    border: none;
+    border-radius: 50%;
+    z-index: 100;
+    transition: background-color 0.2s ease;
+}
+
+#settings-button:hover,
+#help-button:hover {
+    background-color: var(--secondary-color);
+    opacity: 0.9;
+}
+
+#settings-button {
+    right: 20px;
+}
+
+#help-button {
+    left: 20px;
+}
+
+main {
+    padding: 10px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+#exercise-search {
+    flex: 1;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.toggle-switch.small {
+    margin-left: 10px;
+}
+
+.toggle-switch.small .slider {
+    width: 30px;
+    height: 15px;
+}
+
+.toggle-switch.small .slider::before {
+    width: 11px;
+    height: 11px;
+}
+
+.toggle-switch.small .toggle-label {
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+#exercise-search {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.controls h2 {
+    margin: 0;
+    flex-basis: 100%;
+}
+
+.controls button {
+    flex: 1;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#reset-button {
+    background-color: var(--accent-color);
+}
+
+#export-button {
+    background-color: var(--main-color);
+}
+
+#import-button {
+    background-color: var(--secondary-color);
+}
+
+/* New Section Button */
+#new-section-button {
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 20px;
+}
+
+#new-section-button:hover {
+    background-color: var(--accent-color);
+    opacity: 0.9;
+}
+
+.exercise-section {
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.exercise-section.dark-mode {
+    background-color: #2e2e2e;
+}
+
+.exercise-section h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.section-header h2 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+}
+
+.section-header .add-exercise-button {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.section-header .add-exercise-button:hover {
+    background-color: var(--accent-color);
+    opacity: 0.9;
+}
+
+.section-header .edit-section-button {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.section-header .edit-section-button:hover {
+    color: gray;
+}
+
+.exercise-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.exercise {
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    width: calc(33.333% - 10px);
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+    color: #000;
+    position: relative;
+    font-size: 1em;
+}
+
+.exercise:hover {
+    background-color: #e0e0e0;
+}
+
+.exercise.dark-mode {
+    background-color: #3a3a3a;
+    border-color: #555;
+    color: #eaeaea;
+}
+
+.exercise.dark-mode:hover {
+    background-color: #555;
+}
+
+/* Themes affecting selected and completed exercises */
+.exercise.selected {
+    background-color: var(--exercise-selected-color);
+    border-color: var(--exercise-selected-border-color);
+}
+
+.exercise.selected:hover {
+    background-color: var(--exercise-selected-color);
+}
+
+.exercise.selected.dark-mode {
+    background-color: #4a4a4a; /* Darker shade */
+    border-color: var(--accent-color);
+    color: #eaeaea;
+}
+
+.exercise.selected.dark-mode:hover {
+    background-color: #4a4a4a;
+}
+
+.exercise.completed {
+    background-color: var(--exercise-completed-color);
+}
+
+.exercise.completed.dark-mode {
+    background-color: #3a3a3a; /* Darker shade */
+    color: #eaeaea;
+}
+
+.exercise.completed.selected {
+    border-color: var(--exercise-selected-border-color);
+}
+
+.note {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+    display: none;
+}
+
+.note.visible {
+    display: block;
+}
+
+.exercise.dark-mode .note {
+    color: #bbb;
+}
+
+.exercise-menu-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: inherit;
+    padding: 0 3px;
+    margin: 0;
+    transition: color 0.2s ease;
+}
+
+.exercise-menu-button:hover {
+    color: gray;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.exercise-menu-button:focus {
+    outline: none;
+}
+
+.exercise-menu {
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 10;
+    min-width: 150px;
+}
+
+.exercise-menu.dark-mode {
+    background-color: #3a3a3a;
+    border-color: #555;
+}
+
+.exercise-menu button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    transition: background-color 0.2s ease;
+}
+
+.exercise-menu button:hover {
+    background-color: #f0f0f0;
+}
+
+.exercise-menu.dark-mode button:hover {
+    background-color: #555;
+}
+
+#selected-exercises {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+#selected-exercises.dark-mode {
+    background-color: #2e2e2e;
+}
+
+#selected-exercises h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+/* Adjust styles for progress table in dark mode */
+body.dark-mode .progress-table {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+}
+
+body.dark-mode .progress-table th,
+body.dark-mode .progress-table td {
+    border-bottom: 1px solid #555;
+}
+
+/* Ensure tables have consistent background and text colors */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.dark-mode table {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: inherit;
+    color: inherit;
+    font-size: 1em;
+}
+
+th {
+    background-color: #f1f1f1;
+}
+
+.dark-mode th {
+    background-color: #3a3a3a;
+    color: #eaeaea;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+    cursor: grab;
+}
+
+tbody tr.dark-mode:hover {
+    background-color: #3a3a3a;
+}
+
+/* Styles for the remove exercise button in the table */
+.remove-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--danger-color);
+    padding: 0;
+}
+
+/* No background color on hover */
+.remove-button:hover {
+    background: transparent;
+}
+
+.weight-input {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #000;
+}
+
+.dark-mode .weight-input {
+    background-color: #555;
+    border-color: #777;
+    color: #eaeaea;
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: var(--button-background-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--main-color);
+    opacity: 0.9;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-buttons-row {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+}
+
+.action-buttons-row button {
+    flex: 1;
+    color: #fff;
+    border-radius: 5px;
+}
+
+#complete-button {
+    background-color: var(--accent-color);
+}
+
+#view-progress-button {
+    background-color: var(--secondary-color);
+}
+
+#download-button {
+    background-color: var(--main-color);
+}
+
+#share-button {
+    background-color: var(--accent-color);
+}
+
+#deselect-all-button {
+    background-color: var(--danger-color);
+    color: #fff;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#settings-panel {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+    width: 250px;
+}
+
+#settings-panel.dark-mode {
+    background-color: #2e2e2e;
+    color: #eaeaea;
+}
+
+#settings-panel button {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: var(--secondary-color);
+    color: var(--settings-button-text-color);
+    transition: background-color 0.2s ease;
+}
+
+#settings-panel button:hover {
+    background-color: var(--secondary-color);
+    opacity: 0.9;
+}
+
+#help-panel {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 200;
+    width: 300px;
+    max-width: calc(100% - 40px);
+}
+
+#help-panel.dark-mode {
+    background-color: #2e2e2e;
+    color: #eaeaea;
+}
+
+#help-panel h2 {
+    margin-top: 0;
+}
+
+#help-panel button {
+    background-color: var(--danger-color);
+    color: #fff;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#help-panel button:hover {
+    background-color: #c62828;
+}
+
+.toggle-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch .slider {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.toggle-switch .slider::before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+.toggle-switch input:checked + .slider {
+    background-color: #66bb6a;
+}
+
+.toggle-switch input:checked + .slider::before {
+    transform: translateX(20px);
+}
+
+.toggle-switch .toggle-label {
+    margin-left: 10px;
+    font-size: 1em;
+    color: inherit;
+}
+
+.toggle-switch .slider {
+    flex-shrink: 0;
+}
+
+.toggle-switch .toggle-label {
+    flex-grow: 1;
+}
+
+#settings-panel.dark-mode .toggle-switch .slider {
+    background-color: #555;
+}
+
+#settings-panel.dark-mode .toggle-switch input:checked + .slider {
+    background-color: #388e3c;
+}
+
+#confirmation-overlay,
+#alert-overlay,
+#exercise-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 300;
+    justify-content: center;
+    align-items: center;
+}
+
+#confirmation-popup,
+#alert-popup,
+#modal-content {
+    background-color: var(--popup-background-color);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    box-sizing: border-box;
+    color: var(--popup-text-color);
+}
+
+body.dark-mode #confirmation-popup,
+body.dark-mode #alert-popup,
+body.dark-mode #modal-content {
+    background-color: var(--popup-background-color-dark);
+    color: var(--popup-text-color-dark);
+}
+
+#confirmation-popup button,
+#alert-popup button,
+#modal-content button {
+    padding: 8px 12px;
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    transition: background-color 0.2s ease;
+}
+
+#confirmation-popup button:hover,
+#alert-popup button:hover,
+#modal-content button:hover {
+    background-color: var(--main-color);
+    opacity: 0.9;
+}
+
+#confirm-yes {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+#confirm-no {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
+#alert-ok {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+#modal-save {
+    background-color: var(--accent-color);
+    color: #fff;
+}
+
+#modal-close {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
+#import-file-input {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#import-file-input.dark-mode {
+    background-color: #555;
+    color: #eaeaea;
+    border-color: #777;
+}
+
+@media (max-width: 1024px) {
+    .exercise {
+        width: calc(50% - 10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .exercise {
+        width: calc(50% - 10px);
+    }
+    .controls {
+        flex-direction: column;
+    }
+    header h1 {
+        font-size: 1.5em;
+    }
+    header p {
+        font-size: 0.9em;
+    }
+    button {
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .exercise {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1em;
+    }
+    .section-header .add-exercise-button {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+    }
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    header h1 {
+        font-size: 1.3em;
+    }
+    header p {
+        font-size: 0.9em;
+    }
+    button {
+        font-size: 1em;
+        padding: 12px 20px;
+    }
+    #exercise-search {
+        font-size: 1em;
+        padding: 12px;
+    }
+    .action-buttons button {
+        flex: 1 1 100%;
+    }
+}

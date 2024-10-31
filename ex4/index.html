@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Planner</title>
+    <!-- Include CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Include external libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- Include JavaScript Modules -->
+    <script type="module" src="main.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Workout Planner</h1>
+        <p>Select the exercises to create your personalized workout plan</p>
+    </header>
+    <main>
+        <input type="text" id="exercise-search" placeholder="Search exercises..." aria-label="Search exercises">
+
+        <!-- Controls Section -->
+        <div class="controls">
+            <!-- Buttons will be inserted here -->
+        </div>
+
+        <!-- Exercise Sections will be inserted here -->
+
+        <!-- New Section Button -->
+        <button id="new-section-button">New Section</button>
+
+        <!-- Selected Exercises Section moved to the bottom -->
+        <div id="selected-exercises">
+            <h2>Your Selected Workout</h2>
+            <table id="exercise-table">
+                <thead>
+                    <tr>
+                        <th></th> <!-- For the remove button -->
+                        <th>Exercise</th>
+                        <th>Sets</th>
+                        <th>Reps</th>
+                        <th>Rest</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody id="exercise-table-body">
+                    <!-- Selected exercises will be appended here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <!-- Popups and Modals -->
+    <div id="confirmation-overlay">
+        <div id="confirmation-popup">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+    <div id="alert-overlay">
+        <div id="alert-popup">
+            <!-- Content will be dynamically inserted here -->
+        </div>
+    </div>
+    <div id="exercise-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div id="modal-content">
+            <h2 id="modal-title">Exercise Details</h2>
+            <label>
+                Name:<br>
+                <input type="text" id="modal-exercise-name" style="width: 100%;">
+            </label><br><br>
+            <label>
+                Sets:<br>
+                <input type="text" id="modal-exercise-sets" style="width: 100%;">
+            </label><br><br>
+            <label>
+                Reps:<br>
+                <input type="text" id="modal-exercise-reps" style="width: 100%;">
+            </label><br><br>
+            <label>
+                Rest:<br>
+                <input type="text" id="modal-exercise-rest" style="width: 100%;">
+            </label><br><br>
+            <button id="modal-save">Save</button>
+            <button id="modal-close">Close</button>
+        </div>
+    </div>
+</body>
+</html>
