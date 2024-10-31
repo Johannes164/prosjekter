@@ -900,8 +900,8 @@ body.dark-mode #modal-content {
     /* Adjust help and settings buttons */
     #settings-button,
     #help-button {
-        position: static;
-        margin-top: 10px;
+        margin-top: 5px;
+        position: absolute;
     }
 }
 
@@ -930,12 +930,12 @@ body.dark-mode #modal-content {
         display: flex;
         flex-grow: 10;
     }
-    .exercise {
+    /*.exercise {
         width: 100%;
         padding: 15px;
         height: 100px;
         font-size: clamp(1.2em, 3vw, 1.5em);
-    }
+    }*/
 
     header h1 {
         font-size: 1.3em;
@@ -980,7 +980,6 @@ body.dark-mode #modal-content {
     /* Ensure settings and help buttons don't float */
     #settings-button,
     #help-button {
-        position: static;
-        margin-top: 10px;
+        margin: 0px;
     }
 }

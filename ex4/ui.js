@@ -51,16 +51,19 @@ export function setupEventListeners() {
         }
     });
 
-    // Initialize sortable for the selected exercises table
-    const exerciseTableBody = document.querySelector('#exercise-table tbody');
-    new Sortable(exerciseTableBody, {
-        animation: 150,
-        onEnd: function (evt) {
-            // Update the selectedExerciseOrder based on new order
-            const selectedExerciseOrder = Array.from(exerciseTableBody.querySelectorAll('tr')).map(row => row.dataset.name);
-            localStorage.setItem('selectedExerciseOrder', JSON.stringify(selectedExerciseOrder));
-        }
-    });
+    // Initialize sortable for the selected exercises table only if drag and drop is enabled
+    const dragDropEnabled = localStorage.getItem('dragDropEnabled') === 'true';
+    if (dragDropEnabled) {
+        const exerciseTableBody = document.querySelector('#exercise-table tbody');
+        new Sortable(exerciseTableBody, {
+            animation: 150,
+            onEnd: function (evt) {
+                // Update the selectedExerciseOrder based on new order
+                const selectedExerciseOrder = Array.from(exerciseTableBody.querySelectorAll('tr')).map(row => row.dataset.name);
+                localStorage.setItem('selectedExerciseOrder', JSON.stringify(selectedExerciseOrder));
+            }
+        });
+    }
 }
 
 function performSearch(query, searchSectionsEnabled) {

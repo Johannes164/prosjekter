@@ -78,6 +78,12 @@ export function createSettingsPanel() {
         <span class="slider"></span>
         <span class="toggle-label">Show Notes</span>
     </label>
+    <!-- New Drag and Drop Toggle -->
+    <label class="toggle-switch">
+        <input type="checkbox" id="drag-drop-toggle">
+        <span class="slider"></span>
+        <span class="toggle-label">Enable Drag and Drop</span>
+    </label>
     <label>
         Font Size:
         <select id="font-size-select" style="width: 100%; padding: 5px; margin-top: 5px;">
@@ -112,6 +118,7 @@ export function createSettingsPanel() {
   const notesDisplayToggle = document.getElementById('notes-display-toggle');
   const fontSizeSelect = document.getElementById('font-size-select');
   const themeSelect = document.getElementById('theme-select');
+  const dragDropToggle = document.getElementById('drag-drop-toggle');
 
   // Set initial state based on localStorage
   darkModeToggle.checked = localStorage.getItem('darkMode') === 'true';
@@ -120,6 +127,19 @@ export function createSettingsPanel() {
   fontSizeSelect.value = savedFontSize;
   const savedTheme = localStorage.getItem('theme') || 'theme-blue'; // Set blue as the new default
   themeSelect.value = savedTheme;
+
+  // Set initial state for drag and drop based on localStorage or screen width
+  let dragDropEnabled = localStorage.getItem('dragDropEnabled');
+  if (dragDropEnabled === null) {
+    // Default to off if screen width is 768px or smaller
+    if (window.innerWidth <= 768) {
+      dragDropEnabled = 'false';
+    } else {
+      dragDropEnabled = 'true';
+    }
+    localStorage.setItem('dragDropEnabled', dragDropEnabled);
+  }
+  dragDropToggle.checked = dragDropEnabled === 'true';
 
   darkModeToggle.addEventListener('change', () => {
     document.body.classList.toggle('dark-mode');
@@ -162,6 +182,13 @@ export function createSettingsPanel() {
     );
     document.body.classList.add(selectedTheme);
     localStorage.setItem('theme', selectedTheme);
+  });
+
+  dragDropToggle.addEventListener('change', () => {
+    const isEnabled = dragDropToggle.checked;
+    localStorage.setItem('dragDropEnabled', isEnabled);
+    // Reload the page to apply changes
+    location.reload();
   });
 
   document.getElementById('reset-data').addEventListener('click', () => {
@@ -523,13 +550,16 @@ export function addSectionToDOM(title, exercises = []) {
   const newSectionButton = document.getElementById('new-section-button');
   document.querySelector('main').insertBefore(section, newSectionButton);
 
-  // Make the exercises sortable within the section
-  new Sortable(exerciseContainer, {
-    animation: 150,
-    onEnd: function () {
-      saveSections(); // Save the new order
-    },
-  });
+  // Initialize Sortable for the exercises in this section if drag and drop is enabled
+  const dragDropEnabled = localStorage.getItem('dragDropEnabled') === 'true';
+  if (dragDropEnabled) {
+    new Sortable(exerciseContainer, {
+      animation: 150,
+      onEnd: function () {
+        saveSections(); // Save the new order
+      },
+    });
+  }
 
   // Apply dark mode if active
   if (document.body.classList.contains('dark-mode')) {
