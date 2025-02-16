@@ -23,7 +23,7 @@
     h1, h2 {
       text-align: center;
     }
-    /* Upload/Reset Container */
+    /* Upload & Reset Buttons */
     .upload-reset-container {
       display: flex;
       gap: 10px;
@@ -57,7 +57,12 @@
     button:hover {
       background-color: #555;
     }
-    /* Main Area Layout: cropper options to left of image */
+    /* Crop Option Buttons in Cropper Options */
+    .cropper-options button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    /* Main area layout: cropper options (left) & image area (right) */
     .main-area {
       display: flex;
       gap: 20px;
@@ -99,7 +104,7 @@
       height: 100%;
       display: block;
     }
-    /* Crop Box Overlay (Rectangular) */
+    /* Rectangular Crop Overlay */
     #cropBox {
       position: absolute;
       border: 3px solid rgba(0, 0, 0, 0.8);
@@ -221,7 +226,7 @@
   <div class="container">
     <h1>Image Editor</h1>
 
-    <!-- Upload & Reset Buttons (side-by-side) -->
+    <!-- Upload & Reset Buttons -->
     <div class="upload-reset-container">
       <button id="uploadButton">Upload Image</button>
       <button id="resetImage">Reset Image</button>
@@ -236,12 +241,14 @@
       <!-- Cropper Options -->
       <div class="cropper-options">
         <h2>Crop Options</h2>
+        <!-- Default now rectangular crop (unchecked) -->
         <label>
-          <input type="checkbox" id="perspectiveMode" checked /> Perspective Crop
+          <input type="checkbox" id="perspectiveMode" /> Perspective Crop
         </label>
         <label>
           <input type="checkbox" id="cropperToggle" checked /> Show Cropper Preview
         </label>
+        <button id="autoDetect">Auto Detect QR</button>
         <button id="applyCrop">Apply Crop</button>
       </div>
 
@@ -270,7 +277,7 @@
           <div id="pHandleBR" class="pHandle" style="display:none;">BR</div>
           <div id="pHandleBL" class="pHandle" style="display:none;">BL</div>
         </div>
-        <!-- Image Control Buttons below image -->
+        <!-- Image Control Buttons -->
         <div class="image-buttons">
           <button id="maximizeButton">Maximize</button>
           <button id="downloadButton">Download Image</button>
@@ -337,6 +344,7 @@
     const maximizeButton = document.getElementById('maximizeButton');
     const downloadButton = document.getElementById('downloadButton');
     const qrButton = document.getElementById('QR');
+    const autoDetectButton = document.getElementById('autoDetect');
 
     // Adjustment sliders.
     const brightnessSlider = document.getElementById('brightnessSlider');
@@ -357,6 +365,28 @@
     let baseImageData = null;
     let loadedImage = new Image();
     let adjustedImageData = null;
+
+    // For auto-detect retry logic.
+    let autoDetectRetry = false;
+
+    /* --- Add slider event listeners --- */
+    brightnessSlider.addEventListener('input', () => {
+      brightnessVal.textContent = brightnessSlider.value;
+      applyAdjustments();
+    });
+    contrastSlider.addEventListener('input', () => {
+      contrastVal.textContent = contrastSlider.value;
+      applyAdjustments();
+    });
+    specialContrastSlider.addEventListener('input', () => {
+      specialContrastVal.textContent = specialContrastSlider.value;
+      applyAdjustments();
+    });
+    specialContrastThresholdSlider.addEventListener('input', () => {
+      specialContrastThresholdVal.textContent = specialContrastThresholdSlider.value;
+      applyAdjustments();
+    });
+    bwCheckbox.addEventListener('change', applyAdjustments);
 
     /* --- File Upload & Drag-and-Drop --- */
     uploadButton.addEventListener('click', () => fileInput.click());
@@ -673,6 +703,73 @@
       if (svgOverlay) svgOverlay.style.display = disp;
     }
 
+    /* ================== Auto Detect QR Feature ================== */
+    autoDetectButton.addEventListener('click', autoDetectQR);
+    function autoDetectQR() {
+      if (!loadedImage.src) {
+        alert("No image loaded.");
+        return;
+      }
+      let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+        let tl = code.location.topLeftCorner;
+        let tr = code.location.topRightCorner;
+        let br = code.location.bottomRightCorner;
+        let bl = code.location.bottomLeftCorner;
+        // Increase margin to 10% of the detected width/height.
+        const marginFactor = 0.1;
+        const minX = Math.min(tl.x, tr.x, br.x, bl.x);
+        const maxX = Math.max(tl.x, tr.x, br.x, bl.x);
+        const minY = Math.min(tl.y, tr.y, br.y, bl.y);
+        const maxY = Math.max(tl.y, tr.y, br.y, bl.y);
+        const width = maxX - minX;
+        const height = maxY - minY;
+        const marginX = width * marginFactor;
+        const marginY = height * marginFactor;
+        const newTl = { x: minX - marginX, y: minY - marginY };
+        const newTr = { x: maxX + marginX, y: minY - marginY };
+        const newBr = { x: maxX + marginX, y: maxY + marginY };
+        const newBl = { x: minX - marginX, y: maxY + marginY };
+        const containerRect = canvasContainer.getBoundingClientRect();
+        const scaleX = containerRect.width / canvas.width;
+        const scaleY = containerRect.height / canvas.height;
+        if (perspectiveModeCheckbox.checked) {
+          document.getElementById('pHandleTL').style.left = (newTl.x * scaleX - 8) + "px";
+          document.getElementById('pHandleTL').style.top = (newTl.y * scaleY - 8) + "px";
+          document.getElementById('pHandleTR').style.left = (newTr.x * scaleX - 8) + "px";
+          document.getElementById('pHandleTR').style.top = (newTr.y * scaleY - 8) + "px";
+          document.getElementById('pHandleBR').style.left = (newBr.x * scaleX - 8) + "px";
+          document.getElementById('pHandleBR').style.top = (newBr.y * scaleY - 8) + "px";
+          document.getElementById('pHandleBL').style.left = (newBl.x * scaleX - 8) + "px";
+          document.getElementById('pHandleBL').style.top = (newBl.y * scaleY - 8) + "px";
+          updatePerspectiveOverlay();
+        } else {
+          let rectLeft = (minX - marginX) * scaleX;
+          let rectTop = (minY - marginY) * scaleY;
+          let rectWidth = (width + 2 * marginX) * scaleX;
+          let rectHeight = (height + 2 * marginY) * scaleY;
+          cropBox.style.left = rectLeft + "px";
+          cropBox.style.top = rectTop + "px";
+          cropBox.style.width = rectWidth + "px";
+          cropBox.style.height = rectHeight + "px";
+        }
+        // Automatically apply crop.
+        applyCropButton.click();
+        autoDetectRetry = false;
+      } else {
+        if (!autoDetectRetry) {
+          autoDetectRetry = true;
+          // Apply QR preset (simulate QR button click) then try again once.
+          qrButton.click();
+          setTimeout(autoDetectQR, 500);
+        } else {
+          alert("QR code not detected.");
+          autoDetectRetry = false;
+        }
+      }
+    }
+
     /* ================== Apply Crop ================== */
     applyCropButton.addEventListener('click', () => {
       if (!baseImageData) return;
@@ -686,7 +783,7 @@
         }
         let pts = [ getPt(pHandleTL), getPt(pHandleTR), getPt(pHandleBR), getPt(pHandleBL) ];
         function distance(p1, p2) {
-          return Math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2);
+          return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
         }
         const widthAvg = (distance(pts[0], pts[1]) + distance(pts[3], pts[2])) / 2;
         const heightAvg = (distance(pts[0], pts[3]) + distance(pts[1], pts[2])) / 2;
