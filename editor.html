@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Editor</title>
+  <style>
+    /* Global Dark Style */
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    /* Upload/Reset Container */
+    .upload-reset-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
+    /* Upload Area */
+    .upload-area {
+      border: 2px dashed #444;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+    .upload-area.hover {
+      border-color: #888;
+    }
+    .upload-area p {
+      margin: 0;
+      pointer-events: none;
+    }
+    button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #555;
+    }
+    /* Main Area Layout: cropper options to left of image */
+    .main-area {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .cropper-options {
+      width: 200px;
+    }
+    .cropper-options label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    .cropper-options input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    .image-area {
+      flex-grow: 1;
+    }
+    /* Canvas Container */
+    #canvasContainer {
+      width: 600px;
+      height: 400px;
+      margin: 0 auto;
+      border: 1px solid #444;
+      position: relative;
+      overflow: hidden;
+    }
+    /* When maximized, allow overflow */
+    #canvasContainer.maximized {
+      width: auto;
+      height: auto;
+      border: none;
+      overflow: visible;
+    }
+    /* The canvas fills the container */
+    #imageCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    /* Crop Box Overlay (Rectangular) */
+    #cropBox {
+      position: absolute;
+      border: 3px solid rgba(0, 0, 0, 0.8);
+      box-sizing: border-box;
+      cursor: move;
+      z-index: 10;
+    }
+    /* Rectangular crop handles */
+    .handle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border: 1px solid #fff;
+      box-sizing: border-box;
+    }
+    .handle-tl { top: -6px; left: -6px; cursor: nwse-resize; }
+    .handle-tr { top: -6px; right: -6px; cursor: nesw-resize; }
+    .handle-bl { bottom: -6px; left: -6px; cursor: nesw-resize; }
+    .handle-br { bottom: -6px; right: -6px; cursor: nwse-resize; }
+    .handle-top { top: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+    .handle-right { right: -6px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+    .handle-bottom { bottom: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+    .handle-left { left: -6px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+    /* Perspective Crop Overlays */
+    #perspectiveOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    #perspectiveOverlay polygon {
+      fill: none;
+      stroke: rgba(0, 0, 0, 0.8);
+      stroke-width: 3;
+    }
+    .pHandle {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background-color: rgba(200,200,200,0.9);
+      border: 2px solid #444;
+      border-radius: 50%;
+      cursor: move;
+      z-index: 11;
+      text-align: center;
+      line-height: 16px;
+      font-size: 10px;
+      color: #000;
+      user-select: none;
+    }
+    /* Image Control Buttons below image */
+    .image-buttons {
+      text-align: center;
+      margin-top: 10px;
+    }
+    /* Adjustments Controls */
+    .controls {
+      background: #1e1e1e;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .controls label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      margin: 10px 0;
+      background: transparent;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8px;
+      background: #444;
+      border-radius: 4px;
+    }
+    input[type="range"]::-moz-range-track {
+      width: 100%;
+      height: 8px;
+      background: #444;
+      border-radius: 4px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 20px;
+      width: 20px;
+      background: #888;
+      border-radius: 50%;
+      margin-top: -6px;
+    }
+    input[type="range"]::-moz-range-thumb {
+      height: 20px;
+      width: 20px;
+      background: #888;
+      border-radius: 50%;
+      border: none;
+    }
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      #canvasContainer {
+        width: 100%;
+        height: auto;
+      }
+      .main-area {
+        flex-direction: column;
+      }
+      .cropper-options {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Editor</h1>
+
+    <!-- Upload & Reset Buttons (side-by-side) -->
+    <div class="upload-reset-container">
+      <button id="uploadButton">Upload Image</button>
+      <button id="resetImage">Reset Image</button>
+    </div>
+    <div class="upload-area" id="uploadArea">
+      <p>Drag &amp; drop your image here or click to upload</p>
+      <input type="file" id="fileInput" accept="image/*" style="display:none;" />
+    </div>
+
+    <!-- Main area: Cropper Options (left) & Image Area (right) -->
+    <div class="main-area">
+      <!-- Cropper Options -->
+      <div class="cropper-options">
+        <h2>Crop Options</h2>
+        <label>
+          <input type="checkbox" id="perspectiveMode" checked /> Perspective Crop
+        </label>
+        <label>
+          <input type="checkbox" id="cropperToggle" checked /> Show Cropper Preview
+        </label>
+        <button id="applyCrop">Apply Crop</button>
+      </div>
+
+      <!-- Image Area -->
+      <div class="image-area">
+        <div id="canvasContainer">
+          <canvas id="imageCanvas"></canvas>
+          <!-- Rectangular crop overlay -->
+          <div id="cropBox" style="display:none;">
+            <div class="handle handle-tl"></div>
+            <div class="handle handle-tr"></div>
+            <div class="handle handle-bl"></div>
+            <div class="handle handle-br"></div>
+            <div class="handle handle-top"></div>
+            <div class="handle handle-right"></div>
+            <div class="handle handle-bottom"></div>
+            <div class="handle handle-left"></div>
+          </div>
+          <!-- SVG overlay for perspective mode -->
+          <svg id="perspectiveOverlay" style="display:none;">
+            <polygon></polygon>
+          </svg>
+          <!-- Perspective handles -->
+          <div id="pHandleTL" class="pHandle" style="display:none;">TL</div>
+          <div id="pHandleTR" class="pHandle" style="display:none;">TR</div>
+          <div id="pHandleBR" class="pHandle" style="display:none;">BR</div>
+          <div id="pHandleBL" class="pHandle" style="display:none;">BL</div>
+        </div>
+        <!-- Image Control Buttons below image -->
+        <div class="image-buttons">
+          <button id="maximizeButton">Maximize</button>
+          <button id="downloadButton">Download Image</button>
+          <button id="QR">QR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adjustments Controls -->
+    <div class="controls">
+      <h2>Image Adjustments</h2>
+      <label>
+        Brightness:
+        <input type="range" id="brightnessSlider" min="-100" max="100" value="0">
+        <span id="brightnessVal">0</span>
+      </label>
+      <label>
+        Contrast:
+        <input type="range" id="contrastSlider" min="-100" max="100" value="0">
+        <span id="contrastVal">0</span>
+      </label>
+      <label>
+        Special Contrast:
+        <input type="range" id="specialContrastSlider" min="0" max="100" value="0">
+        <span id="specialContrastVal">0</span>
+      </label>
+      <label>
+        Special Contrast Threshold:
+        <input type="range" id="specialContrastThresholdSlider" min="0" max="255" value="128">
+        <span id="specialContrastThresholdVal">128</span>
+      </label>
+      <label>
+        <input type="checkbox" id="bwCheckbox" /> Black &amp; White
+      </label>
+    </div>
+  </div>
+
+  <script>
+    /* ================== Image Upload & Adjustments ================== */
+    function clamp(val, min, max) {
+      return Math.min(max, Math.max(min, val));
+    }
+    function transformSliderValue(value, maxVal) {
+      value = parseFloat(value);
+      if (value >= 0) {
+        return (Math.log(value + 1) / Math.log(maxVal + 1)) * maxVal;
+      } else {
+        return - (Math.log(-value + 1) / Math.log(maxVal + 1)) * maxVal;
+      }
+    }
+    const sensitivity = 1.5;
+
+    // DOM elements for upload and canvas.
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const uploadButton = document.getElementById('uploadButton');
+    const canvasContainer = document.getElementById('canvasContainer');
+    const canvas = document.getElementById('imageCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Buttons.
+    const applyCropButton = document.getElementById('applyCrop');
+    const resetButton = document.getElementById('resetImage');
+    const maximizeButton = document.getElementById('maximizeButton');
+    const downloadButton = document.getElementById('downloadButton');
+    const qrButton = document.getElementById('QR');
+
+    // Adjustment sliders.
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const contrastSlider = document.getElementById('contrastSlider');
+    const specialContrastSlider = document.getElementById('specialContrastSlider');
+    const brightnessVal = document.getElementById('brightnessVal');
+    const contrastVal = document.getElementById('contrastVal');
+    const specialContrastVal = document.getElementById('specialContrastVal');
+    const bwCheckbox = document.getElementById('bwCheckbox');
+    const specialContrastThresholdSlider = document.getElementById('specialContrastThresholdSlider');
+    const specialContrastThresholdVal = document.getElementById('specialContrastThresholdVal');
+
+    // Cropper option checkboxes.
+    const perspectiveModeCheckbox = document.getElementById('perspectiveMode');
+    const cropperToggleCheckbox = document.getElementById('cropperToggle');
+
+    let originalImageData = null;
+    let baseImageData = null;
+    let loadedImage = new Image();
+    let adjustedImageData = null;
+
+    /* --- File Upload & Drag-and-Drop --- */
+    uploadButton.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', handleFiles);
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('hover'); });
+    uploadArea.addEventListener('dragleave', e => { e.preventDefault(); uploadArea.classList.remove('hover'); });
+    uploadArea.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadArea.classList.remove('hover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFiles({ target: { files: e.dataTransfer.files } });
+      }
+    });
+    function handleFiles(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        loadedImage = new Image();
+        loadedImage.onload = function() {
+          canvasContainer.classList.remove('maximized');
+          canvas.width = loadedImage.width;
+          canvas.height = loadedImage.height;
+          ctx.drawImage(loadedImage, 0, 0);
+          originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          baseImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          updateCropOverlayMode();
+          brightnessSlider.value = 0;
+          contrastSlider.value = 0;
+          specialContrastSlider.value = 0;
+          brightnessVal.textContent = "0";
+          contrastVal.textContent = "0";
+          specialContrastVal.textContent = "0";
+          bwCheckbox.checked = false;
+          specialContrastThresholdSlider.value = 128;
+          specialContrastThresholdVal.textContent = "128";
+          applyAdjustments();
+        };
+        loadedImage.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* --- Image Adjustments --- */
+    function applyAdjustments() {
+      if (!baseImageData) return;
+      let tempData = new ImageData(new Uint8ClampedArray(baseImageData.data), baseImageData.width, baseImageData.height);
+      const data = tempData.data;
+      const brightness = parseInt(brightnessSlider.value, 10) * sensitivity;
+      const rawContrast = parseInt(contrastSlider.value, 10);
+      const effectiveContrast = transformSliderValue(rawContrast, 100) * sensitivity;
+      const factor = (259 * (effectiveContrast + 255)) / (255 * (259 - effectiveContrast));
+      const rawSpecialContrast = parseInt(specialContrastSlider.value, 10);
+      const effectiveSpecialContrast = transformSliderValue(rawSpecialContrast, 100) * sensitivity;
+      const specialThreshold = parseInt(specialContrastThresholdSlider.value, 10);
+      const bw = bwCheckbox.checked;
+      for (let i = 0; i < data.length; i += 4) {
+        for (let j = 0; j < 3; j++) {
+          let pixel = data[i+j];
+          pixel = factor * (pixel - 128) + 128 + brightness;
+          data[i+j] = pixel;
+        }
+        let avg = (data[i] + data[i+1] + data[i+2]) / 3;
+        for (let j = 0; j < 3; j++) {
+          data[i+j] += avg > specialThreshold ? effectiveSpecialContrast : -effectiveSpecialContrast;
+          data[i+j] = clamp(data[i+j], 0, 255);
+        }
+        if (bw) {
+          const gray = 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2];
+          data[i] = data[i+1] = data[i+2] = gray;
+        }
+      }
+      adjustedImageData = tempData;
+      ctx.putImageData(adjustedImageData, 0, 0);
+      if (perspectiveModeCheckbox.checked) {
+        updatePerspectiveOverlay();
+      }
+    }
+
+    /* --- Button Listeners --- */
+    maximizeButton.addEventListener('click', () => {
+      canvasContainer.classList.toggle('maximized');
+      if (canvasContainer.classList.contains('maximized')) {
+        canvas.style.width = canvas.width + "px";
+        canvas.style.height = canvas.height + "px";
+      } else {
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+      }
+    });
+    downloadButton.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'edited_image.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+    qrButton.addEventListener('click', () => {
+      brightnessSlider.value = -100;
+      contrastSlider.value = 100;
+      specialContrastSlider.value = 100;
+      brightnessVal.textContent = "-100";
+      contrastVal.textContent = "100";
+      specialContrastVal.textContent = "100";
+      bwCheckbox.checked = true;
+      specialContrastThresholdSlider.value = 128;
+      specialContrastThresholdVal.textContent = "128";
+      applyAdjustments();
+    });
+    resetButton.addEventListener('click', () => {
+      if (!originalImageData) return;
+      canvas.width = loadedImage.width;
+      canvas.height = loadedImage.height;
+      baseImageData = new ImageData(new Uint8ClampedArray(originalImageData.data), originalImageData.width, originalImageData.height);
+      ctx.putImageData(baseImageData, 0, 0);
+      brightnessSlider.value = 0;
+      contrastSlider.value = 0;
+      specialContrastSlider.value = 0;
+      brightnessVal.textContent = "0";
+      contrastVal.textContent = "0";
+      specialContrastVal.textContent = "0";
+      bwCheckbox.checked = false;
+      specialContrastThresholdSlider.value = 128;
+      specialContrastThresholdVal.textContent = "128";
+      updateCropOverlayMode();
+      applyAdjustments();
+    });
+
+    /* ================== Crop Overlay Mode & Toggle ================== */
+    perspectiveModeCheckbox.addEventListener('change', updateCropOverlayMode);
+    cropperToggleCheckbox.addEventListener('change', updateCropOverlayVisibility);
+    function updateCropOverlayMode() {
+      if (!loadedImage.src) return;
+      if (perspectiveModeCheckbox.checked) {
+        document.getElementById('cropBox').style.display = 'none';
+        initPerspectiveHandles();
+        document.getElementById('perspectiveOverlay').style.display = cropperToggleCheckbox.checked ? 'block' : 'none';
+        showPerspectiveHandles(true);
+      } else {
+        document.getElementById('perspectiveOverlay').style.display = 'none';
+        showPerspectiveHandles(false);
+        initCropBox();
+      }
+      updateCropOverlayVisibility();
+    }
+    function updateCropOverlayVisibility() {
+      const visible = cropperToggleCheckbox.checked;
+      if (perspectiveModeCheckbox.checked) {
+        document.getElementById('perspectiveOverlay').style.display = visible ? 'block' : 'none';
+        setPerspectiveHandlesDisplay(visible);
+      } else {
+        document.getElementById('cropBox').style.display = visible ? 'block' : 'none';
+      }
+    }
+
+    /* ================== Rectangular Crop Overlay ================== */
+    const cropBox = document.getElementById('cropBox');
+    function initCropBox() {
+      cropBox.style.display = cropperToggleCheckbox.checked ? 'block' : 'none';
+      const cw = canvasContainer.clientWidth;
+      const ch = canvasContainer.clientHeight;
+      const boxW = cw * 0.5, boxH = ch * 0.5;
+      cropBox.style.width = boxW + "px";
+      cropBox.style.height = boxH + "px";
+      cropBox.style.left = (cw - boxW) / 2 + "px";
+      cropBox.style.top = (ch - boxH) / 2 + "px";
+      initRectangularDrag();
+    }
+    let currentHandle = null, startX, startY, startLeft, startTop, startWidth, startHeight;
+    const rectHandles = cropBox.querySelectorAll('.handle');
+    rectHandles.forEach(handle => {
+      handle.addEventListener('pointerdown', startHandleDrag);
+      handle.addEventListener('pointerdown', e => e.stopPropagation());
+    });
+    cropBox.addEventListener('pointerdown', startBoxDrag);
+    function startHandleDrag(e) {
+      currentHandle = e.target;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = cropBox.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      startWidth = rect.width;
+      startHeight = rect.height;
+      document.addEventListener('pointermove', handleDrag);
+      document.addEventListener('pointerup', stopDrag);
+    }
+    function startBoxDrag(e) {
+      if (e.target !== cropBox) return;
+      currentHandle = null;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = cropBox.getBoundingClientRect();
+      startLeft = rect.left;
+      startTop = rect.top;
+      document.addEventListener('pointermove', handleDrag);
+      document.addEventListener('pointerup', stopDrag);
+    }
+    function handleDrag(e) {
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const containerRect = canvasContainer.getBoundingClientRect();
+      let newLeft = parseFloat(cropBox.style.left);
+      let newTop = parseFloat(cropBox.style.top);
+      let newWidth = parseFloat(cropBox.style.width);
+      let newHeight = parseFloat(cropBox.style.height);
+      if (!currentHandle) {
+        newLeft = startLeft - containerRect.left + dx;
+        newTop = startTop - containerRect.top + dy;
+      } else {
+        if (currentHandle.classList.contains('handle-tl')) {
+          newLeft = startLeft - containerRect.left + dx;
+          newTop = startTop - containerRect.top + dy;
+          newWidth = startWidth - dx;
+          newHeight = startHeight - dy;
+        } else if (currentHandle.classList.contains('handle-tr')) {
+          newTop = startTop - containerRect.top + dy;
+          newWidth = startWidth + dx;
+          newHeight = startHeight - dy;
+        } else if (currentHandle.classList.contains('handle-bl')) {
+          newLeft = startLeft - containerRect.left + dx;
+          newWidth = startWidth - dx;
+          newHeight = startHeight + dy;
+        } else if (currentHandle.classList.contains('handle-br')) {
+          newWidth = startWidth + dx;
+          newHeight = startHeight + dy;
+        } else if (currentHandle.classList.contains('handle-top')) {
+          newTop = startTop - containerRect.top + dy;
+          newHeight = startHeight - dy;
+        } else if (currentHandle.classList.contains('handle-right')) {
+          newWidth = startWidth + dx;
+        } else if (currentHandle.classList.contains('handle-bottom')) {
+          newHeight = startHeight + dy;
+        } else if (currentHandle.classList.contains('handle-left')) {
+          newLeft = startLeft - containerRect.left + dx;
+          newWidth = startWidth - dx;
+        }
+      }
+      const minSize = 30;
+      if (newWidth < minSize) newWidth = minSize;
+      if (newHeight < minSize) newHeight = minSize;
+      cropBox.style.width = newWidth + "px";
+      cropBox.style.height = newHeight + "px";
+      cropBox.style.left = newLeft + "px";
+      cropBox.style.top = newTop + "px";
+    }
+    function stopDrag(e) {
+      document.removeEventListener('pointermove', handleDrag);
+      document.removeEventListener('pointerup', stopDrag);
+    }
+    function initRectangularDrag() { /* Listeners already attached */ }
+
+    /* ================== Perspective Crop Overlay ================== */
+    let pHandleTL, pHandleTR, pHandleBR, pHandleBL, svgOverlay, svgPolygon;
+    function initPerspectiveHandles() {
+      pHandleTL = document.getElementById('pHandleTL');
+      pHandleTR = document.getElementById('pHandleTR');
+      pHandleBR = document.getElementById('pHandleBR');
+      pHandleBL = document.getElementById('pHandleBL');
+      const cw = canvasContainer.clientWidth;
+      const ch = canvasContainer.clientHeight;
+      pHandleTL.style.left = "0px";              pHandleTL.style.top = "0px";
+      pHandleTR.style.left = (cw - 16) + "px";      pHandleTR.style.top = "0px";
+      pHandleBR.style.left = (cw - 16) + "px";      pHandleBR.style.top = (ch - 16) + "px";
+      pHandleBL.style.left = "0px";              pHandleBL.style.top = (ch - 16) + "px";
+      setPerspectiveHandlesDisplay(cropperToggleCheckbox.checked);
+      [pHandleTL, pHandleTR, pHandleBR, pHandleBL].forEach(ph => {
+        ph.addEventListener('pointerdown', startPHandleDrag);
+      });
+      svgOverlay = document.getElementById('perspectiveOverlay');
+      svgPolygon = svgOverlay.querySelector('polygon');
+      updatePerspectiveOverlay();
+    }
+    function setPerspectiveHandlesDisplay(show) {
+      [pHandleTL, pHandleTR, pHandleBR, pHandleBL].forEach(ph => {
+        if (ph) ph.style.display = show ? "block" : "none";
+      });
+    }
+    let currentPHandle = null, pStartX, pStartY, pHandleStartLeft, pHandleStartTop;
+    function startPHandleDrag(e) {
+      currentPHandle = e.target;
+      pStartX = e.clientX;
+      pStartY = e.clientY;
+      pHandleStartLeft = parseFloat(currentPHandle.style.left);
+      pHandleStartTop = parseFloat(currentPHandle.style.top);
+      document.addEventListener('pointermove', handlePHandleDrag);
+      document.addEventListener('pointerup', stopPHandleDrag);
+      e.stopPropagation();
+    }
+    function handlePHandleDrag(e) {
+      const dx = e.clientX - pStartX;
+      const dy = e.clientY - pStartY;
+      currentPHandle.style.left = (pHandleStartLeft + dx) + "px";
+      currentPHandle.style.top = (pHandleStartTop + dy) + "px";
+      updatePerspectiveOverlay();
+    }
+    function stopPHandleDrag(e) {
+      document.removeEventListener('pointermove', handlePHandleDrag);
+      document.removeEventListener('pointerup', stopPHandleDrag);
+    }
+    function updatePerspectiveOverlay() {
+      if (!svgPolygon) return;
+      const pts = [];
+      [pHandleTL, pHandleTR, pHandleBR, pHandleBL].forEach(ph => {
+        pts.push(parseFloat(ph.style.left) + 8 + "," + (parseFloat(ph.style.top) + 8));
+      });
+      svgPolygon.setAttribute("points", pts.join(" "));
+    }
+    function showPerspectiveHandles(show) {
+      const disp = show && cropperToggleCheckbox.checked ? "block" : "none";
+      if (pHandleTL) pHandleTL.style.display = disp;
+      if (pHandleTR) pHandleTR.style.display = disp;
+      if (pHandleBR) pHandleBR.style.display = disp;
+      if (pHandleBL) pHandleBL.style.display = disp;
+      if (svgOverlay) svgOverlay.style.display = disp;
+    }
+
+    /* ================== Apply Crop ================== */
+    applyCropButton.addEventListener('click', () => {
+      if (!baseImageData) return;
+      if (perspectiveModeCheckbox.checked) {
+        const containerRect = canvasContainer.getBoundingClientRect();
+        function getPt(ph) {
+          return {
+            x: parseFloat(ph.style.left),
+            y: parseFloat(ph.style.top)
+          };
+        }
+        let pts = [ getPt(pHandleTL), getPt(pHandleTR), getPt(pHandleBR), getPt(pHandleBL) ];
+        function distance(p1, p2) {
+          return Math.sqrt((p1.x-p2.x)**2 + (p1.y-p2.y)**2);
+        }
+        const widthAvg = (distance(pts[0], pts[1]) + distance(pts[3], pts[2])) / 2;
+        const heightAvg = (distance(pts[0], pts[3]) + distance(pts[1], pts[2])) / 2;
+        const scaleX = canvas.width / containerRect.width;
+        const scaleY = canvas.height / containerRect.height;
+        const srcPts = pts.map(p => ({ x: p.x * scaleX, y: p.y * scaleY }));
+        let warpedCanvas = perspectiveCrop(canvas, srcPts, Math.round(widthAvg * scaleX), Math.round(heightAvg * scaleY));
+        canvas.width = warpedCanvas.width;
+        canvas.height = warpedCanvas.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(warpedCanvas, 0, 0);
+        baseImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        hideAllCropOverlays();
+      } else {
+        const containerRect = canvasContainer.getBoundingClientRect();
+        const cropRect = cropBox.getBoundingClientRect();
+        const scaleX = canvas.width / containerRect.width;
+        const scaleY = canvas.height / containerRect.height;
+        const x = (cropRect.left - containerRect.left) * scaleX;
+        const y = (cropRect.top - containerRect.top) * scaleY;
+        const w = cropRect.width * scaleX;
+        const h = cropRect.height * scaleY;
+        const croppedData = ctx.getImageData(x, y, w, h);
+        canvas.width = w;
+        canvas.height = h;
+        baseImageData = new ImageData(new Uint8ClampedArray(croppedData.data), w, h);
+        ctx.putImageData(baseImageData, 0, 0);
+        cropBox.style.display = 'none';
+      }
+    });
+    function hideAllCropOverlays() {
+      document.getElementById('cropBox').style.display = 'none';
+      if (svgOverlay) svgOverlay.style.display = 'none';
+      setPerspectiveHandlesDisplay(false);
+    }
+
+    /* ================== Perspective Crop Function ================== */
+    function perspectiveCrop(srcCanvas, pts, destWidth, destHeight) {
+      let destCanvas = document.createElement('canvas');
+      destCanvas.width = destWidth;
+      destCanvas.height = destHeight;
+      let destCtx = destCanvas.getContext('2d');
+      let gridX = 20, gridY = 20;
+      let cellW = destWidth / gridX, cellH = destHeight / gridY;
+      function interp(u, v, p0, p1, p2, p3) {
+        return (1 - u) * (1 - v) * p0 + u * (1 - v) * p1 + u * v * p2 + (1 - u) * v * p3;
+      }
+      for (let i = 0; i < gridX; i++) {
+        for (let j = 0; j < gridY; j++) {
+          let u0 = i / gridX, v0 = j / gridY;
+          let u1 = (i + 1) / gridX, v1 = (j + 1) / gridY;
+          let sx0 = interp(u0, v0, pts[0].x, pts[1].x, pts[2].x, pts[3].x);
+          let sy0 = interp(u0, v0, pts[0].y, pts[1].y, pts[2].y, pts[3].y);
+          let sx1 = interp(u1, v0, pts[0].x, pts[1].x, pts[2].x, pts[3].x);
+          let sy1 = interp(u1, v0, pts[0].y, pts[1].y, pts[2].y, pts[3].y);
+          let sx2 = interp(u1, v1, pts[0].x, pts[1].x, pts[2].x, pts[3].x);
+          let sy2 = interp(u1, v1, pts[0].y, pts[1].y, pts[2].y, pts[3].y);
+          let sx3 = interp(u0, v1, pts[0].x, pts[1].x, pts[2].x, pts[3].x);
+          let sy3 = interp(u0, v1, pts[0].y, pts[1].y, pts[2].y, pts[3].y);
+          let sX = Math.min(sx0, sx1, sx2, sx3);
+          let sY = Math.min(sy0, sy1, sy2, sy3);
+          let sX2 = Math.max(sx0, sx1, sx2, sx3);
+          let sY2 = Math.max(sy0, sy1, sy2, sy3);
+          let sW = sX2 - sX, sH = sY2 - sY;
+          let dx = i * cellW, dy = j * cellH;
+          destCtx.drawImage(srcCanvas, sX, sY, sW, sH, dx, dy, cellW, cellH);
+        }
+      }
+      return destCanvas;
+    }
+  </script>
+</body>
+</html>
